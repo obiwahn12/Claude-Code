@@ -26,9 +26,9 @@
   --muted: #6c6c70;         /* secondaryLabel, kontraststark */
   --line: #c6c6c8;          /* separator */
   --fill: #e5e5ea;          /* systemGray5 – Eingabefelder, Chips */
-  --accent: #1e7b34;        /* systemGreen, kontraststark für weiße Schrift */
+  --accent: #8944ab;        /* systemPurple, kontraststark für weiße Schrift */
   --accent-text: #ffffff;
-  --tint: #1e7b34;          /* Akzent für Text und Symbole */
+  --tint: #8944ab;          /* Akzent für Text und Symbole */
   --danger: #d70015;        /* systemRed, kontraststark */
   --warn: #c93400;          /* systemOrange, kontraststark */
   --bar: rgba(249, 249, 249, .92);
@@ -39,14 +39,14 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #000000; --card: #1c1c1e; --text: #ffffff; --muted: #aeaeb2; --line: #38383a;
-    --fill: #2c2c2e; --accent: #30d158; --accent-text: #000000; --tint: #30d158;
+    --fill: #2c2c2e; --accent: #9a4bd6; --accent-text: #ffffff; --tint: #d29bff;
     --danger: #ff6961; --warn: #ffb340; --bar: rgba(22, 22, 24, .9); --shadow: none;
   }
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
   --bg: #000000; --card: #1c1c1e; --text: #ffffff; --muted: #aeaeb2; --line: #38383a;
-  --fill: #2c2c2e; --accent: #30d158; --accent-text: #000000; --tint: #30d158;
+  --fill: #2c2c2e; --accent: #9a4bd6; --accent-text: #ffffff; --tint: #d29bff;
   --danger: #ff6961; --warn: #ffb340; --bar: rgba(22, 22, 24, .9); --shadow: none;
 }
 :root[data-theme="light"] { color-scheme: light; }
@@ -225,7 +225,7 @@ ul.check input[type=checkbox]:disabled { opacity: .45; }
   --wall: radial-gradient(60% 50% at 15% 10%, rgba(255, 255, 255, .95), transparent 70%),
           radial-gradient(55% 45% at 90% 18%, #c4d2e4, transparent 70%),
           radial-gradient(70% 55% at 80% 95%, #e0c7a8, transparent 70%),
-          radial-gradient(50% 45% at 5% 85%, #c9dfc9, transparent 70%),
+          radial-gradient(50% 45% at 5% 85%, #dccdee, transparent 70%),
           linear-gradient(160deg, #f3efe9, #ddd5ca);
   --glass: rgba(255, 255, 255, .58);
   --glass-strong: rgba(255, 255, 255, .72);
@@ -244,7 +244,7 @@ ul.check input[type=checkbox]:disabled { opacity: .45; }
     --wall: radial-gradient(55% 45% at 12% 8%, #2b2546, transparent 70%),
             radial-gradient(50% 45% at 92% 25%, #17343a, transparent 70%),
             radial-gradient(65% 55% at 75% 95%, #3a2a20, transparent 70%),
-            radial-gradient(45% 40% at 5% 85%, #1c3324, transparent 70%),
+            radial-gradient(45% 40% at 5% 85%, #2e1c40, transparent 70%),
             linear-gradient(160deg, #111118, #08080b);
     --glass: rgba(44, 44, 52, .46); --glass-strong: rgba(36, 36, 42, .62); --glass-edge: rgba(255, 255, 255, .12);
     --glass-shadow: 0 10px 34px rgba(0, 0, 0, .45);
@@ -256,7 +256,7 @@ ul.check input[type=checkbox]:disabled { opacity: .45; }
   --wall: radial-gradient(55% 45% at 12% 8%, #2b2546, transparent 70%),
           radial-gradient(50% 45% at 92% 25%, #17343a, transparent 70%),
           radial-gradient(65% 55% at 75% 95%, #3a2a20, transparent 70%),
-          radial-gradient(45% 40% at 5% 85%, #1c3324, transparent 70%),
+          radial-gradient(45% 40% at 5% 85%, #2e1c40, transparent 70%),
           linear-gradient(160deg, #111118, #08080b);
   --glass: rgba(44, 44, 52, .46); --glass-strong: rgba(36, 36, 42, .62); --glass-edge: rgba(255, 255, 255, .12);
   --glass-shadow: 0 10px 34px rgba(0, 0, 0, .45);
