@@ -392,6 +392,38 @@ ul.check input[type=checkbox]:checked::after { width: 7px; height: 13px; }
   #viewEinkauf .card.list > ul.check:first-child { margin-top: -1px; }
 }
 
+/* Wochentag ohne Gericht */
+.tag-row .gericht.leer { color: var(--muted); font-weight: 400; }
+
+/* Gericht-Auswahl: Fenster (Desktop) bzw. Blatt von unten (Handy) */
+dialog.sheet { padding: 0; border: 1px solid var(--glass-edge); color: var(--text); background: var(--glass-strong);
+               -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+               width: min(600px, calc(100% - 32px)); max-width: none; height: min(780px, calc(100dvh - 64px)); max-height: none;
+               border-radius: 28px; box-shadow: 0 24px 80px rgba(0, 0, 0, .25); overflow: hidden; }
+dialog.sheet[open] { display: flex; flex-direction: column; animation: sheet-rein .22s ease-out; }
+dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+@keyframes sheet-rein { from { opacity: 0; transform: translateY(16px) scale(.98); } }
+.sheet-kopf { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; padding: 10px 12px 4px; }
+.sheet-kopf h2 { margin: 0; font-size: 17px; font-weight: 600; text-align: center; }
+.sheet-kopf .link { justify-self: start; min-height: 44px; padding: 0 10px; background: none; border: 0; color: var(--tint); font-size: 17px; }
+.sheet-kopf .link:last-child { justify-self: end; }
+.danger-text { color: var(--danger) !important; }
+.sheet-filter { padding: 6px 20px 0; }
+.sheet-filter input { margin-bottom: 12px; }
+.sheet-liste { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 0 20px calc(24px + env(safe-area-inset-bottom)); }
+.sheet .card { background: rgba(255, 255, 255, .55); }
+:root[data-theme="dark"] .sheet .card { background: rgba(60, 60, 68, .5); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sheet .card { background: rgba(60, 60, 68, .5); } }
+.recipes .list button.gewaehlt { color: var(--tint); font-weight: 600; }
+.recipes .list button .haken { margin-left: auto; color: var(--tint); font-weight: 600; }
+@media (max-width: 699px) {
+  dialog.sheet { width: 100%; height: 90dvh; margin: auto 0 0; border-radius: 28px 28px 0 0; border-bottom: 0; }
+  @keyframes sheet-rein { from { transform: translateY(100%); } }
+  .sheet-kopf::before { content: ""; position: absolute; left: 50%; top: 6px; width: 36px; height: 5px; margin-left: -18px;
+                        border-radius: 3px; background: var(--muted); opacity: .4; }
+}
+@media (prefers-reduced-motion: reduce) { dialog.sheet[open] { animation: none; } }
+
 /* Hinweis-Meldung als Glas-Kapsel */
 #toast { background: var(--glass-strong); border: 1px solid var(--glass-edge); border-radius: 999px; padding: 14px 22px; }
 </style>
@@ -528,6 +560,18 @@ ul.check input[type=checkbox]:checked::after { width: 7px; height: 13px; }
     </form>
   </section>
 </main>
+<dialog id="wahl" class="sheet" aria-labelledby="wahlTitel">
+  <div class="sheet-kopf">
+    <button type="button" class="link" id="wahlZu">Abbrechen</button>
+    <h2 id="wahlTitel">Gericht wählen</h2>
+    <button type="button" class="link danger-text hidden" id="wahlLeeren">Entfernen</button>
+  </div>
+  <div class="sheet-filter">
+    <input id="wahlSuche" type="search" placeholder="Gericht oder Zutat suchen" aria-label="Gerichte durchsuchen" autocomplete="off">
+    <div class="seg kat-seg" id="wahlSeg" role="tablist" aria-label="Kategorie"></div>
+  </div>
+  <div class="sheet-liste recipes" id="wahlListe"></div>
+</dialog>
 <datalist id="gerichte"></datalist>
 <datalist id="artikelListe"></datalist>
 <div id="toast" role="status"></div>
@@ -602,37 +646,14 @@ function zeigeWoche() {
   const heute = TAGE[(new Date().getDay() + 6) % 7];
   $("#days").replaceChildren(el("div", {class: "card list woche"}, TAGE.map(t => {
     const g = (woche.tage[t] || [])[0] || "";
-    const setze = name => { woche.tage[t] = name ? [name] : []; zeigeWoche(); speichereWoche(); };
-    const eingabe = () => {
-      const input = el("input", {list: "gerichte", value: g, placeholder: "Wählen …",
-        "aria-label": `Gericht am ${TAG_NAME[t]}`, enterkeyhint: "done", autocomplete: "off",
-        onfocus: e => e.target.select()});
-      let erledigt = false;
-      const fertig = () => {
-        if (erledigt) return; erledigt = true;
-        const v = input.value.trim();
-        if (v === g) return g ? zeigeWoche() : undefined;
-        if (!v) return setze("");
-        const r = finde(v);
-        if (!r) { toast(`„${v}“ gibt es noch nicht – unter Rezepte anlegen`); return zeigeWoche(); }
-        setze(r.name);
-      };
-      input.addEventListener("change", fertig);
-      input.addEventListener("blur", () => { if (g) fertig(); });  // Ändern abbrechen → Gericht wieder anzeigen
-      input.addEventListener("keydown", e => {
-        if (e.key === "Enter") input.blur();
-        if (e.key === "Escape") { input.value = g; input.blur(); }
-      });
-      return input;
-    };
-    // Gericht als Text (bricht in den Kacheln um); Tippen darauf öffnet die Auswahl
-    const anzeige = g ? el("button", {type: "button", class: "gericht", title: "Gericht ändern",
-      "aria-label": `${TAG_NAME[t]}: ${g} – ändern`, onclick: e => {
-        const input = eingabe(); e.currentTarget.replaceWith(input); input.focus(); }}, g) : eingabe();
+    // Gericht als Text (bricht in den Kacheln um); Tippen öffnet die Auswahl nach Kategorien
+    const anzeige = el("button", {type: "button", class: "gericht" + (g ? "" : " leer"), "aria-haspopup": "dialog",
+      "aria-label": g ? `${TAG_NAME[t]}: ${g} – ändern` : `Gericht für ${TAG_NAME[t]} wählen`,
+      onclick: () => oeffneWahl(t)}, g || "Wählen …");
     return el("div", {class: "tag-row" + (t === heute ? " heute" : "")},
       el("span", {class: "tag-name"}, TAG_NAME[t]), anzeige,
       g ? el("button", {type: "button", class: "clear", title: "entfernen", "aria-label": `${g} am ${TAG_NAME[t]} entfernen`,
-        onclick: () => setze("")}, "×") : null);
+        onclick: () => setzeGericht(t, "")}, "×") : null);
   })));
 }
 function finde(q) {
@@ -814,36 +835,33 @@ $("#senden").onclick = async () => {
 
 /* ---------- Rezepte ---------- */
 $("#suche").oninput = zeigeRezepte;
-function zeigeRezepte() {
-  const q = $("#suche").value.trim().toLocaleLowerCase("de");
-  const box = $("#rezepte"); box.replaceChildren();
+const chev = () => { const s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  s.setAttribute("viewBox", "0 0 8 13"); s.setAttribute("class", "chev"); s.setAttribute("aria-hidden", "true");
+  s.innerHTML = '<path d="M1.5 1.5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+  return s; };
+
+/* Rezeptliste mit Kategorie-Umschalter und Suche – genutzt in „Rezepte“ und in der Gericht-Auswahl.
+   opt: {seg, box, q, kat, onKat(k), zeile(r) → Element} */
+function rezeptAuswahl(opt) {
+  const {seg, box, zeile} = opt;
+  const q = klein(opt.q.trim());
   const alleKat = [...new Set(rezepte.map(r => r.kategorie))];
-  if (!alleKat.includes(rezeptKat)) rezeptKat = alleKat[0];
-
+  const kat = alleKat.includes(opt.kat) ? opt.kat : alleKat[0];
+  box.replaceChildren();
   // Umschalter: eine Kategorie zeigen; während der Suche gilt er nicht (Suche über alle)
-  $("#katSeg").replaceChildren(...alleKat.map(k => el("button", {type: "button", role: "tab", class: k === rezeptKat ? "active" : "",
-    "aria-selected": String(k === rezeptKat),
-    onclick: () => { rezeptKat = k; $("#suche").value = ""; try { localStorage.setItem("rezeptKat", k); } catch {} zeigeRezepte(); }}, k)));
-  $("#katSeg").classList.toggle("inaktiv", !!q);
-
-  const chev = () => { const s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    s.setAttribute("viewBox", "0 0 8 13"); s.setAttribute("class", "chev"); s.setAttribute("aria-hidden", "true");
-    s.innerHTML = '<path d="M1.5 1.5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
-    return s; };
-  const zeile = r => el("button", {type: "button", onclick: () => oeffne(r)},
-    el("span", {}, r.name), el("span", {class: "muted"}, `${r.zutaten.length} Zutaten`), chev());
+  seg.replaceChildren(...alleKat.map(k => el("button", {type: "button", role: "tab", class: k === kat ? "active" : "",
+    "aria-selected": String(k === kat), onclick: () => opt.onKat(k)}, k)));
+  seg.classList.toggle("inaktiv", !!q);
   const abschnitt = (titel, liste) => box.append(el("h2", {class: "section"}, titel), el("div", {class: "card list"}, liste.map(zeile)));
   const sortiert = liste => [...liste].sort((a, b) => a.name.localeCompare(b.name, "de"));
-
   if (q) {
-    const treffer = rezepte.filter(r => r.name.toLocaleLowerCase("de").includes(q)
-      || r.zutaten.some(z => z.artikel.toLocaleLowerCase("de").includes(q)));
+    const treffer = rezepte.filter(r => klein(r.name).includes(q) || r.zutaten.some(z => klein(z.artikel).includes(q)));
     for (const k of alleKat) {
       const t = sortiert(treffer.filter(r => r.kategorie === k));
       if (t.length) abschnitt(`${k} · ${t.length}`, t);
     }
   } else {
-    const liste = sortiert(rezepte.filter(r => r.kategorie === rezeptKat));
+    const liste = sortiert(rezepte.filter(r => r.kategorie === kat));
     if (liste.length > 20) {  // lange Kategorie: nach Anfangsbuchstaben gliedern
       const buchstabe = r => r.name.normalize("NFD")[0].toLocaleUpperCase("de");
       for (const b of [...new Set(liste.map(buchstabe))]) abschnitt(b, liste.filter(r => buchstabe(r) === b));
@@ -852,7 +870,45 @@ function zeigeRezepte() {
     }
   }
   if (!box.children.length) box.append(el("p", {class: "muted", style: "text-align:center;margin-top:40px"}, "Nichts gefunden."));
+  return kat;
 }
+function zeigeRezepte() {
+  rezeptKat = rezeptAuswahl({seg: $("#katSeg"), box: $("#rezepte"), q: $("#suche").value, kat: rezeptKat,
+    onKat: k => { rezeptKat = k; $("#suche").value = ""; try { localStorage.setItem("rezeptKat", k); } catch {} zeigeRezepte(); },
+    zeile: r => el("button", {type: "button", onclick: () => oeffne(r)},
+      el("span", {}, r.name), el("span", {class: "muted"}, `${r.zutaten.length} Zutaten`), chev())});
+}
+
+/* ---------- Gericht-Auswahl (Blatt / Fenster) ---------- */
+let wahl = {tag: null, kat: null};
+function zeigeWahl() {
+  const aktuell = (woche.tage[wahl.tag] || [])[0];
+  wahl.kat = rezeptAuswahl({seg: $("#wahlSeg"), box: $("#wahlListe"), q: $("#wahlSuche").value, kat: wahl.kat,
+    onKat: k => { wahl.kat = k; $("#wahlSuche").value = ""; zeigeWahl(); $("#wahlListe").scrollTop = 0; },
+    zeile: r => el("button", {type: "button", class: r.name === aktuell ? "gewaehlt" : "", "aria-current": r.name === aktuell ? "true" : null,
+      onclick: () => setzeGericht(wahl.tag, r.name)},
+      el("span", {}, r.name), r.name === aktuell ? el("span", {class: "haken", "aria-hidden": "true"}, "✓") : null)});
+}
+function oeffneWahl(tag) {
+  const aktuell = (woche.tage[tag] || [])[0];
+  const r = aktuell && rezepte.find(x => x.name === aktuell);
+  wahl = {tag, kat: r ? r.kategorie : rezeptKat};
+  $("#wahlTitel").textContent = TAG_NAME[tag];
+  $("#wahlSuche").value = "";
+  $("#wahlLeeren").classList.toggle("hidden", !aktuell);
+  zeigeWahl();
+  const d = $("#wahl"); if (!d.open) d.showModal();
+  $("#wahlListe").scrollTop = 0;
+  const markiert = $("#wahlListe .gewaehlt"); if (markiert) markiert.scrollIntoView({block: "center"});
+}
+function setzeGericht(tag, name) {
+  woche.tage[tag] = name ? [name] : [];
+  $("#wahl").close(); zeigeWoche(); speichereWoche();
+}
+$("#wahlSuche").oninput = zeigeWahl;
+$("#wahlZu").onclick = () => $("#wahl").close();
+$("#wahlLeeren").onclick = () => setzeGericht(wahl.tag, "");
+$("#wahl").addEventListener("click", e => { if (e.target === e.currentTarget) e.currentTarget.close(); });  // Tipp neben das Blatt
 function zutatZeile(z = {artikel: "", menge: ""}) {
   return el("div", {class: "zut"},
     el("input", {value: z.artikel, list: "artikelListe", placeholder: "Artikel", "aria-label": "Artikel"}),
