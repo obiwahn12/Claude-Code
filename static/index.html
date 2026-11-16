@@ -615,13 +615,15 @@ $("#leeren").onclick = () => {
 };
 
 const klein = s => s.toLocaleLowerCase("de");
-// Zutaten prüfen; mit behalten=true bleiben abgewählte Haken erhalten (z. B. nach „+ Zutat“)
+// Abhakbar: neue Zutaten (Standard: kaufen) und Vorrat (Standard: nicht kaufen, außer er ist leer)
+const waehlbar = a => a && (a.status === "neu" || a.status === "vorrat");
+// Zutaten prüfen; mit behalten=true bleiben gesetzte/entfernte Haken erhalten (z. B. nach „+ Zutat“)
 async function pruefe(behalten) {
   const vorher = behalten && pruefung
-    ? Object.fromEntries(pruefung.artikel.filter(a => a.status === "neu").map(a => [klein(a.artikel), a.kaufen])) : {};
+    ? Object.fromEntries(pruefung.artikel.filter(waehlbar).map(a => [klein(a.artikel) + "|" + a.status, a.kaufen])) : {};
   pruefung = await api("POST", "/api/woche/pruefen");
   if (!pruefung.artikel.length) { $("#ergebnis").classList.add("hidden"); toast("Noch keine Gerichte geplant"); return; }
-  pruefung.artikel.forEach(a => a.kaufen = a.status === "neu" && (vorher[klein(a.artikel)] ?? true));
+  pruefung.artikel.forEach(a => a.kaufen = waehlbar(a) && (vorher[klein(a.artikel) + "|" + a.status] ?? a.status === "neu"));
   $("#ergebnis").classList.remove("hidden");
   zeigeErgebnis();
   if (!pruefung.liste_geprueft) toast("Bring!-Liste nicht geprüft – unter „Bring!“ anmelden");
@@ -662,13 +664,14 @@ function kopf(titel, tag) {
 }
 // Eine Zeile mit Haken; Haken gilt für die Zutat insgesamt (sie kommt einmal auf die Liste)
 function zeileMitHaken(a, text, menge, nebenzeile, entfernen) {
-  const aktiv = a && a.status === "neu";
+  const aktiv = waehlbar(a);
   const cb = el("input", {type: "checkbox", checked: aktiv ? a.kaufen : a ? false : true, disabled: !aktiv,
+    "aria-label": a && a.status === "vorrat" ? `${text} nachkaufen` : `${text} kaufen`,
     onchange: e => { a.kaufen = e.target.checked; zeigeErgebnis(); }});
   const hinweis = !a ? null
     : a.status === "liste" ? el("span", {class: "tag" + (a.dort !== a.menge ? " warn" : "")},
         a.dort !== a.menge ? `auf der Liste: ${a.dort || "ohne Menge"}` : "auf der Liste")
-    : a.status === "vorrat" ? el("span", {class: "tag"}, "Vorrat")
+    : a.status === "vorrat" ? el("span", {class: "tag" + (a.kaufen ? " warn" : "")}, a.kaufen ? "nachkaufen" : "Vorrat")
     : !a.kaufen ? el("span", {class: "tag"}, "zuhause") : null;
   const weg = entfernen ? el("button", {type: "button", class: "weg", title: "entfernen", "aria-label": `${text} entfernen`,
     onclick: e => { e.preventDefault(); e.stopPropagation(); entfernen(); }}, "×") : null;
@@ -685,7 +688,7 @@ function zeigeErgebnis() {
   const gruppen = [
     ["neu", "Einkaufen", "Haken weg bei allem, was schon zuhause ist."],
     ["liste", "Steht schon auf der Bring!-Liste", ""],
-    ["vorrat", "Aus dem Vorrat", "Kommt nicht auf die Liste."],
+    ["vorrat", "Aus dem Vorrat", "Haken setzen bei allem, was leer ist – dann kommt es mit auf die Liste."],
   ];
   const box = $("#viewEinkauf"); box.replaceChildren();
   for (const [st, titel, hint] of gruppen) {
@@ -709,7 +712,7 @@ function zeigeGerichte() {
     for (const z of r.zutaten) {
       const a = status[klein(z.artikel)];
       gesehen.add(klein(z.artikel));
-      if (a && a.status === "vorrat") { vorrat.push(z.artikel); continue; }
+      if (a && a.status === "vorrat" && !a.kaufen) { vorrat.push(z.artikel); continue; }  // nachzukaufender Vorrat bekommt eine Zeile
       li.push(zeileMitHaken(a, z.artikel, z.menge));
     }
     for (const e of extra.filter(e => e.tag === t && !gesehen.has(klein(e.artikel)))) {
@@ -730,13 +733,13 @@ function zeigeGerichte() {
         el("p", {class: "muted"}, "Mit + Zutaten ohne Gericht hinzufügen, z. B. Brot fürs Frühstück."))));
 }
 function zaehle() {
-  const n = pruefung.artikel.filter(a => a.status === "neu" && a.kaufen).length;
+  const n = pruefung.artikel.filter(a => waehlbar(a) && a.kaufen).length;
   $("#senden").textContent = `${n} Artikel an „${woche.liste}“ senden`;
   $("#senden").disabled = !n || !bringInfo.angemeldet;
   $("#sendenInfo").textContent = bringInfo.angemeldet ? "" : "Erst unter „Bring!“ anmelden.";
 }
 $("#senden").onclick = async () => {
-  const artikel = pruefung.artikel.filter(a => a.status === "neu" && a.kaufen).map(a => ({artikel: a.artikel, menge: a.menge}));
+  const artikel = pruefung.artikel.filter(a => waehlbar(a) && a.kaufen).map(a => ({artikel: a.artikel, menge: a.menge}));
   $("#senden").disabled = true;
   try {
     const d = await api("POST", "/api/bring/senden", {liste: woche.liste, artikel});
