@@ -8,8 +8,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Essenplan">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f2eee8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c0c11" media="(prefers-color-scheme: dark)">
 <script>
   // Gewähltes Farbschema vor dem ersten Zeichnen setzen (kein Aufblitzen)
   try { const t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}
@@ -221,7 +221,7 @@ ul.check input[type=checkbox]:disabled { opacity: .45; }
    Überschreibt die Grundwerte oben.
    ===================================================================== */
 :root {
-  --wall-base: #ebe6df;
+  --wall-base: #f2eee8;     /* ≈ Farbe am oberen Rand des Verlaufs – auch für die Statusleiste */
   --wall: radial-gradient(60% 50% at 15% 10%, rgba(255, 255, 255, .95), transparent 70%),
           radial-gradient(55% 45% at 90% 18%, #c4d2e4, transparent 70%),
           radial-gradient(70% 55% at 80% 95%, #e0c7a8, transparent 70%),
@@ -268,7 +268,8 @@ ul.check input[type=checkbox]:disabled { opacity: .45; }
   :root[data-theme="dark"] { --glass: rgba(36, 36, 42, .92); --glass-strong: rgba(30, 30, 34, .96); }
 }
 
-body { background: var(--wall-base); }
+html { background-color: var(--wall-base); }  /* Safari färbt damit auch die Statusleiste */
+body { background: transparent; }
 body::before { content: ""; position: fixed; inset: 0; z-index: -1; background: var(--wall); pointer-events: none; }
 :focus-visible { border-radius: 14px; }
 
@@ -496,6 +497,63 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter
 
 /* Hinweis-Meldung als Glas-Kapsel */
 #toast { background: var(--glass-strong); border: 1px solid var(--glass-edge); border-radius: 999px; padding: 14px 22px; }
+
+/* =====================================================================
+   Handy: größere Schrift und iOS-artige Abstände (wie in den iPhone-Einstellungen)
+   ===================================================================== */
+@media (max-width: 699px) {
+  /* Statusleiste: oberen Rand in Seitenfarbe füllen (falls die Seite darunter liegt) */
+  header::before { content: ""; position: fixed; top: 0; left: 0; right: 0; height: env(safe-area-inset-top);
+                   background: var(--wall-base); z-index: -1; }
+  body { font-size: 18px; }
+  main { padding-left: max(18px, env(safe-area-inset-left)); padding-right: max(18px, env(safe-area-inset-right)); }
+  h1.title { font-size: 36px; line-height: 43px; margin: 16px 6px 22px; }
+  .row:has(> .titel-aktionen) h1.title { font-size: 32px; }
+  h2 { font-size: 22px; }
+  h2.section, .section-row h2.section { font-size: 14px; line-height: 19px; margin-left: 22px; margin-right: 22px; }
+  .section-row { margin: 32px 0 10px; }
+  .muted { font-size: 16px; }
+  label { font-size: 14px; }
+  .card { padding: 22px; margin-bottom: 22px; }
+  .card.list { padding: 0; }
+
+  input, select, textarea { min-height: 56px; font-size: 18px; padding: 15px 18px; }
+  .btn { min-height: 56px; font-size: 18px; padding: 0 26px; }
+  .titel-aktionen .btn { min-height: 48px; font-size: 16px; padding: 0 16px; }
+  .seg { padding: 4px; }
+  .seg button { min-height: 44px; font-size: 15px; }
+
+  /* Listen: Zeilen wie in iOS (gut 60 pt), Schrift 18 px */
+  .check-row { min-height: 64px; padding: 16px 20px; gap: 18px; font-size: 18px; }
+  .check-row .muted { font-size: 16px; }
+  .check-row small { font-size: 14px; margin-top: 3px; }
+  ul.check li + li::before { left: 64px; }
+  .list-head { padding: 20px 22px 10px; }
+  .recipes .list button { min-height: 62px; padding: 16px 20px 16px 0; font-size: 18px; }
+  .recipes .list button .muted { font-size: 16px; }
+
+  /* Woche */
+  .tag-row { min-height: 64px; padding-left: 22px; }
+  .tag-row + .tag-row::before { left: 22px; }
+  .tag-name { width: 124px; font-size: 18px; }
+  .tag-row input, .tag-row .gericht { min-height: 64px; font-size: 18px; }
+
+  /* Vorrat-Raster, Schnellauswahl, Menü */
+  .item-grid .item { min-height: 58px; font-size: 17px; }
+  .schnell-chip { min-height: 48px; padding: 0 20px; font-size: 17px; }
+  .schnell-chips { gap: 10px; }
+  nav button { min-height: 58px; font-size: 18px; }
+  .menu-btn { width: 52px; height: 52px; }
+  .theme button { width: 44px; min-height: 40px; }
+  .sheet-kopf .link { font-size: 18px; }
+  .sheet-kopf h2 { font-size: 18px; }
+  #toast { font-size: 16px; }
+  /* Beim Scrollen: Kopfbereich als Glas-Leiste (wie die Navigationsleiste in iOS) */
+  header { transition: background-color .2s, box-shadow .2s; }
+  header.gescrollt { background: var(--glass-strong); box-shadow: 0 .5px 0 var(--line);
+                     -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
+  header .bar { padding-bottom: 10px; }
+}
 </style>
 </head>
 <body>
@@ -684,6 +742,9 @@ function menu(auf) {
 $("#menuBtn").onclick = e => { e.stopPropagation(); menu(!document.querySelector("header").classList.contains("menu-offen")); };
 document.addEventListener("click", e => { if (!e.target.closest("nav, #menuBtn")) menu(false); });
 document.addEventListener("keydown", e => { if (e.key === "Escape") menu(false); });
+// Kopfbereich bekommt beim Scrollen einen Glas-Hintergrund (Handy)
+const kopfScroll = () => document.querySelector("header").classList.toggle("gescrollt", scrollY > 8);
+addEventListener("scroll", kopfScroll, {passive: true}); kopfScroll();
 function zeigeTab(t) {
   document.querySelectorAll("nav button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === t)));
   window.scrollTo(0, 0);
@@ -919,7 +980,8 @@ function zeigeGerichte() {
 }
 function zaehle() {
   const n = pruefung.artikel.filter(a => waehlbar(a) && a.kaufen).length;
-  $("#senden").textContent = `${n} Artikel an „${woche.liste}“ senden`;
+  $("#senden").textContent = `${n} Artikel senden`;
+  $("#senden").title = `An die Bring!-Liste „${woche.liste}“ senden`;
   $("#senden").disabled = !n || !bringInfo.angemeldet;
   $("#sendenInfo").textContent = bringInfo.angemeldet ? "" : "Erst unter „Bring!“ anmelden.";
 }
@@ -1140,7 +1202,8 @@ function setzeTheme(t) {
   document.querySelectorAll("#theme button").forEach(b => b.setAttribute("aria-checked", String(b.dataset.theme === t)));
   // Farbe der Statusleiste (iPhone/Android) passend setzen
   const dunkel = t === "dark" || (t === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
-  document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.content = dunkel ? "#000000" : "#f2f2f7");
+  // Statusleiste: gleiche Farbe wie der Seitenhintergrund oben (--wall-base)
+  document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.content = dunkel ? "#0c0c11" : "#f2eee8");
   try { t === "auto" ? localStorage.removeItem("theme") : localStorage.setItem("theme", t); } catch {}
 }
 document.querySelectorAll("#theme button").forEach(b => b.onclick = () => setzeTheme(b.dataset.theme));
