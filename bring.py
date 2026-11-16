@@ -57,7 +57,16 @@ def _request(method, url, headers, data=None, json_body=None):
     except urllib.error.HTTPError as e:
         detail = e.read().decode(errors="replace")[:300]
         if e.code in (401, 403):
-            raise BringError(f"Nicht berechtigt (HTTP {e.code}). E-Mail/Passwort prüfen.") from None
+            try:
+                msg = json.loads(detail).get("message") or ""
+            except (json.JSONDecodeError, AttributeError):
+                msg = ""
+            if msg == "email password combination not existing":
+                raise BringError("Bring! kennt diese E-Mail/Passwort-Kombination nicht. "
+                                 "Bei Anmeldung über Google/Apple zuerst in der Bring!-App "
+                                 "ein Passwort setzen.") from None
+            raise BringError(f"Nicht berechtigt (HTTP {e.code}){': ' + msg if msg else ''}. "
+                             "E-Mail/Passwort prüfen.") from None
         raise BringError(f"HTTP {e.code} bei {method} {url}: {detail}") from None
     except urllib.error.URLError as e:
         raise BringError(f"Keine Verbindung zu {url}: {e.reason}") from None
