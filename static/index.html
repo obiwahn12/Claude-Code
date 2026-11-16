@@ -360,6 +360,17 @@ ul.check input[type=checkbox]:checked::after { width: 7px; height: 13px; }
   .tag-row .clear { top: 6px; right: 4px; width: 44px; height: 44px; }
 }
 
+/* „Zutaten prüfen“: schlanke Leiste ohne Karte */
+.pruef-leiste { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin: 18px 0 8px; }
+.pruef-leiste .muted { margin: 0 4px; }
+@media (max-width: 699px) { .pruef-leiste { margin-top: 4px; } .pruef-leiste .btn { flex: 1 1 auto; } }
+
+/* Ab Tablet: um die Wochen-Kacheln keine Kartenfläche */
+@media (min-width: 700px) {
+  .card.woche { background: none; border: 0; box-shadow: none; padding: 0; border-radius: 0; overflow: visible;
+                -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+
 /* Hinweis-Meldung als Glas-Kapsel */
 #toast { background: var(--glass-strong); border: 1px solid var(--glass-edge); border-radius: 999px; padding: 14px 22px; }
 </style>
@@ -398,11 +409,9 @@ ul.check input[type=checkbox]:checked::after { width: 7px; height: 13px; }
       <button class="btn sec" id="leeren" style="margin-bottom:14px">Leeren</button>
     </div>
     <div class="days" id="days"></div>
-    <div class="card">
-      <label for="liste">Bring!-Liste</label>
-      <select id="liste"></select>
-      <button class="btn block" id="pruefen" style="margin-top:14px">Zutaten prüfen</button>
-      <p class="muted" id="pruefHinweis" style="margin:8px 0 0;text-align:center">Danach abhaken, was schon zuhause ist.</p>
+    <div class="pruef-leiste">
+      <button class="btn" id="pruefen">Zutaten prüfen</button>
+      <span class="muted" id="pruefHinweis">Danach abhaken, was schon zuhause ist.</span>
     </div>
     <div id="ergebnis" class="hidden">
       <h2 style="margin-top:28px">Einkauf</h2>
@@ -467,6 +476,11 @@ ul.check input[type=checkbox]:checked::after { width: 7px; height: 13px; }
       <div class="card">
         <p style="margin:0;font-weight:600"><span class="badge-ok">✓</span> Angemeldet</p>
         <p class="muted" style="margin:4px 0 0">Das Passwort ist nicht gespeichert, nur ein Anmelde-Token auf dem Server.</p>
+      </div>
+      <div class="card">
+        <label for="liste">Liste für den Essenplan</label>
+        <select id="liste"></select>
+        <p class="muted" style="margin:10px 2px 0">Auf diese Bring!-Liste kommen die Zutaten aus „Zutaten prüfen“.</p>
       </div>
       <button class="btn danger block" id="logout">Abmelden</button>
     </div>
