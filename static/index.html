@@ -449,7 +449,7 @@ header.menu-offen .menu-btn .zu { display: block; }
   nav { display: none; position: fixed; top: calc(env(safe-area-inset-top) + 66px); bottom: auto; left: 12px; right: auto;
         width: min(270px, calc(100% - 24px)); flex-direction: column; gap: 2px; padding: 8px; border-radius: 24px;
         box-shadow: 0 18px 50px rgba(0, 0, 0, .22); }
-  header.menu-offen nav { display: flex; animation: menu-rein .16s ease-out; }
+  header.menu-offen nav { display: flex; animation: menu-rein .28s cubic-bezier(.25, .7, .25, 1); }
   nav button { flex: none; flex-direction: row; justify-content: flex-start; gap: 14px; min-height: 52px; padding: 0 16px;
                border-radius: 16px; font-size: 17px; font-weight: 500; color: var(--text); }
   nav button svg { width: 24px; height: 24px; }
@@ -471,7 +471,7 @@ dialog.sheet { padding: 0; border: 1px solid var(--glass-edge); color: var(--tex
                -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
                width: min(600px, calc(100% - 32px)); max-width: none; height: min(780px, calc(100dvh - 64px)); max-height: none;
                border-radius: 28px; box-shadow: 0 24px 80px rgba(0, 0, 0, .25); overflow: hidden; }
-dialog.sheet[open] { display: flex; flex-direction: column; animation: sheet-rein .22s ease-out; }
+dialog.sheet[open] { display: flex; flex-direction: column; animation: sheet-rein .38s cubic-bezier(.25, .7, .25, 1); }
 dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
 @keyframes sheet-rein { from { opacity: 0; transform: translateY(16px) scale(.98); } }
 .sheet-kopf { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; padding: 10px 12px 4px; }
@@ -499,10 +499,10 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter
 #toast { background: var(--glass-strong); border: 1px solid var(--glass-edge); border-radius: 999px; padding: 14px 22px; }
 
 /* Weiche Animationen: Bereichswechsel und Prüf-Ergebnis */
-@keyframes rein { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-.rein { animation: rein .32s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes rein { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.rein { animation: rein .55s cubic-bezier(.25, .7, .25, 1) both; }
 #ergebnis.rein { animation: none; }
-#ergebnis.rein > * { animation: rein .42s cubic-bezier(.2, .8, .2, 1) both; }
+#ergebnis.rein > * { animation: rein .7s cubic-bezier(.25, .7, .25, 1) both; }
 @media (prefers-reduced-motion: reduce) { .rein, #ergebnis.rein > * { animation: none !important; } }
 
 /* =====================================================================
@@ -753,15 +753,15 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") menu(false);
 const kopfScroll = () => document.querySelector("header").classList.toggle("gescrollt", scrollY > 8);
 addEventListener("scroll", kopfScroll, {passive: true}); kopfScroll();
 // Klasse „rein“ (Einblend-Animation) neu starten und danach wieder entfernen
-function animiere(el, dauer = 450) {
+function animiere(el, dauer = 700) {
   el.classList.remove("rein"); void el.offsetWidth; el.classList.add("rein");
   clearTimeout(el._rein); el._rein = setTimeout(() => el.classList.remove("rein"), dauer);
 }
 // Beim ersten Laden: Wochentage nacheinander weich einblenden
 function wocheEinblenden() {
   const tage = [...document.querySelectorAll("#days .tag-row")];
-  tage.forEach((k, i) => { k.style.animationDelay = `${i * 50}ms`; k.classList.add("rein"); });
-  setTimeout(() => tage.forEach(k => { k.classList.remove("rein"); k.style.animationDelay = ""; }), 900);
+  tage.forEach((k, i) => { k.style.animationDelay = `${i * 85}ms`; k.classList.add("rein"); });
+  setTimeout(() => tage.forEach(k => { k.classList.remove("rein"); k.style.animationDelay = ""; }), 1400);
 }
 function zeigeTab(t) {
   const neu = $("#tab-" + t);
@@ -864,8 +864,8 @@ async function pruefe(behalten) {
   zeigeErgebnis();
   if (warZu) {  // erstes Einblenden: Abschnitte nacheinander weich einblenden, ggf. sanft hinscrollen
     const e = $("#ergebnis");
-    [...e.children].forEach((k, i) => k.style.animationDelay = `${Math.min(i, 8) * 55}ms`);
-    animiere(e, 1100);
+    [...e.children].forEach((k, i) => k.style.animationDelay = `${Math.min(i, 8) * 100}ms`);
+    animiere(e, 1700);
     const oben = e.getBoundingClientRect().top;
     if (oben > innerHeight * .7) scrollTo({top: scrollY + oben - 90, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
   }
