@@ -16,6 +16,9 @@ Schickt der Nutzer den Wochenplan (Text oder Screenshot vom Board):
 python3 bring.py -l Abendessen rezept Focaccia Eierkuchen "Chili sin Carne" -n   # Probelauf
 python3 bring.py -l Abendessen rezept Focaccia Eierkuchen "Chili sin Carne"
 ```
+Gerichte mit Wochentag übergeben (`Mo=Focaccia "So=Chili sin Carne"`). Am Ende druckt das Skript
+eine Wochenübersicht (Zutaten je Gericht, Vorrat getrennt) – diese dem Nutzer **immer** am Ende
+ausgeben. Nur die Übersicht ohne Eintragen: `python3 bring.py woche Mo=Focaccia …`.
 Teilnamen und kleine Tippfehler vom Board („Tacco-Bowls“) werden erkannt. Mengen gleicher Zutaten
 werden zusammengerechnet. Steht ein Artikel schon auf der Liste, meldet das Skript die Mengen –
 dem Nutzer sagen, falls dort zu wenig steht. „Reste“ ist kein Rezept.

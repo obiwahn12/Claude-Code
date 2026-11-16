@@ -239,6 +239,32 @@ def find_rezept(rezepte, query):
     raise BringError(f"Gericht '{query}' nicht eindeutig gefunden.{hint}")
 
 
+def parse_plan(rezepte, args):
+    """['Mo=Focaccia', 'Chili'] -> [('Mo', 'Focaccia'), ('', 'Chili sin Carne')]"""
+    plan = []
+    for arg in args:
+        tag, sep, query = arg.partition("=")
+        if not sep:
+            tag, query = "", arg
+        plan.append((tag.strip(), find_rezept(rezepte, query.strip())))
+    return plan
+
+
+def wochen_uebersicht(plan, rezepte, vorrat):
+    out = ["", "=" * 40, "WOCHENÜBERSICHT", "=" * 40]
+    for tag, name in plan:
+        out.append(f"\n{tag + ': ' if tag else ''}{name}")
+        da = []
+        for artikel, info in rezepte[name]["zutaten"]:
+            if artikel.casefold() in vorrat:
+                da.append(artikel)
+            else:
+                out.append(f"  • {artikel}{f' – {info}' if info else ''}")
+        if da:
+            out.append(f"  aus dem Vorrat: {', '.join(da)}")
+    return "\n".join(out)
+
+
 _MENGE = re.compile(r"^(\d+(?:,\d+)?)\s*([A-Za-zäöüÄÖÜß.]+)?$")
 _PLURAL = {"Dose": "Dosen", "Glas": "Gläser", "Kopf": "Köpfe", "Würfel": "Würfel"}
 
@@ -332,7 +358,20 @@ def main(argv=None):
     rz.add_argument("-n", "--probelauf", action="store_true",
                     help="nur anzeigen, nichts eintragen")
     sub.add_parser("rezepte", help="alle Gerichte aus rezepte/ auflisten (ohne Login)")
+    wo = sub.add_parser("woche", help="nur Wochenübersicht: Zutaten je Gericht (ohne Login)")
+    wo.add_argument("gerichte", nargs="+", help="Gerichte, optional mit Tag: 'Mo=Focaccia'")
+    wo.add_argument("--vorrat", default=str(Path(__file__).with_name("vorrat.txt")))
     args = p.parse_args(argv)
+
+    if args.cmd == "woche":
+        try:
+            rezepte = load_rezepte(REZEPTE_DIR)
+            print(wochen_uebersicht(parse_plan(rezepte, args.gerichte), rezepte,
+                                    load_vorrat(args.vorrat)))
+        except BringError as e:
+            print(f"Fehler: {e}", file=sys.stderr)
+            return 1
+        return 0
 
     if args.cmd == "rezepte":
         try:
@@ -398,14 +437,12 @@ def main(argv=None):
                       load_vorrat(args.vorrat), args.probelauf, load_names(args.locale))
         elif args.cmd == "rezept":
             rezepte = load_rezepte(REZEPTE_DIR)
-            items = []
-            for query in args.gerichte:
-                name = find_rezept(rezepte, query)
-                print(f"Rezept: {name}")
-                items += rezepte[name]["zutaten"]
-            print()
+            plan = parse_plan(rezepte, args.gerichte)
+            vorrat = load_vorrat(args.vorrat)
+            items = [z for _, name in plan for z in rezepte[name]["zutaten"]]
             add_items(bring, list_uuid, merge_items(items),
-                      load_vorrat(args.vorrat), args.probelauf, load_names(args.locale))
+                      vorrat, args.probelauf, load_names(args.locale))
+            print(wochen_uebersicht(plan, rezepte, vorrat))
     except BringError as e:
         print(f"Fehler: {e}", file=sys.stderr)
         return 1

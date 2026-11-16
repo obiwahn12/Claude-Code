@@ -35,7 +35,8 @@ In `rezepte/` liegen Rezepte (5 Personen, vegetarisch/vegan) für alle Gerichte 
 ```bash
 python3 bring.py rezepte                                    # alle Gerichte
 python3 bring.py -l Abendessen rezept Pizza "Chili sin" -n  # Probelauf
-python3 bring.py -l Abendessen rezept Pizza "Chili sin"     # Zutaten eintragen
+python3 bring.py -l Abendessen rezept Mo=Pizza "Di=Chili sin"  # eintragen + Wochenübersicht
+python3 bring.py woche Mo=Pizza "Di=Chili sin"                 # nur Übersicht, ohne Login
 ```
 
 Zutaten aus `vorrat.txt` werden übersprungen, gleiche Zutaten zusammengerechnet und
