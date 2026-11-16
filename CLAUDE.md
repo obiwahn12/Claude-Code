@@ -6,6 +6,8 @@ Kommunikation mit dem Nutzer auf Deutsch.
 ## Wochenplan → Liste „Abendessen“
 
 Familie: 5 Personen, isst nur vegetarisch/vegan. Milch = Haferdrink, Sahne = Soja-Sahne.
+**Kein Knoblauch** – mag niemand. Nie in Rezepte schreiben, auch nicht in die Zubereitung
+(steht zusätzlich in `vorrat.txt` unter „Nie kaufen“, damit er beim Eintragen rausfällt).
 Die Gerichte stehen auf einem Freeform-Board „Essenplan“ (Screenshot vom Nutzer); zu jedem
 Gericht gibt es ein Rezept in `rezepte/*.md` (`python3 bring.py rezepte` listet alle).
 

@@ -289,7 +289,7 @@ def add_items(bring, list_uuid, items, vorrat, probelauf=False, names=None):
     for name, info in items:
         key = name.casefold()
         if key in vorrat:
-            print(f"Übersprungen (Vorrat): {name}")
+            print(f"Übersprungen (vorrat.txt): {name}")
         elif key in vorhanden:
             dort = vorhanden[key]
             extra = f" – dort: {dort or 'ohne Menge'}, benötigt: {info}" if info and info != dort else ""

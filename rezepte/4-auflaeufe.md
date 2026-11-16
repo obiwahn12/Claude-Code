@@ -9,16 +9,15 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Kartoffeln | 2 kg (festkochend)
 - Soja-Sahne | 400 ml
 - Haferdrink | 400 ml
-- Knoblauch | 2 Zehen
 - Muskat | 1 Prise
 - Geriebener Käse | 200 g (z. B. Gruyère)
 - Butter | 20 g
 - Salat | 1 Kopf
 
 ### Zubereitung
-1. Ofen auf 180 °C vorheizen, Form mit Butter und halbierter Knoblauchzehe ausreiben.
+1. Ofen auf 180 °C vorheizen, Form mit Butter ausreiben.
 2. Kartoffeln schälen, in dünne Scheiben hobeln und dachziegelartig einschichten.
-3. Soja-Sahne und Haferdrink mit gepresstem Knoblauch, Salz, Pfeffer und Muskat erhitzen, über die Kartoffeln gießen.
+3. Soja-Sahne und Haferdrink mit Salz, Pfeffer und Muskat erhitzen, über die Kartoffeln gießen.
 4. Mit Käse bestreuen und 50–60 min backen. Mit Salat servieren.
 
 ## Lasagne
@@ -30,7 +29,6 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Passierte Tomaten | 1 l
 - Möhren | 2
 - Zwiebeln | 2
-- Knoblauch | 2 Zehen
 - Tomatenmark | 2 EL
 - Oregano | 1 TL
 - Butter | 60 g
@@ -42,7 +40,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Öl | zum Braten
 
 ### Zubereitung
-1. Zwiebeln, Knoblauch und Möhren fein würfeln, mit Soja-Hack anbraten, Tomatenmark mitrösten. Passierte Tomaten zugeben, würzen und 15 min köcheln.
+1. Zwiebeln und Möhren fein würfeln, mit Soja-Hack anbraten, Tomatenmark mitrösten. Passierte Tomaten zugeben, würzen und 15 min köcheln.
 2. Béchamel: Butter schmelzen, Mehl einrühren, Haferdrink nach und nach unterrühren, aufkochen, mit Salz und Muskat würzen.
 3. In eine große Form abwechselnd Soße, Platten, Hack-Soße und Béchamel schichten, mit Béchamel abschließen.
 4. Mozzarella und Parmesan darauf, bei 180 °C 40–45 min backen.
@@ -56,7 +54,6 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Eier | 5
 - Blattspinat | 600 g TK
 - Zwiebeln | 1
-- Knoblauch | 2 Zehen
 - Schmand | 200 g
 - Soja-Sahne | 200 ml
 - Feta | 200 g
@@ -65,7 +62,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 
 ### Zubereitung
 1. Mehl, kalte Butter in Stücken, 1 Ei, ½ TL Salz und 3 EL kaltes Wasser zu einem Mürbeteig kneten, 30 min kühlen.
-2. Spinat auftauen und ausdrücken, mit angeschwitzter Zwiebel und Knoblauch mischen.
+2. Spinat auftauen und ausdrücken, mit angeschwitzter Zwiebel mischen.
 3. Teig in eine große, gefettete Form (oder aufs Blech) drücken, Rand hochziehen. Spinat und gebröselten Feta darauf verteilen.
 4. 4 Eier, Schmand und Soja-Sahne verquirlen, mit Salz, Pfeffer und Muskat würzen, darübergießen.
 5. Bei 180 °C 40–45 min backen. Mit Salat servieren.
@@ -99,7 +96,6 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Paprika | 2
 - Zucchini | 1
 - Zwiebeln | 2
-- Knoblauch | 2 Zehen
 - Gemüsebrühe | 500 ml
 - Kreuzkümmel | 1 TL
 - Paprikapulver | 1 TL
@@ -108,7 +104,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Öl | zum Braten
 
 ### Zubereitung
-1. Zwiebeln, Knoblauch, Paprika und Zucchini würfeln und anbraten, Gewürze mitrösten.
+1. Zwiebeln, Paprika und Zucchini würfeln und anbraten, Gewürze mitrösten.
 2. Linsen, Tomaten und Brühe zugeben, 20 min köcheln, bis die Linsen fast gar sind. Abschmecken.
 3. In eine Auflaufform füllen, Feta darüberbröseln, bei 200 °C 20 min backen.
 4. Dazu Reis kochen.
@@ -120,14 +116,13 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Gnocchi | 1,5 kg
 - Blattspinat | 600 g TK
 - Kirschtomaten | 400 g
-- Knoblauch | 2 Zehen
 - Soja-Sahne | 400 ml
 - Frischkäse | 200 g
 - Mozzarella | 2
 - Muskat | 1 Prise
 
 ### Zubereitung
-1. Spinat mit Knoblauch in einem Topf auftauen lassen, Soja-Sahne und Frischkäse einrühren, mit Salz, Pfeffer und Muskat würzen.
+1. Spinat in einem Topf auftauen lassen, Soja-Sahne und Frischkäse einrühren, mit Salz, Pfeffer und Muskat würzen.
 2. Gnocchi (ungekocht) und halbierte Tomaten in eine Form geben, Soße darübergießen und mischen.
 3. Mozzarella darauf verteilen, bei 200 °C 25 min backen.
 
@@ -185,13 +180,12 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Soja-Sahne | 200 ml
 - Paprika | 2
 - Zwiebeln | 1
-- Knoblauch | 2 Zehen
 - Geriebener Käse | 250 g
 - Basilikum | 1 Topf
 - Öl | zum Braten
 
 ### Zubereitung
-1. Zwiebel, Knoblauch und Paprika anbraten, passierte Tomaten und Soja-Sahne zugeben, würzen.
+1. Zwiebel und Paprika anbraten, passierte Tomaten und Soja-Sahne zugeben, würzen.
 2. Tortellini (ungekocht) mit der Soße in einer Form mischen.
 3. Mit Käse bestreuen, bei 200 °C 20–25 min backen. Mit Basilikum servieren.
 

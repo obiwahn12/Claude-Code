@@ -35,7 +35,6 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Gnocchi | 1,5 kg
 - Passierte Tomaten | 1 l
 - Zwiebeln | 1
-- Knoblauch | 2 Zehen
 - Mozzarella | 2
 - Basilikum | 1 Topf
 - Parmesan | 80 g
@@ -43,7 +42,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Zucker | 1 Prise
 
 ### Zubereitung
-1. Zwiebel und Knoblauch fein würfeln, in Olivenöl anschwitzen.
+1. Zwiebel fein würfeln, in Olivenöl anschwitzen.
 2. Passierte Tomaten zugeben, mit Salz, Pfeffer und Zucker 10 min köcheln.
 3. Gnocchi nach Packung garen (oder in der Pfanne anbraten), in die Sauce geben.
 4. Mozzarella zerzupfen und unterheben, mit Basilikum und Parmesan servieren.
@@ -133,13 +132,12 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Rotkohl | 1/4 Kopf
 - Hummus | 200 g
 - Joghurt | 300 g
-- Knoblauch | 1 Zehe
 - Minze | 1 Bund (optional)
 - Öl | zum Braten
 
 ### Zubereitung
 1. Falafel nach Packung anrühren, quellen lassen, Bällchen formen und in Öl ausbacken.
-2. Joghurt mit gepresstem Knoblauch, Minze, Salz und Pfeffer verrühren.
+2. Joghurt mit Minze, Salz und Pfeffer verrühren.
 3. Gemüse klein schneiden, Rotkohl fein hobeln.
 4. Wraps kurz erwärmen, mit Hummus bestreichen, mit Gemüse, Falafel und Joghurtsoße füllen und einrollen.
 
@@ -215,7 +213,6 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Tofu | 400 g
 - Eier | 4
 - Frühlingszwiebeln | 1 Bund
-- Knoblauch | 2 Zehen
 - Ingwer | 1 Stück
 - Sojasauce | 6 EL
 - Sesamöl | 2 EL
@@ -224,7 +221,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 ### Zubereitung
 1. Reis kochen (am besten am Vortag) und abkühlen lassen.
 2. Tofu würfeln und knusprig braten, herausnehmen.
-3. Knoblauch und Ingwer kurz anbraten, Gemüse zugeben und 5 min braten.
+3. Ingwer kurz anbraten, Gemüse zugeben und 5 min braten.
 4. Reis zugeben und kräftig mitbraten. Eier hineinschlagen, unterrühren.
 5. Tofu zurückgeben, mit Sojasauce und Sesamöl würzen, Frühlingszwiebeln darüber.
 
@@ -241,11 +238,10 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Zwiebeln | 1 rote
 - Feta | 200 g
 - Joghurt | 500 g
-- Knoblauch | 2 Zehen
 - Öl | zum Braten
 
 ### Zubereitung
-1. Joghurt mit Knoblauch, Salz und Pfeffer verrühren (Kräutersoße), optional mit Chili eine scharfe Soße abzweigen.
+1. Joghurt mit Salz und Pfeffer verrühren (Kräutersoße), optional mit Chili eine scharfe Soße abzweigen.
 2. Gemüse schneiden, Rotkohl und Zwiebel fein hobeln.
 3. Veggi-Döner in Öl knusprig braten.
 4. Fladenbrot aufbacken, in Stücke schneiden, aufschneiden und mit allem füllen. Feta darüberbröseln.
@@ -285,13 +281,12 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Olivenöl | 6 EL
 - Rosmarin | 1 Bund
 - Joghurt | 500 g
-- Knoblauch | 2 Zehen
 
 ### Zubereitung
 1. Ofen auf 200 °C Umluft vorheizen.
 2. Kartoffeln, Süßkartoffeln und Möhren in Spalten, restliches Gemüse in grobe Stücke schneiden.
 3. Mit Kichererbsen, Öl, Rosmarin, Salz und Pfeffer auf zwei Blechen verteilen, 35–40 min backen. Nach 25 min Feta darüberbröseln.
-4. Joghurt mit Knoblauch, Salz und Pfeffer als Dip dazu.
+4. Joghurt mit Salz und Pfeffer als Dip dazu.
 
 ## Veganes Rührei
 5 Portionen · ca. 20 min
@@ -343,7 +338,6 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Paprika | 2
 - Erbsen | 200 g TK
 - Zwiebeln | 1
-- Knoblauch | 2 Zehen
 - Soja-Sahne | 400 ml
 - Gemüsebrühe | 200 ml
 - Parmesan | 80 g
@@ -352,7 +346,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 
 ### Zubereitung
 1. Gnocchi in einer großen Pfanne in Öl goldbraun braten, herausnehmen.
-2. Zwiebel, Knoblauch und klein geschnittenes Gemüse 5 min anbraten.
+2. Zwiebel und klein geschnittenes Gemüse 5 min anbraten.
 3. Mit Soja-Sahne und Brühe ablöschen, 5 min köcheln, mit Salz, Pfeffer und Muskat würzen.
 4. Gnocchi unterheben, mit Parmesan servieren.
 
@@ -436,7 +430,6 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Gehackte Tomaten | 1 Dose
 - Kokosmilch | 1 Dose
 - Zwiebeln | 2
-- Knoblauch | 3 Zehen
 - Ingwer | 1 Stück
 - Garam Masala | 2 TL
 - Currypulver | 1 EL
@@ -448,7 +441,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 
 ### Zubereitung
 1. Reis kochen.
-2. Zwiebeln, Knoblauch und Ingwer in Öl anbraten, Gewürze 1 min mitrösten.
+2. Zwiebeln und Ingwer in Öl anbraten, Gewürze 1 min mitrösten.
 3. Blumenkohlröschen, Tomaten und Kokosmilch zugeben, 10 min köcheln.
 4. Kichererbsen zugeben, weitere 10 min köcheln, abschmecken.
 5. Mit Reis, warmem Naan, Joghurt und Koriander servieren.
@@ -487,13 +480,12 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Feta | 400 g
 - Eier | 2
 - Zwiebeln | 1
-- Knoblauch | 2 Zehen
 - Muskat | 1 Prise
 - Sesam | 2 EL
 - Salat | 1 Kopf
 
 ### Zubereitung
-1. Spinat auftauen und gut ausdrücken. Zwiebel und Knoblauch anschwitzen.
+1. Spinat auftauen und gut ausdrücken. Zwiebel anschwitzen.
 2. Spinat, Zwiebeln, zerbröselten Feta und 1 Ei mischen, mit Pfeffer und Muskat würzen.
 3. Blätterteig in Quadrate schneiden, Füllung daraufgeben, zu Dreiecken falten, Ränder andrücken.
 4. Mit verquirltem Ei bestreichen, mit Sesam bestreuen, bei 200 °C 20–25 min backen. Mit Salat servieren.
@@ -506,7 +498,6 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Butter | 250 g
 - Petersilie | 1 Bund
 - Schnittlauch | 1 Bund
-- Knoblauch | 3 Zehen
 - Salat | 2 Köpfe
 - Tomaten | 5
 - Salatgurke | 1
@@ -517,7 +508,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Balsamico | 3 EL
 
 ### Zubereitung
-1. Weiche Butter mit gehackten Kräutern, gepresstem Knoblauch und Salz verrühren.
+1. Weiche Butter mit gehackten Kräutern und Salz verrühren.
 2. Baguettes schräg einschneiden (nicht durch), Kräuterbutter in die Schnitte streichen.
 3. In Alufolie bei 200 °C 10 min backen, Folie öffnen und 5 min knusprig backen.
 4. Großen Salat mit Gemüse, Feta und Balsamico-Dressing anrichten.

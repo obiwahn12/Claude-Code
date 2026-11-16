@@ -43,7 +43,6 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Gehackte Tomaten | 2 Dosen
 - Paprika | 2
 - Zwiebeln | 2
-- Knoblauch | 3 Zehen
 - Tomatenmark | 2 EL
 - Gemüsebrühe | 300 ml
 - Kreuzkümmel | 1 TL
@@ -54,7 +53,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Öl | zum Braten
 
 ### Zubereitung
-1. Zwiebeln und Knoblauch würfeln, mit Soja-Hack krümelig anbraten, Tomatenmark und Gewürze kurz mitrösten.
+1. Zwiebeln würfeln, mit Soja-Hack krümelig anbraten, Tomatenmark und Gewürze kurz mitrösten.
 2. Paprika würfeln und zugeben, Tomaten und Brühe angießen, 20 min köcheln.
 3. Bohnen und Mais zugeben, weitere 10 min köcheln, abschmecken.
 4. Mit Reis und Schmand servieren.
@@ -92,7 +91,6 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Paprika | 2
 - Mais | 1 Dose
 - Zwiebeln | 2
-- Knoblauch | 2 Zehen
 - Gemüsebrühe | 750 ml
 - Kreuzkümmel | 1 TL
 - Paprikapulver geräuchert | 1 TL
@@ -100,7 +98,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Öl | zum Braten
 
 ### Zubereitung
-1. Zwiebeln, Knoblauch und Paprika würfeln und anbraten, Gewürze mitrösten.
+1. Zwiebeln und Paprika würfeln und anbraten, Gewürze mitrösten.
 2. Tomaten und Brühe zugeben, 15 min köcheln.
 3. Abgetropfte Bohnen und Mais zugeben, weitere 10 min köcheln, abschmecken.
 4. Mit Brot servieren.
@@ -212,7 +210,6 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Miso-Paste | 4 EL
 - Sojasauce | 4 EL
 - Ingwer | 1 Stück
-- Knoblauch | 3 Zehen
 - Eier | 5
 - Tofu | 400 g
 - Pak Choi | 2
@@ -224,7 +221,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Sesam | 2 EL
 
 ### Zubereitung
-1. Ingwer und Knoblauch in Sesamöl anbraten, mit Brühe auffüllen, 10 min köcheln. Miso und Sojasauce einrühren (nicht mehr kochen).
+1. Ingwer in Sesamöl anbraten, mit Brühe auffüllen, 10 min köcheln. Miso und Sojasauce einrühren (nicht mehr kochen).
 2. Eier 6,5 min kochen, abschrecken, pellen und halbieren.
 3. Tofu knusprig braten, Pilze anbraten, Pak Choi kurz in der Brühe garen.
 4. Nudeln nach Packung kochen und in Schalen verteilen, heiße Brühe darüber.

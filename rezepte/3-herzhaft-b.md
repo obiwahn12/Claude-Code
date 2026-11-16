@@ -19,13 +19,12 @@
 - Petersilie | 1 Bund
 - Schnittlauch | 1 Bund
 - Zitrone | 1
-- Knoblauch | 1 Zehe
 - Olivenöl | 4 EL
 
 ### Zubereitung
 1. Quinoa nach Packung kochen.
 2. Brokkoli in Röschen und Zucchini in Scheiben in Öl anbraten, Edamame kurz kochen. Kichererbsen in der Pfanne rösten.
-3. Für das Dressing Joghurt, Kräuter, Zitronensaft, Knoblauch, Öl, Salz und Pfeffer pürieren.
+3. Für das Dressing Joghurt, Kräuter, Zitronensaft, Öl, Salz und Pfeffer pürieren.
 4. Schüsseln mit Spinat, Quinoa, Gemüse, Gurke und Avocado füllen, Dressing darüber.
 
 ## Nudeln mit Spinatsauce
@@ -35,7 +34,6 @@
 - Nudeln | 750 g
 - Blattspinat | 600 g TK
 - Zwiebeln | 1
-- Knoblauch | 2 Zehen
 - Soja-Sahne | 400 ml
 - Frischkäse | 200 g
 - Parmesan | 80 g
@@ -44,7 +42,7 @@
 
 ### Zubereitung
 1. Nudeln kochen.
-2. Zwiebel und Knoblauch anschwitzen, Spinat zugeben und auftauen lassen.
+2. Zwiebel anschwitzen, Spinat zugeben und auftauen lassen.
 3. Soja-Sahne und Frischkäse einrühren, 5 min köcheln, mit Salz, Pfeffer und Muskat würzen.
 4. Mit den Nudeln mischen, mit Parmesan servieren.
 
@@ -140,7 +138,6 @@
 - Kartoffeln | 400 g
 - Möhren | 2
 - Zwiebeln | 1
-- Knoblauch | 2 Zehen
 - Cashewkerne | 100 g
 - Hefeflocken | 50 g
 - Haferdrink | 400 ml
@@ -149,7 +146,7 @@
 - Paprikapulver | 1 TL
 
 ### Zubereitung
-1. Kartoffeln, Möhren und Zwiebel würfeln, mit Knoblauch und Cashews 15 min in Salzwasser weich kochen.
+1. Kartoffeln, Möhren und Zwiebel würfeln, mit Cashews 15 min in Salzwasser weich kochen.
 2. Makkaroni kochen.
 3. Gemüse abgießen und mit Haferdrink, Hefeflocken, Senf, Zitronensaft, Paprika, Salz und Pfeffer cremig pürieren.
 4. Soße mit den Nudeln mischen. Optional mit Semmelbröseln bestreut kurz überbacken.
@@ -164,7 +161,6 @@
 - Champignons | 300 g
 - Möhren | 2
 - Frühlingszwiebeln | 1 Bund
-- Knoblauch | 2 Zehen
 - Ingwer | 1 Stück
 - Sojasauce | 5 EL
 - Erdnussbutter | 3 EL
@@ -174,7 +170,7 @@
 
 ### Zubereitung
 1. Tofu würfeln und knusprig braten, herausnehmen.
-2. Knoblauch, Ingwer, Möhren und Champignons im selben Topf anbraten.
+2. Ingwer, Möhren und Champignons im selben Topf anbraten.
 3. Brühe, Sojasauce und Erdnussbutter einrühren, Udon und Pak Choi zugeben, 3–4 min köcheln.
 4. Tofu zurückgeben, mit Limettensaft und Frühlingszwiebeln servieren.
 
@@ -190,7 +186,6 @@
 - Koriander | 1 Bund
 - Chili | 1
 - Joghurt | 500 g
-- Knoblauch | 1 Zehe
 - Minze | 1 Bund (optional)
 - Öl | zum Braten
 
@@ -199,7 +194,7 @@
 2. Kartoffeln kochen, stampfen, mit fein geschnittenen Frühlingszwiebeln, Koriander, Chili, Salz und Pfeffer mischen.
 3. Teig in 10 Stücke teilen, dünn ausrollen, eine Hälfte mit Füllung belegen, zuklappen und Ränder andrücken.
 4. In Öl von beiden Seiten goldbraun braten.
-5. Joghurt mit Knoblauch, Minze und Salz als Dip dazu.
+5. Joghurt mit Minze und Salz als Dip dazu.
 
 ## Spiegelei
 5 Portionen · ca. 30 min
@@ -245,12 +240,11 @@
 - Feta | 200 g
 - Eier | 1
 - Zwiebeln | 1
-- Knoblauch | 2 Zehen
 - Sesam | 2 EL
 - Salat | 1 Kopf
 
 ### Zubereitung
-1. Spinat auftauen und ausdrücken, mit angeschwitzter Zwiebel, Knoblauch, Frischkäse und Feta mischen, würzen.
+1. Spinat auftauen und ausdrücken, mit angeschwitzter Zwiebel, Frischkäse und Feta mischen, würzen.
 2. Füllung auf den Blätterteigen verteilen (Rand frei lassen), von der langen Seite aufrollen.
 3. Mit Ei bestreichen, mit Sesam bestreuen, bei 200 °C 25–30 min backen.
 4. In Scheiben schneiden, mit Salat servieren.
@@ -306,7 +300,6 @@
 - Champignons | 500 g
 - Erbsen | 200 g TK
 - Zwiebeln | 2
-- Knoblauch | 2 Zehen
 - Weißwein | 150 ml
 - Gemüsebrühe | 1,5 l
 - Butter | 50 g
@@ -316,7 +309,7 @@
 
 ### Zubereitung
 1. Brühe heiß halten. Champignons in Scheiben braten, herausnehmen.
-2. Zwiebeln und Knoblauch in Öl anschwitzen, Reis glasig dünsten, mit Wein ablöschen.
+2. Zwiebeln in Öl anschwitzen, Reis glasig dünsten, mit Wein ablöschen.
 3. Nach und nach Brühe angießen und unter Rühren 18–20 min garen.
 4. Pilze und Erbsen zugeben, Butter und Parmesan unterrühren, mit Petersilie servieren.
 
@@ -369,13 +362,12 @@
 - Haferdrink | 100 ml
 - Leinöl | 5 EL
 - Schnittlauch | 1 Bund
-- Knoblauch | 1 Zehe
 - Salatgurke | 1
 - Radieschen | 1 Bund
 
 ### Zubereitung
 1. Kartoffeln als Pellkartoffeln kochen.
-2. Quark mit Haferdrink glatt rühren, mit Schnittlauch, Knoblauch, Salz und Pfeffer würzen.
+2. Quark mit Haferdrink glatt rühren, mit Schnittlauch, Salz und Pfeffer würzen.
 3. Gurke und Radieschen in Scheiben schneiden.
 4. Kartoffeln mit Quark servieren, Leinöl darüberträufeln.
 
@@ -408,7 +400,6 @@
 - Kokosmilch | 2 Dosen
 - Gehackte Tomaten | 1 Dose
 - Zwiebeln | 2
-- Knoblauch | 3 Zehen
 - Ingwer | 1 Stück
 - Currypulver | 2 EL
 - Gemüsebrühe | 500 ml
@@ -420,7 +411,7 @@
 
 ### Zubereitung
 1. Reis kochen.
-2. Zwiebeln, Knoblauch und Ingwer anbraten, Curry kurz mitrösten.
+2. Zwiebeln und Ingwer anbraten, Curry kurz mitrösten.
 3. Linsen, Kokosmilch, Tomaten und Brühe zugeben, 15 min köcheln, bis die Linsen weich sind.
 4. Spinat unterrühren, mit Limettensaft, Salz und Pfeffer abschmecken. Mit Reis und Koriander servieren.
 
@@ -493,7 +484,6 @@
 - Zucchini | 3
 - Paprika | 3
 - Zwiebeln | 2
-- Knoblauch | 3 Zehen
 - Gehackte Tomaten | 2 Dosen
 - Tomatenmark | 2 EL
 - Kräuter der Provence | 2 TL
@@ -503,7 +493,7 @@
 
 ### Zubereitung
 1. Gemüse in mundgerechte Würfel schneiden.
-2. Auberginen in Olivenöl anbraten, dann Zwiebeln, Knoblauch, Paprika und Zucchini zugeben.
+2. Auberginen in Olivenöl anbraten, dann Zwiebeln, Paprika und Zucchini zugeben.
 3. Tomatenmark kurz mitrösten, Tomaten und Kräuter zugeben, 25 min schmoren.
 4. Mit Salz und Pfeffer abschmecken, mit Baguette und Feta servieren.
 
@@ -535,7 +525,6 @@
 - Ricotta | 500 g
 - Passierte Tomaten | 1 l
 - Zwiebeln | 1
-- Knoblauch | 2 Zehen
 - Mozzarella | 2
 - Parmesan | 50 g
 - Muskat | 1 Prise
@@ -543,7 +532,7 @@
 
 ### Zubereitung
 1. Spinat auftauen, gut ausdrücken, mit Ricotta, Salz, Pfeffer und Muskat mischen.
-2. Zwiebel und Knoblauch anschwitzen, passierte Tomaten zugeben und würzen.
+2. Zwiebel anschwitzen, passierte Tomaten zugeben und würzen.
 3. Etwas Soße in eine Auflaufform geben, Cannelloni mit Spinatmasse füllen (Spritzbeutel/Gefrierbeutel), hineinlegen.
 4. Mit restlicher Soße bedecken, Mozzarella und Parmesan darauf. Bei 180 °C 35–40 min backen.
 
@@ -571,7 +560,6 @@
 - Passierte Tomaten | 1 l
 - Gehackte Tomaten | 1 Dose
 - Zwiebeln | 1
-- Knoblauch | 2 Zehen
 - Tomatenmark | 1 EL
 - Basilikum | 1 Topf
 - Parmesan | 100 g
@@ -579,7 +567,7 @@
 - Zucker | 1 Prise
 
 ### Zubereitung
-1. Zwiebel und Knoblauch in Olivenöl anschwitzen, Tomatenmark kurz mitrösten.
+1. Zwiebel in Olivenöl anschwitzen, Tomatenmark kurz mitrösten.
 2. Passierte und gehackte Tomaten zugeben, mit Salz, Pfeffer und Zucker 15 min köcheln.
 3. Nudeln kochen, mit der Soße mischen, mit Basilikum und Parmesan servieren.
 
