@@ -22,43 +22,18 @@ Alle Rezepte für 5 Personen. Milch = Haferdrink, Sahne = Soja-Sahne (wie auf eu
 2. Wenig Öl in der Pfanne erhitzen, dünne Eierkuchen von beiden Seiten goldbraun backen.
 3. Mit Apfelmus oder Zucker servieren.
 
-## Kuchen
-5 Portionen · ca. 75 min
-
-> Allgemeiner Rührkuchen (Marmorkuchen). Habt ihr einen Lieblingskuchen, ersetze ich das Rezept.
-
-### Zutaten
-- Butter | 250 g
-- Zucker | 250 g
-- Vanillezucker | 1 Pck
-- Eier | 5
-- Mehl | 375 g
-- Backpulver | 1 Pck
-- Haferdrink | 125 ml
-- Kakaopulver | 3 EL
-
-### Zubereitung
-1. Ofen auf 175 °C Ober-/Unterhitze vorheizen, Gugelhupf- oder Kastenform fetten.
-2. Butter, Zucker und Vanillezucker cremig schlagen, Eier einzeln unterrühren.
-3. Mehl mit Backpulver mischen, abwechselnd mit dem Haferdrink unterrühren.
-4. Ein Drittel des Teigs mit Kakao und 2 EL Haferdrink verrühren. Hell und dunkel abwechselnd einfüllen, mit einer Gabel marmorieren.
-5. 50–60 min backen (Stäbchenprobe).
-
 ## Haferschleim
 5 Portionen · ca. 15 min
 
 ### Zutaten
 - Haferflocken | 250 g
 - Haferdrink | 1,5 l
-- Äpfel | 2
 - Zimt | 1 TL
-- Ahornsirup | nach Geschmack
 - Salz | 1 Prise
 
 ### Zubereitung
 1. Haferflocken mit Haferdrink und Salz aufkochen, unter Rühren 5–8 min sämig köcheln.
-2. Äpfel reiben und unterrühren.
-3. Mit Zimt und Ahornsirup abschmecken.
+2. Mit Zimt abschmecken.
 
 ## Milchreis
 5 Portionen · ca. 40 min
@@ -87,13 +62,10 @@ Alle Rezepte für 5 Personen. Milch = Haferdrink, Sahne = Soja-Sahne (wie auf eu
 - Zucker | 2 EL
 - Salz | 1 Prise
 - Butter | 50 g
-- Nuss-Nougat-Creme | 1 Glas
-- Bananen | 4
 
 ### Zubereitung
 1. Mehl, Eier, Haferdrink, Zucker, Salz und 30 g geschmolzene Butter glatt rühren, 15 min ruhen lassen.
 2. Pfanne mit wenig Butter auspinseln, sehr dünne Crêpes backen.
-3. Mit Nuss-Nougat-Creme und Bananenscheiben füllen.
 
 ## Grieß-Brei mit Erdbeeren
 5 Portionen · ca. 15 min
