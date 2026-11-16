@@ -53,7 +53,7 @@ Bei Zweifeln, ob etwas Grundvorrat ist (z. B. Butter, Eier), eintragen und es in
 ## Web-App
 
 `app.py` (Server, nur Standardbibliothek) + `static/index.html` + `rezeptbuch.py` (liest/schreibt
-`rezepte/*.md` verlustfrei). Läuft beim Nutzer auf dem Mac (`start.command`). Rezeptänderungen aus
+`rezepte/*.md` verlustfrei). Läuft beim Nutzer auf einem Windows-PC „obiwahn“ (`start.bat`). Rezeptänderungen aus
 der App landen in den .md-Dateien dort – vor Änderungen hier ggf. abgleichen.
 
 ## Zugang

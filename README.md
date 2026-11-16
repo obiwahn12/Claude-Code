@@ -49,7 +49,9 @@ python3 app.py          # http://localhost:8765
 python3 app.py --lan    # zusätzlich im WLAN erreichbar (Handy/iPad) – ohne Passwortschutz
 ```
 
-Auf dem Mac reicht ein Doppelklick auf `start.command`.
+Doppelklick zum Starten: Windows `start.bat`, Mac `start.command`. Unter Windows Python von
+https://www.python.org/downloads/ installieren (Haken bei „Add python.exe to PATH“). Beim ersten
+Start mit `--lan` fragt die Windows-Firewall – „Private Netzwerke“ erlauben.
 
 - **Woche:** Gerichte pro Tag auswählen → „Zutaten prüfen“ → abhaken, was zuhause ist →
   „An Bring! senden“. Ansicht wahlweise als Einkaufsliste oder nach Gericht.
