@@ -210,13 +210,12 @@ Alle Rezepte für 5 Personen. Milch = Haferdrink, Sahne = Soja-Sahne (wie auf eu
 - Haferdrink | 250 ml
 - Zucker | 70 g
 - Butter | 130 g
-- Eier | 2
 - Salz | 1 Prise
 - Pflaumenmus | 1 Glas
 - Vanillesoße | 1 l
 
 ### Zubereitung
-1. Hefe in lauwarmem Haferdrink mit etwas Zucker auflösen. Mit Mehl, restlichem Zucker, 80 g weicher Butter, Eiern und Salz zu einem Teig kneten, 45 min gehen lassen.
+1. Hefe in lauwarmem Haferdrink mit etwas Zucker auflösen. Mit Mehl, restlichem Zucker, 80 g weicher Butter und Salz zu einem Teig kneten, 45 min gehen lassen.
 2. Teig in 15 Stücke teilen, flach drücken, je 1 TL Pflaumenmus darauf, zu Kugeln verschließen.
 3. In geschmolzener Butter wälzen, dicht in eine Auflaufform setzen, 20 min gehen lassen.
 4. Bei 180 °C 25–30 min goldbraun backen, mit Vanillesoße servieren.
@@ -230,7 +229,6 @@ Alle Rezepte für 5 Personen. Milch = Haferdrink, Sahne = Soja-Sahne (wie auf eu
 - Haferdrink | 250 ml
 - Zucker | 50 g
 - Butter | 150 g
-- Eier | 1
 - Salz | 1 Prise
 - Pflaumenmus | 1 Glas
 - Mohn | 100 g (gemahlen)
@@ -251,16 +249,14 @@ Alle Rezepte für 5 Personen. Milch = Haferdrink, Sahne = Soja-Sahne (wie auf eu
 - Backpulver | 1 Pck
 - Zucker | 2 EL
 - Salz | 1 Prise
-- Eier | 3
-- Haferdrink | 500 ml
+- Haferdrink | 600 ml
 - Butter | 50 g
 - Ahornsirup | 1 Flasche
-- Heidelbeeren | 250 g
 
 ### Zubereitung
-1. Mehl, Backpulver, Zucker und Salz mischen. Eier, Haferdrink und 30 g geschmolzene Butter verrühren, alles kurz zu einem dicken Teig verrühren.
+1. Mehl, Backpulver, Zucker und Salz mischen. Haferdrink und 30 g geschmolzene Butter verrühren, alles kurz zu einem dicken Teig verrühren.
 2. In einer leicht gebutterten Pfanne kleine, dicke Pancakes backen, wenden, sobald sich Bläschen bilden.
-3. Mit Ahornsirup und Heidelbeeren servieren.
+3. Mit Ahornsirup servieren.
 
 ## Quarkkeulchen
 5 Portionen · ca. 45 min
@@ -272,14 +268,12 @@ Alle Rezepte für 5 Personen. Milch = Haferdrink, Sahne = Soja-Sahne (wie auf eu
 - Mehl | 150 g
 - Zucker | 80 g
 - Vanillezucker | 1 Pck
-- Zitrone | 1 (Abrieb)
-- Rosinen | 50 g (optional)
 - Öl | zum Braten
 - Apfelmus | 1 Glas
 
 ### Zubereitung
 1. Kalte Kartoffeln pellen und fein reiben oder stampfen.
-2. Mit Quark, Eiern, Mehl, Zucker, Vanillezucker, Zitronenabrieb und Rosinen zu einem Teig verkneten.
+2. Mit Quark, Eiern, Mehl, Zucker und Vanillezucker zu einem Teig verkneten.
 3. Handtellergroße, flache Taler formen, in Öl von beiden Seiten goldbraun braten.
 4. Mit Apfelmus und Zimt-Zucker servieren.
 
@@ -296,14 +290,12 @@ Alle Rezepte für 5 Personen. Milch = Haferdrink, Sahne = Soja-Sahne (wie auf eu
 - Mais | 1 Dose
 - Feta | 400 g
 - Sonnenblumenkerne | 75 g
-- Baguette | 2
 - Olivenöl | 6 EL
 - Balsamico | 3 EL
 - Senf | 1 TL
-- Honig | 1 TL
 
 ### Zubereitung
 1. Salat waschen und zupfen, Gemüse klein schneiden, Mais abtropfen lassen.
 2. Sonnenblumenkerne ohne Fett rösten, Feta würfeln.
-3. Dressing aus Öl, Balsamico, Senf, Honig, Salz und Pfeffer anrühren.
-4. Alles mischen, mit Baguette servieren.
+3. Dressing aus Öl, Balsamico, Senf, Salz und Pfeffer anrühren.
+4. Alles mischen.
