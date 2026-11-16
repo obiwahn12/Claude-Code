@@ -41,3 +41,20 @@ python3 bring.py woche Mo=Pizza "Di=Chili sin"                 # nur Übersicht,
 
 Zutaten aus `vorrat.txt` werden übersprungen, gleiche Zutaten zusammengerechnet und
 Katalogartikel unter ihrem Bring!-Namen eingetragen (mit Bild und Ladenbereich).
+
+## Web-App
+
+```bash
+python3 app.py          # http://localhost:8765
+python3 app.py --lan    # zusätzlich im WLAN erreichbar (Handy/iPad) – ohne Passwortschutz
+```
+
+Auf dem Mac reicht ein Doppelklick auf `start.command`.
+
+- **Woche:** Gerichte pro Tag auswählen → „Zutaten prüfen“ → abhaken, was zuhause ist →
+  „An Bring! senden“. Ansicht wahlweise als Einkaufsliste oder nach Gericht.
+- **Rezepte:** suchen, bearbeiten, neu anlegen, löschen (schreibt direkt in `rezepte/*.md`).
+- **Vorrat:** `vorrat.txt` bearbeiten.
+- **Bring!:** Anmelden. Das Passwort wird nicht gespeichert, nur das Token.
+
+Der Wochenplan liegt in `woche.json` (nicht im Git).

@@ -50,6 +50,12 @@ Wenn der Nutzer ein Rezept schickt (Text, Zutatenliste oder Link):
 
 Bei Zweifeln, ob etwas Grundvorrat ist (z. B. Butter, Eier), eintragen und es in der Antwort erwähnen.
 
+## Web-App
+
+`app.py` (Server, nur Standardbibliothek) + `static/index.html` + `rezeptbuch.py` (liest/schreibt
+`rezepte/*.md` verlustfrei). Läuft beim Nutzer auf dem Mac (`start.command`). Rezeptänderungen aus
+der App landen in den .md-Dateien dort – vor Änderungen hier ggf. abgleichen.
+
 ## Zugang
 
 - Login braucht `BRING_EMAIL` und `BRING_PASSWORD` als Umgebungsvariablen. Nie in Dateien,

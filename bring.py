@@ -79,21 +79,26 @@ class Bring:
         self.auth = None
 
     # ---------- Login ----------
-    def login(self):
-        cached = self._load_token()
-        if cached and cached.get("expires_at", 0) > time.time() + 60:
-            self._use(cached)
-            return
-        if cached and cached.get("refresh_token"):
-            try:
-                self._refresh(cached)
+    def login(self, email=None, password=None):
+        """Mit gespeichertem Token anmelden; sonst mit E-Mail/Passwort (Argumente oder Umgebung).
+
+        Das Passwort wird nie gespeichert, nur das Token.
+        """
+        if not (email and password):
+            cached = self._load_token()
+            if cached and cached.get("expires_at", 0) > time.time() + 60:
+                self._use(cached)
                 return
-            except BringError:
-                pass  # dann normal neu anmelden
-        email = os.environ.get("BRING_EMAIL")
-        password = os.environ.get("BRING_PASSWORD")
+            if cached and cached.get("refresh_token"):
+                try:
+                    self._refresh(cached)
+                    return
+                except BringError:
+                    pass  # dann normal neu anmelden
+        email = email or os.environ.get("BRING_EMAIL")
+        password = password or os.environ.get("BRING_PASSWORD")
         if not email or not password:
-            raise BringError("Bitte BRING_EMAIL und BRING_PASSWORD als Umgebungsvariablen setzen.")
+            raise BringError("Nicht bei Bring! angemeldet.")
         res = _request("POST", BASE + "bringauth", self.headers,
                        data={"email": email, "password": password})
         self._store(res)
@@ -122,6 +127,15 @@ class Bring:
         except OSError:
             pass  # Cache ist nur Komfort
         self._use(token)
+
+    def logout(self):
+        self.auth = None
+        for h in ("Authorization", "X-BRING-USER-UUID"):
+            self.headers.pop(h, None)
+        try:
+            TOKEN_FILE.unlink()
+        except OSError:
+            pass
 
     def _load_token(self):
         try:
