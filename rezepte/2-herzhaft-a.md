@@ -377,43 +377,39 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Butter | 30 g
 - Mehl | 1 EL
 - Gemüsebrühe | 300 ml
-- Schmand | 200 g
 - Senf | 1 TL
-- Dill | 1 Bund
 - Zucker | 1 Prise
 
 ### Zubereitung
 1. Kartoffeln als Salzkartoffeln kochen.
 2. Gurken schälen, längs halbieren, entkernen, in dicke Stücke schneiden.
 3. Zwiebeln in Butter anschwitzen, Gurken zugeben, mit Mehl bestäuben, mit Brühe ablöschen und 15 min schmoren.
-4. Schmand und Senf einrühren, mit Salz, Pfeffer, Zucker und viel Dill abschmecken.
+4. Senf einrühren, mit Salz, Pfeffer und Zucker abschmecken.
 
 ## Indisch
 5 Portionen · ca. 40 min
 
-> Chana Masala mit Blumenkohl, Reis und Naan. Für andere indische Gerichte sag Bescheid.
+> Kichererbsen-Curry mit Blumenkohl und Erbsen, dazu Reis und Naan.
 
 ### Zutaten
 - Kichererbsen | 2 Dosen
 - Blumenkohl | 1
+- Erbsen | 300 g TK
 - Gehackte Tomaten | 1 Dose
-- Kokosmilch | 1 Dose
+- Haferdrink | 400 ml
 - Zwiebeln | 2
-- Ingwer | 1 Stück
 - Garam Masala | 2 TL
 - Currypulver | 1 EL
 - Basmatireis | 500 g
 - Naan | 5
-- Joghurt | 300 g
-- Koriander | 1 Bund (optional)
 - Öl | zum Braten
 
 ### Zubereitung
 1. Reis kochen.
-2. Zwiebeln und Ingwer in Öl anbraten, Gewürze 1 min mitrösten.
-3. Blumenkohlröschen, Tomaten und Kokosmilch zugeben, 10 min köcheln.
-4. Kichererbsen zugeben, weitere 10 min köcheln, abschmecken.
-5. Mit Reis, warmem Naan, Joghurt und Koriander servieren.
+2. Zwiebeln in Öl anbraten, Gewürze 1 min mitrösten.
+3. Blumenkohlröschen, Tomaten und Haferdrink zugeben, 10 min köcheln.
+4. Kichererbsen und Erbsen zugeben, weitere 10 min köcheln, abschmecken.
+5. Mit Reis und warmem Naan servieren.
 
 ## Kartoffelsalat
 5 Portionen · ca. 40 min + Ziehzeit
@@ -429,35 +425,33 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Senf | 1 EL
 - Zucker | 1 TL
 - Gewürzgurken | 1 Glas
-- Schnittlauch | 1 Bund
+- TK-Kräuter | 1 Pck
 - Vegetarische Würstchen | 10
 
 ### Zubereitung
 1. Kartoffeln kochen, pellen, noch warm in Scheiben schneiden.
 2. Zwiebeln fein würfeln, in der heißen Brühe kurz aufkochen, mit Essig, Senf, Zucker, Salz und Pfeffer verrühren.
 3. Über die Kartoffeln gießen, Öl und gewürfelte Gurken unterheben, mindestens 30 min ziehen lassen.
-4. Mit Schnittlauch bestreuen, Würstchen erwärmen und dazu servieren.
+4. Mit TK-Kräutern bestreuen, Würstchen erwärmen und dazu servieren.
 
 ## Blätterteig mit Spinatfüllung
 5 Portionen · ca. 45 min
 
-> Spinat-Feta-Taschen nach griechischer Art, dazu Salat.
+> Spinat-Feta-Taschen nach griechischer Art.
 
 ### Zutaten
 - Blätterteig | 2 Rollen
 - Blattspinat | 750 g TK
 - Feta | 400 g
-- Eier | 2
 - Zwiebeln | 1
 - Muskat | 1 Prise
 - Sesam | 2 EL
-- Salat | 1 Kopf
 
 ### Zubereitung
 1. Spinat auftauen und gut ausdrücken. Zwiebel anschwitzen.
-2. Spinat, Zwiebeln, zerbröselten Feta und 1 Ei mischen, mit Pfeffer und Muskat würzen.
-3. Blätterteig in Quadrate schneiden, Füllung daraufgeben, zu Dreiecken falten, Ränder andrücken.
-4. Mit verquirltem Ei bestreichen, mit Sesam bestreuen, bei 200 °C 20–25 min backen. Mit Salat servieren.
+2. Spinat, Zwiebeln und zerbröselten Feta mischen, mit Pfeffer und Muskat würzen.
+3. Blätterteig in Quadrate schneiden, Füllung daraufgeben, zu Dreiecken falten, Ränder mit einer Gabel andrücken.
+4. Mit etwas Wasser bestreichen, mit Sesam bestreuen, bei 200 °C 20–25 min backen.
 
 ## Kräuter-Baguette mit Salat
 5 Portionen · ca. 30 min
@@ -465,8 +459,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 ### Zutaten
 - Baguette | 3
 - Butter | 250 g
-- Petersilie | 1 Bund
-- Schnittlauch | 1 Bund
+- TK-Kräuter | 1 Pck
 - Salat | 2 Köpfe
 - Tomaten | 5
 - Salatgurke | 1
@@ -477,7 +470,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Balsamico | 3 EL
 
 ### Zubereitung
-1. Weiche Butter mit gehackten Kräutern und Salz verrühren.
+1. Weiche Butter mit den TK-Kräutern und Salz verrühren.
 2. Baguettes schräg einschneiden (nicht durch), Kräuterbutter in die Schnitte streichen.
 3. In Alufolie bei 200 °C 10 min backen, Folie öffnen und 5 min knusprig backen.
 4. Großen Salat mit Gemüse, Feta und Balsamico-Dressing anrichten.
@@ -518,17 +511,16 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Paprika | 2
 - Zucchini | 1
 - Erbsen | 200 g TK
-- Kokosmilch | 1 Dose
-- Gemüsebrühe | 200 ml
+- Gemüsebrühe | 300 ml
 - Currypulver | 2 TL
-- Sojasauce | 3 EL
+- Sojasauce | 4 EL
 - Zwiebeln | 1
 - Öl | zum Braten
 
 ### Zubereitung
 1. Reis kochen.
 2. Zwiebel und Gemüse klein schneiden, in Öl 5 min anbraten, Curry kurz mitrösten.
-3. Mit Kokosmilch und Brühe ablöschen, Erbsen zugeben, 8 min köcheln.
+3. Mit Brühe ablöschen, Erbsen zugeben, 8 min köcheln.
 4. Mit Sojasauce, Salz und Pfeffer abschmecken, mit Reis servieren.
 
 ## Schmorkohl
