@@ -5,11 +5,11 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 ## Frikassee
 5 Portionen · ca. 45 min
 
-> Jackfruit-Frikassee nach zuckerjagdwurst.com (https://www.zuckerjagdwurst.com/de/rezepte/jackfruit-frikassee-mit-reis), auf 5 Personen umgerechnet.
+> Nach dem Jackfruit-Frikassee von zuckerjagdwurst.com (https://www.zuckerjagdwurst.com/de/rezepte/jackfruit-frikassee-mit-reis), auf 5 Personen umgerechnet, mit Veggie-Chicken statt Jackfruit.
 
 ### Zutaten
 - Basmatireis | 300 g
-- Jackfruit | 3 Dosen (je 500 g Abtropfgewicht)
+- Veggi-Chicken | 600 g
 - Erbsen | 125 g TK
 - Möhren | 2
 - Zwiebeln | 1
@@ -28,7 +28,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 
 ### Zubereitung
 1. Reis kochen.
-2. Jackfruit abtropfen lassen, harte Stücke entfernen, zerzupfen und in Öl anbraten, salzen und pfeffern.
+2. Veggie-Chicken in mundgerechte Stücke zupfen und in Öl anbraten, salzen und pfeffern.
 3. Zwiebel, Möhre und Champignons klein schneiden und mitbraten.
 4. Vegane Butter zugeben, Mehl darüberstäuben, mit Weißwein, Brühe und Soja-Sahne ablöschen.
 5. Erbsen und Spargelköpfe zugeben, 10 min köcheln. Mit Senf, Zitronensaft, Muskat, Salz und Pfeffer abschmecken. Mit Reis und Petersilie servieren.
