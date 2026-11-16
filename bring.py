@@ -31,6 +31,7 @@ from pathlib import Path
 
 BASE = "https://api.getbring.com/rest/v2/"
 ARTICLES_URL = "https://web.getbring.com/locale/articles.{locale}.json"
+CATALOG_URL = "https://web.getbring.com/locale/catalog.{locale}.json"
 # Fester, öffentlich bekannter Key der Bring!-Web-App.
 API_KEY = "cof4Nc6D8saplXjE3h3HXqHH8m7VU2i1Gs0g85Sp"
 CACHE = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "bring-cli"
@@ -208,6 +209,28 @@ def load_names(locale):
         return names
     except (BringError, OSError):
         return {}
+
+
+def load_catalog(locale):
+    """Bring!-Katalog: Abteilungen (wie in der App sortiert) mit ihren Standardartikeln.
+
+    Liefert [{"name": "Obst & Gemüse", "items": ["Ananas", ...]}, ...] – eine Woche zwischengespeichert.
+    """
+    cache_file = CACHE / f"catalog.{locale}.json"
+    try:
+        if time.time() - cache_file.stat().st_mtime < 7 * 86400:
+            return json.loads(cache_file.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        pass
+    try:
+        raw = _request("GET", CATALOG_URL.format(locale=locale), {})
+        sections = [{"name": s["name"], "items": [i["itemId"] for i in s.get("items", [])]}
+                    for s in raw["catalog"]["sections"]]
+        CACHE.mkdir(parents=True, exist_ok=True)
+        cache_file.write_text(json.dumps(sections, ensure_ascii=False), encoding="utf-8")
+        return sections
+    except (BringError, OSError, KeyError, TypeError):
+        return []
 
 
 def load_vorrat(path):

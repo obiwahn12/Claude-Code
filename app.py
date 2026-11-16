@@ -20,6 +20,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote, urlparse
 
+import abteilungen
 import bring
 import rezeptbuch
 
@@ -137,14 +138,16 @@ def plan_pruefen(woche):
             liste_ok = True
         except bring.BringError:
             pass
+    abteilung, reihenfolge = abteilungen.zuordner("de-DE")
     artikel = []
     for name, menge in bring.merge_items(zeilen):
         key = name.casefold()
         status = ("vorrat" if key in vorrat and key not in eigene
                   else "liste" if key in vorhanden else "neu")
         artikel.append({"artikel": name, "menge": menge, "status": status, "eigene": key in eigene,
+                        "abteilung": abteilung(name),
                         "dort": vorhanden.get(key, ""), "gerichte": list(dict.fromkeys(gerichte.get(key, [])))})
-    return {"artikel": artikel, "liste_geprueft": liste_ok}
+    return {"artikel": artikel, "abteilungen": reihenfolge, "liste_geprueft": liste_ok}
 
 
 def an_bring(liste, artikel):

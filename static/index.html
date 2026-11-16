@@ -970,20 +970,22 @@ document.querySelectorAll("#ergebnis .seg button").forEach(b => b.onclick = () =
   $("#viewGericht").classList.toggle("hidden", b.dataset.view !== "gericht");
 });
 function zeigeErgebnis() {
-  const gruppen = [
-    ["neu", "Einkaufen", "Haken weg bei allem, was schon zuhause ist."],
-    ["liste", "Steht schon auf der Bring!-Liste", ""],
-    ["vorrat", "Aus dem Vorrat", "Haken setzen bei allem, was leer ist – dann kommt es mit auf die Liste."],
-  ];
+  // Einkaufsliste nach Bring!-Abteilungen (Reihenfolge wie in der Bring!-App)
   const box = $("#viewEinkauf"); box.replaceChildren();
-  for (const [st, titel, hint] of gruppen) {
-    const items = pruefung.artikel.filter(a => a.status === st);
-    if (!items.length && st !== "neu") continue;  // „Einkaufen“ immer zeigen, damit das „+“ da ist
-    box.append(kopf(`${titel} · ${items.length}`, st === "neu" ? "" : null),
-      el("div", {class: "card list"},
-      hint ? el("div", {class: "list-head"}, el("p", {class: "muted"}, hint)) : null,
-      el("ul", {class: "check"}, items.map(a => zeileMitHaken(a, a.artikel, a.menge, a.gerichte.join(", "),
-        a.eigene ? () => zutatEntfernen(a.artikel, null) : null)))));
+  box.append(kopf(`Zutaten · ${pruefung.artikel.length}`, ""),
+    el("div", {class: "card list"}, el("div", {class: "list-head", style: "padding-bottom:14px"},
+      el("p", {class: "muted"}, "Haken weg bei allem, was schon zuhause ist. Vorrat nur anhaken, wenn er leer ist."))));
+  const rang = {neu: 0, vorrat: 1, liste: 2};
+  const gruppen = {};
+  for (const a of pruefung.artikel) (gruppen[a.abteilung || "Eigene Artikel"] ||= []).push(a);
+  const reihenfolge = pruefung.abteilungen || [];
+  for (const abt of [...reihenfolge, ...Object.keys(gruppen).filter(k => !reihenfolge.includes(k))]) {
+    const items = gruppen[abt];
+    if (!items) continue;
+    items.sort((x, y) => rang[x.status] - rang[y.status] || x.artikel.localeCompare(y.artikel, "de"));
+    box.append(el("h2", {class: "section"}, `${abt} · ${items.length}`),
+      el("div", {class: "card list"}, el("ul", {class: "check"}, items.map(a =>
+        zeileMitHaken(a, a.artikel, a.menge, a.gerichte.join(", "), a.eigene ? () => zutatEntfernen(a.artikel, null) : null)))));
   }
   zeigeGerichte(); zaehle();
 }

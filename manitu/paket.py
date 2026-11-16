@@ -89,7 +89,7 @@ def main():
     text_kopieren(HIER / "essenplan.cgi", ziel / "essenplan.cgi")
     text_kopieren(HIER / "htaccess.vorlage", ziel / ".htaccess",
                   {"{{AUTHUSERFILE}}": f"{server}/.htpasswd"})
-    for name in ("app.py", "bring.py", "rezeptbuch.py"):
+    for name in ("app.py", "abteilungen.py", "bring.py", "rezeptbuch.py"):
         text_kopieren(REPO / name, ziel / name)
     text_kopieren(REPO / "static" / "index.html", ziel / "static" / "index.html")
 

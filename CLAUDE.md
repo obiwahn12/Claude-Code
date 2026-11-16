@@ -53,7 +53,8 @@ Bei Zweifeln, ob etwas Grundvorrat ist (z. B. Butter, Eier), eintragen und es in
 ## Web-App
 
 `app.py` (Server, nur Standardbibliothek) + `static/index.html` + `rezeptbuch.py` (liest/schreibt
-`rezepte/*.md` verlustfrei). Läuft beim Nutzer auf einem Windows-PC „obiwahn“ (`start.bat`). Rezeptänderungen aus
+`rezepte/*.md` verlustfrei) + `abteilungen.py` (ordnet Zutaten den Bring!-Abteilungen zu: Bring!-Katalog,
+sonst feste Liste/Stichworte, sonst „Eigene Artikel“ – neue Rezept-Zutaten dort ergänzen). Läuft beim Nutzer auf einem Windows-PC „obiwahn“ (`start.bat`). Rezeptänderungen aus
 der App landen in den .md-Dateien dort – vor Änderungen hier ggf. abgleichen.
 
 Webserver (manitu, CGI): `manitu/essenplan.cgi` ruft `app.dispatch()` auf, `manitu/htaccess.vorlage`
