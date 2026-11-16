@@ -107,15 +107,17 @@ textarea { min-height: 160px; resize: vertical; line-height: 1.45; }
 .btn.block { width: 100%; }
 
 /* Woche */
-.days { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); margin-bottom: 14px; }
-.days .card { margin: 0; }
-.day h3 { margin: 0 0 10px; font-size: 17px; font-weight: 600; }
-.chips:empty { display: none; }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-.chip { display: inline-flex; align-items: center; min-height: 36px; background: var(--fill); border-radius: 18px;
-        padding-left: 14px; font-size: 15px; }
-.chip button { display: grid; place-items: center; width: 44px; height: 44px; margin: -4px 0; background: none; border: 0;
-               color: var(--muted); font-size: 20px; line-height: 1; }
+/* Woche: eine Zeile pro Tag (Tag links, Gericht rechts), ein Gericht pro Tag */
+.woche { padding: 0; }
+.tag-row { position: relative; display: flex; align-items: center; min-height: 48px; padding-left: 16px; }
+.tag-row + .tag-row::before { content: ""; position: absolute; top: 0; left: 16px; right: 0; border-top: .5px solid var(--line); }
+.tag-name { flex: none; width: 108px; font-size: 17px; }
+.tag-row.heute .tag-name { color: var(--tint); font-weight: 600; }
+.tag-row input { flex: 1; min-width: 0; min-height: 48px; background: none; border-radius: 0; padding: 0 8px 0 0; }
+.tag-row input:focus { outline: none; }
+.tag-row:focus-within { background: var(--fill); }
+.tag-row .clear { flex: none; display: grid; place-items: center; width: 44px; height: 44px; margin-right: 4px;
+                  background: none; border: 0; color: var(--muted); font-size: 20px; line-height: 1; }
 
 /* Listen im iOS-Stil (gruppiert, Trennlinien eingerückt) */
 .list { padding: 0; overflow: hidden; }
@@ -340,25 +342,34 @@ function zeigeListenAuswahl() {
 }
 
 /* ---------- Woche ---------- */
-async function ladeWoche() { woche = await api("GET", "/api/woche"); zeigeWoche(); zeigeListenAuswahl(); }
+async function ladeWoche() {
+  woche = await api("GET", "/api/woche");
+  TAGE.forEach(t => woche.tage[t] = (woche.tage[t] || []).slice(0, 1));  // ein Gericht pro Tag
+  zeigeWoche(); zeigeListenAuswahl();
+}
 async function speichereWoche() { await api("PUT", "/api/woche", woche).catch(fehler); pruefung = null; $("#ergebnis").classList.add("hidden"); }
 function zeigeWoche() {
-  $("#days").replaceChildren(...TAGE.map(t => {
-    const input = el("input", {list: "gerichte", placeholder: "Gericht hinzufügen", "aria-label": `Gericht für ${TAG_NAME[t]} hinzufügen`, enterkeyhint: "done"});
-    const add = () => {
-      const v = input.value.trim(); if (!v) return;
+  const heute = TAGE[(new Date().getDay() + 6) % 7];
+  $("#days").replaceChildren(el("div", {class: "card list woche"}, TAGE.map(t => {
+    const g = (woche.tage[t] || [])[0] || "";
+    const setze = name => { woche.tage[t] = name ? [name] : []; zeigeWoche(); speichereWoche(); };
+    const input = el("input", {list: "gerichte", value: g, placeholder: "Gericht wählen",
+      "aria-label": `Gericht am ${TAG_NAME[t]}`, enterkeyhint: "done", autocomplete: "off",
+      onfocus: e => e.target.select()});
+    input.addEventListener("change", () => {
+      const v = input.value.trim();
+      if (v === g) return;
+      if (!v) return setze("");
       const r = finde(v);
-      if (!r) { toast(`„${v}“ gibt es noch nicht – unter Rezepte anlegen`); return; }
-      woche.tage[t].push(r.name); input.value = ""; zeigeWoche(); speichereWoche();
-    };
-    input.addEventListener("change", add);
-    input.addEventListener("keydown", e => { if (e.key === "Enter") add(); });
-    return el("div", {class: "card day"},
-      el("h3", {}, TAG_NAME[t]),
-      el("div", {class: "chips"}, (woche.tage[t] || []).map((g, i) => el("span", {class: "chip"}, g,
-        el("button", {title: "entfernen", "aria-label": `${g} entfernen`, onclick: () => { woche.tage[t].splice(i, 1); zeigeWoche(); speichereWoche(); }}, "×")))),
-      input);
-  }));
+      if (!r) { toast(`„${v}“ gibt es noch nicht – unter Rezepte anlegen`); input.value = g; return; }
+      setze(r.name);
+    });
+    input.addEventListener("keydown", e => { if (e.key === "Enter") input.blur(); });
+    return el("div", {class: "tag-row" + (t === heute ? " heute" : "")},
+      el("span", {class: "tag-name"}, TAG_NAME[t]), input,
+      g ? el("button", {type: "button", class: "clear", title: "entfernen", "aria-label": `${g} am ${TAG_NAME[t]} entfernen`,
+        onclick: () => setze("")}, "×") : null);
+  })));
 }
 function finde(q) {
   const k = q.toLocaleLowerCase("de");
