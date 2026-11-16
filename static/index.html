@@ -214,6 +214,154 @@ ul.check input[type=checkbox]:disabled { opacity: .45; }
 #toast.show { opacity: 1; transform: translate(-50%, 0); }
 @media (max-width: 699px) { #toast { bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 12px); } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* =====================================================================
+   Glas-Design (angelehnt an iPadOS): weicher Verlaufs-Hintergrund,
+   durchscheinende Flächen mit Unschärfe, große Radien, mehr Abstand.
+   Überschreibt die Grundwerte oben.
+   ===================================================================== */
+:root {
+  --wall-base: #ebe6df;
+  --wall: radial-gradient(60% 50% at 15% 10%, rgba(255, 255, 255, .95), transparent 70%),
+          radial-gradient(55% 45% at 90% 18%, #c4d2e4, transparent 70%),
+          radial-gradient(70% 55% at 80% 95%, #e0c7a8, transparent 70%),
+          radial-gradient(50% 45% at 5% 85%, #c9dfc9, transparent 70%),
+          linear-gradient(160deg, #f3efe9, #ddd5ca);
+  --glass: rgba(255, 255, 255, .58);
+  --glass-strong: rgba(255, 255, 255, .72);
+  --glass-edge: rgba(255, 255, 255, .75);
+  --glass-shadow: 0 10px 34px rgba(60, 45, 30, .10), 0 1px 2px rgba(60, 45, 30, .06);
+  --glass-blur: saturate(180%) blur(28px);
+  --card: rgba(255, 255, 255, .92);       /* gewählte Segmente */
+  --fill: rgba(120, 120, 128, .13);
+  --line: rgba(60, 60, 67, .16);
+  --r-lg: 26px; --r-md: 16px;
+  --tabbar-h: 64px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --wall-base: #0c0c11;
+    --wall: radial-gradient(55% 45% at 12% 8%, #2b2546, transparent 70%),
+            radial-gradient(50% 45% at 92% 25%, #17343a, transparent 70%),
+            radial-gradient(65% 55% at 75% 95%, #3a2a20, transparent 70%),
+            radial-gradient(45% 40% at 5% 85%, #1c3324, transparent 70%),
+            linear-gradient(160deg, #111118, #08080b);
+    --glass: rgba(44, 44, 52, .46); --glass-strong: rgba(36, 36, 42, .62); --glass-edge: rgba(255, 255, 255, .12);
+    --glass-shadow: 0 10px 34px rgba(0, 0, 0, .45);
+    --card: rgba(110, 110, 120, .42); --fill: rgba(118, 118, 128, .24); --line: rgba(255, 255, 255, .11);
+  }
+}
+:root[data-theme="dark"] {
+  --wall-base: #0c0c11;
+  --wall: radial-gradient(55% 45% at 12% 8%, #2b2546, transparent 70%),
+          radial-gradient(50% 45% at 92% 25%, #17343a, transparent 70%),
+          radial-gradient(65% 55% at 75% 95%, #3a2a20, transparent 70%),
+          radial-gradient(45% 40% at 5% 85%, #1c3324, transparent 70%),
+          linear-gradient(160deg, #111118, #08080b);
+  --glass: rgba(44, 44, 52, .46); --glass-strong: rgba(36, 36, 42, .62); --glass-edge: rgba(255, 255, 255, .12);
+  --glass-shadow: 0 10px 34px rgba(0, 0, 0, .45);
+  --card: rgba(110, 110, 120, .42); --fill: rgba(118, 118, 128, .24); --line: rgba(255, 255, 255, .11);
+}
+/* Ohne Unschärfe-Unterstützung: Flächen deckender, damit Text lesbar bleibt */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root { --glass: rgba(255, 255, 255, .9); --glass-strong: rgba(255, 255, 255, .95); }
+  :root[data-theme="dark"] { --glass: rgba(36, 36, 42, .92); --glass-strong: rgba(30, 30, 34, .96); }
+}
+
+body { background: var(--wall-base); }
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; background: var(--wall); pointer-events: none; }
+:focus-visible { border-radius: 14px; }
+
+/* Glasfläche als gemeinsame Grundlage */
+.card, nav, .theme, #toast, .tag-row {
+  -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+}
+.card { background: var(--glass); border: 1px solid var(--glass-edge); border-radius: var(--r-lg);
+        box-shadow: var(--glass-shadow); padding: 20px 22px; margin-bottom: 18px; }
+.list { padding: 0; }
+
+/* Kopfleiste: schwebende Glas-Kapseln */
+header { background: none; border: 0; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.bar { padding-top: 14px; padding-bottom: 6px; min-height: 0; }
+nav { background: var(--glass-strong); border: 1px solid var(--glass-edge); border-radius: 999px; padding: 5px;
+      box-shadow: var(--glass-shadow); }
+nav button { min-height: 44px; padding: 0 18px; border-radius: 999px; font-size: 15px; }
+nav button svg { width: 20px; height: 20px; }
+nav button[aria-selected="true"] { background: var(--card); box-shadow: 0 2px 8px rgba(0, 0, 0, .10); }
+.theme { background: var(--glass-strong); border: 1px solid var(--glass-edge); border-radius: 999px; padding: 5px;
+         box-shadow: var(--glass-shadow); }
+.theme button { width: 44px; min-height: 44px; border-radius: 999px; }
+.theme button svg { width: 20px; height: 20px; }
+
+@media (max-width: 699px) {
+  header .bar { padding-top: 10px; }
+  .theme { padding: 4px; } .theme button { width: 40px; min-height: 36px; }
+  nav { left: 12px; right: 12px; bottom: calc(10px + env(safe-area-inset-bottom)); padding: 6px;
+        border: 1px solid var(--glass-edge); border-radius: 32px; background: var(--glass-strong);
+        -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
+  nav button { min-height: calc(var(--tabbar-h) - 12px); border-radius: 26px; font-size: 11px; gap: 3px; }
+  nav button svg { width: 25px; height: 25px; }
+  nav button[aria-selected="true"] { background: var(--card); box-shadow: 0 2px 8px rgba(0, 0, 0, .10); }
+  main { padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 40px) !important; }
+  #toast { bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 22px); }
+}
+
+/* Inhalt: mehr Luft */
+main { padding-top: 4px; padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); }
+h1.title { margin: 18px 4px 18px; }
+h2.section { margin: 28px 20px 10px; }
+.section-row { margin: 28px 0 10px; }
+.section-row h2.section { margin: 0 20px; }
+label { margin: 16px 2px 8px; }
+
+input, select, textarea { min-height: 52px; padding: 14px 16px; border-radius: var(--r-md); background: var(--fill); }
+select { padding-right: 40px; background-position: right 16px center; }
+.btn { min-height: 52px; padding: 0 24px; border-radius: 999px; }
+.btn.block + p, .btn.block { margin-top: 4px; }
+
+/* Segmented Control als Kapsel */
+.seg { border-radius: 999px; padding: 4px; margin-bottom: 18px; background: var(--fill); }
+.seg button { min-height: 40px; border-radius: 999px; font-size: 14px; }
+.seg button.active { background: var(--card); box-shadow: 0 2px 8px rgba(0, 0, 0, .10); }
+.kat-seg { margin-bottom: 6px; }
+
+/* Listen: höhere Zeilen, größere Häkchen */
+.check-row { min-height: 56px; padding: 14px 20px; gap: 16px; }
+ul.check li + li::before { left: 62px; }
+ul.check input[type=checkbox] { width: 26px; height: 26px; border-width: 1.8px; }
+ul.check input[type=checkbox]:checked::after { width: 7px; height: 13px; }
+.list-head { padding: 18px 20px 8px; }
+.check-row .weg { margin-right: -14px; }
+.tag { border-radius: 999px; padding: 2px 9px; }
+.zusatz { padding: 14px 16px; gap: 10px; }
+.section-row .plus { width: 48px; height: 44px; margin: -12px 6px -8px 0; font-size: 30px; }
+
+.recipes .list button { min-height: 56px; margin-left: 20px; width: calc(100% - 20px); padding: 14px 20px 14px 0; }
+.zut { gap: 10px; margin-bottom: 10px; }
+
+/* Woche – Handy: Liste mit hohen Zeilen */
+.tag-row { min-height: 58px; padding-left: 20px; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.tag-row + .tag-row::before { left: 20px; }
+.tag-name { width: 112px; }
+.tag-row input, .tag-row .gericht { min-height: 58px; }
+.tag-row:focus-within { background: var(--fill); }
+
+/* Woche – ab Tablet: Glas-Kacheln */
+@media (min-width: 700px) {
+  .woche { gap: 12px; border: 0; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .tag-row { min-height: 150px; padding: 16px 18px 14px; border-radius: 24px; background: var(--glass);
+             border: 1px solid var(--glass-edge); box-shadow: var(--glass-shadow);
+             -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
+  .tag-row.heute { box-shadow: inset 0 0 0 2px var(--tint), var(--glass-shadow); }
+  .tag-row:focus-within { background: var(--glass-strong); box-shadow: inset 0 0 0 2px var(--tint), var(--glass-shadow); }
+  .tag-name { margin-bottom: 10px; }
+  .tag-row .gericht { font-size: 16px; min-height: 0; }
+  .tag-row input { min-height: 40px; }
+  .tag-row .clear { top: 6px; right: 4px; width: 44px; height: 44px; }
+}
+
+/* Hinweis-Meldung als Glas-Kapsel */
+#toast { background: var(--glass-strong); border: 1px solid var(--glass-edge); border-radius: 999px; padding: 14px 22px; }
 </style>
 </head>
 <body>
@@ -409,7 +557,7 @@ function zeigeWoche() {
     const g = (woche.tage[t] || [])[0] || "";
     const setze = name => { woche.tage[t] = name ? [name] : []; zeigeWoche(); speichereWoche(); };
     const eingabe = () => {
-      const input = el("input", {list: "gerichte", value: g, placeholder: "Auswählen …",
+      const input = el("input", {list: "gerichte", value: g, placeholder: "Wählen …",
         "aria-label": `Gericht am ${TAG_NAME[t]}`, enterkeyhint: "done", autocomplete: "off",
         onfocus: e => e.target.select()});
       let erledigt = false;
