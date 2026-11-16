@@ -757,6 +757,12 @@ function animiere(el, dauer = 450) {
   el.classList.remove("rein"); void el.offsetWidth; el.classList.add("rein");
   clearTimeout(el._rein); el._rein = setTimeout(() => el.classList.remove("rein"), dauer);
 }
+// Beim ersten Laden: Wochentage nacheinander weich einblenden
+function wocheEinblenden() {
+  const tage = [...document.querySelectorAll("#days .tag-row")];
+  tage.forEach((k, i) => { k.style.animationDelay = `${i * 50}ms`; k.classList.add("rein"); });
+  setTimeout(() => tage.forEach(k => { k.classList.remove("rein"); k.style.animationDelay = ""; }), 900);
+}
 function zeigeTab(t) {
   const neu = $("#tab-" + t);
   if (neu && neu.classList.contains("hidden")) animiere(neu);  // weicher Bereichswechsel
@@ -1235,7 +1241,7 @@ setzeTheme(document.documentElement.dataset.theme || "auto");
 /* ---------- Start ---------- */
 (async () => {
   try { const t = localStorage.getItem("tab"); if (t) zeigeTab(t); } catch {}
-  try { await ladeRezepte(); await ladeWoche(); await ladeRegel(); await ladeBring(); await ladeVorrat(); }
+  try { await ladeRezepte(); await ladeWoche(); wocheEinblenden(); await ladeRegel(); await ladeBring(); await ladeVorrat(); }
   catch (e) { fehler(e); }
 })();
 </script>
