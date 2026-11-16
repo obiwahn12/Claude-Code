@@ -498,6 +498,13 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter
 /* Hinweis-Meldung als Glas-Kapsel */
 #toast { background: var(--glass-strong); border: 1px solid var(--glass-edge); border-radius: 999px; padding: 14px 22px; }
 
+/* Weiche Animationen: Bereichswechsel und Prüf-Ergebnis */
+@keyframes rein { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.rein { animation: rein .32s cubic-bezier(.2, .8, .2, 1) both; }
+#ergebnis.rein { animation: none; }
+#ergebnis.rein > * { animation: rein .42s cubic-bezier(.2, .8, .2, 1) both; }
+@media (prefers-reduced-motion: reduce) { .rein, #ergebnis.rein > * { animation: none !important; } }
+
 /* =====================================================================
    Handy: größere Schrift und iOS-artige Abstände (wie in den iPhone-Einstellungen)
    ===================================================================== */
@@ -745,7 +752,14 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") menu(false);
 // Kopfbereich bekommt beim Scrollen einen Glas-Hintergrund (Handy)
 const kopfScroll = () => document.querySelector("header").classList.toggle("gescrollt", scrollY > 8);
 addEventListener("scroll", kopfScroll, {passive: true}); kopfScroll();
+// Klasse „rein“ (Einblend-Animation) neu starten und danach wieder entfernen
+function animiere(el, dauer = 450) {
+  el.classList.remove("rein"); void el.offsetWidth; el.classList.add("rein");
+  clearTimeout(el._rein); el._rein = setTimeout(() => el.classList.remove("rein"), dauer);
+}
 function zeigeTab(t) {
+  const neu = $("#tab-" + t);
+  if (neu && neu.classList.contains("hidden")) animiere(neu);  // weicher Bereichswechsel
   document.querySelectorAll("nav button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === t)));
   window.scrollTo(0, 0);
   document.querySelectorAll("main > section").forEach(s => s.classList.toggle("hidden", s.id !== "tab-" + t));
@@ -837,10 +851,18 @@ async function pruefe(behalten) {
   const vorher = behalten && pruefung
     ? Object.fromEntries(pruefung.artikel.filter(waehlbar).map(a => [klein(a.artikel) + "|" + a.status, a.kaufen])) : {};
   pruefung = await api("POST", "/api/woche/pruefen");
+  const warZu = $("#ergebnis").classList.contains("hidden");
   if (!pruefung.artikel.length) { $("#ergebnis").classList.add("hidden"); toast("Noch keine Gerichte geplant"); return; }
   pruefung.artikel.forEach(a => a.kaufen = waehlbar(a) && (vorher[klein(a.artikel) + "|" + a.status] ?? a.status === "neu"));
   $("#ergebnis").classList.remove("hidden");
   zeigeErgebnis();
+  if (warZu) {  // erstes Einblenden: Abschnitte nacheinander weich einblenden, ggf. sanft hinscrollen
+    const e = $("#ergebnis");
+    [...e.children].forEach((k, i) => k.style.animationDelay = `${Math.min(i, 8) * 55}ms`);
+    animiere(e, 1100);
+    const oben = e.getBoundingClientRect().top;
+    if (oben > innerHeight * .7) scrollTo({top: scrollY + oben - 90, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+  }
   if (!pruefung.liste_geprueft) toast("Bring!-Liste nicht geprüft – unter „Bring!“ anmelden");
 }
 $("#pruefen").onclick = () => pruefe(false).catch(fehler);
