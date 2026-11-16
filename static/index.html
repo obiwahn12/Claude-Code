@@ -1124,7 +1124,7 @@ function oeffne(r) {
   $("#eHinweis").value = r ? r.hinweis.replace(/\n/g, " ") : "";
   $("#eSchritte").value = r ? r.zubereitung : "1. ";
   $("#eZutaten").replaceChildren(...(r ? r.zutaten : [{artikel: "", menge: ""}]).map(zutatZeile));
-  $("#eKat").replaceChildren(...kategorien.map(k => el("option", {value: k.datei, selected: r && r.datei === k.datei}, `${k.kategorie} (${k.datei})`)));
+  $("#eKat").replaceChildren(...kategorien.map(k => el("option", {value: k.datei, selected: r && r.datei === k.datei}, k.kategorie)));
   $("#eKatWrap").classList.toggle("hidden", !!r);
   $("#eDelete").classList.toggle("hidden", !r);
   $("#editorTitel").textContent = r ? r.name : "Neues Rezept";
