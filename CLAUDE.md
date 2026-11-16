@@ -6,6 +6,8 @@ Kommunikation mit dem Nutzer auf Deutsch.
 ## Wochenplan → Liste „Abendessen“
 
 Familie: 5 Personen, isst nur vegetarisch/vegan. Milch = Haferdrink, Sahne = Soja-Sahne.
+„Salami“, „Wurst“, „Würstchen“ usw. meinen **immer** die vegetarische/vegane Alternative.
+Mineralwasser nie aufschreiben (Sodastream; steht in `vorrat.txt`).
 **Kein Knoblauch** – mag niemand. Nie in Rezepte schreiben, auch nicht in die Zubereitung
 (steht zusätzlich in `vorrat.txt` unter „Nie kaufen“, damit er beim Eintragen rausfällt).
 Die Gerichte stehen auf einem Freeform-Board „Essenplan“ (Screenshot vom Nutzer); zu jedem

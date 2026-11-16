@@ -5,7 +5,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 ## Focaccia
 5 Portionen · ca. 40 min + 2 h Gehzeit
 
-> Als Abendessen mit Salat und Dips.
+> Nur das Brot, aufgeschnitten und belegt mit Käse, (veganer) Salami und Salat.
 
 ### Zutaten
 - Mehl | 1 kg
@@ -13,18 +13,16 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Olivenöl | 150 ml
 - Salz | 2 TL
 - Meersalz | grob, zum Bestreuen
-- Rosmarin | 1 Bund (frisch)
-- Kirschtomaten | 300 g
-- Oliven | 1 Glas
-- Zwiebeln | 1 rote
+- Käse | 300 g (Scheiben)
+- Salami | 200 g (vegetarisch/vegan)
 - Salat | 1 Kopf
-- Hummus | 200 g
 
 ### Zubereitung
 1. Hefe in 650 ml lauwarmem Wasser auflösen, mit Mehl, Salz und 50 ml Öl 5 min kneten. Abgedeckt 1,5 h gehen lassen.
 2. Teig auf ein geöltes Blech geben, mit geölten Fingern auseinanderdrücken, 30 min gehen lassen.
-3. Mit den Fingern Mulden drücken, mit restlichem Öl beträufeln, Tomaten, Oliven, Zwiebelringe, Rosmarin und grobes Salz darauf verteilen.
-4. Bei 220 °C 20–25 min goldbraun backen. Mit Salat und Hummus servieren.
+3. Mit den Fingern Mulden drücken, mit restlichem Öl beträufeln und mit grobem Salz bestreuen.
+4. Bei 220 °C 20–25 min goldbraun backen, etwas abkühlen lassen.
+5. In Stücke schneiden, waagerecht aufschneiden und mit Käse, Salami und Salat belegen.
 
 ## Gnocchi mit Sauce
 5 Portionen · ca. 25 min
