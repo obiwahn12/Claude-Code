@@ -10,6 +10,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<script>
+  // Gewähltes Farbschema vor dem ersten Zeichnen setzen (kein Aufblitzen)
+  try { const t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}
+</script>
 <style>
 /* Gestaltung nach Apples Human Interface Guidelines:
    iOS-Systemfarben (barrierearme Varianten), SF-Schrift mit Textstilen,
@@ -31,13 +35,21 @@
   --shadow: 0 1px 3px rgba(0, 0, 0, .08);
   --tabbar-h: 50px;
 }
+/* Dunkel: automatisch nach Gerät, außer der Schalter steht auf „Hell“; oder fest per Schalter */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #000000; --card: #1c1c1e; --text: #ffffff; --muted: #aeaeb2; --line: #38383a;
     --fill: #2c2c2e; --accent: #30d158; --accent-text: #000000; --tint: #30d158;
     --danger: #ff6961; --warn: #ffb340; --bar: rgba(22, 22, 24, .9); --shadow: none;
   }
 }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #000000; --card: #1c1c1e; --text: #ffffff; --muted: #aeaeb2; --line: #38383a;
+  --fill: #2c2c2e; --accent: #30d158; --accent-text: #000000; --tint: #30d158;
+  --danger: #ff6961; --warn: #ffb340; --bar: rgba(22, 22, 24, .9); --shadow: none;
+}
+:root[data-theme="light"] { color-scheme: light; }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--bg); color: var(--text);
@@ -61,10 +73,17 @@ nav button svg { width: 18px; height: 18px; }
 nav button[aria-selected="true"] { background: var(--card); box-shadow: 0 1px 4px rgba(0, 0, 0, .12); font-weight: 600; }
 .badge-ok { color: var(--tint); }
 
+/* Schalter Hell / Dunkel / Automatisch */
+.theme { display: flex; background: var(--fill); border-radius: 9px; padding: 2px; flex: none; order: 2; }
+.theme button { display: grid; place-items: center; width: 40px; min-height: 32px; border: 0; background: none;
+                border-radius: 7px; color: var(--muted); }
+.theme button svg { width: 18px; height: 18px; }
+.theme button[aria-checked="true"] { background: var(--card); color: var(--text); box-shadow: 0 1px 4px rgba(0, 0, 0, .12); }
+
 /* Handy: Navigation wird zur Tab-Leiste am unteren Rand */
 @media (max-width: 699px) {
   header { position: static; background: none; border: 0; -webkit-backdrop-filter: none; backdrop-filter: none; }
-  header .bar { min-height: 0; padding: 0; }
+  header .bar { min-height: 44px; padding-top: 6px; padding-bottom: 0; justify-content: flex-end; }
   .app-name { display: none; }
   nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; border-radius: 0; padding: 0;
         padding-bottom: env(safe-area-inset-bottom); background: var(--bar); border-top: .5px solid var(--line);
@@ -192,6 +211,14 @@ ul.check input[type=checkbox]:disabled { opacity: .45; }
 <body>
 <header><div class="bar">
   <span class="app-name">Essenplan</span>
+  <div class="theme" id="theme" role="radiogroup" aria-label="Darstellung">
+    <button type="button" role="radio" data-theme="auto" title="Automatisch (wie das Gerät)" aria-label="Automatisch">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+    <button type="button" role="radio" data-theme="light" title="Hell" aria-label="Hell">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg></button>
+    <button type="button" role="radio" data-theme="dark" title="Dunkel" aria-label="Dunkel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
+  </div>
   <nav role="tablist" aria-label="Bereiche">
     <button role="tab" data-tab="woche" aria-selected="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
@@ -595,6 +622,20 @@ $("#bringOut").onsubmit = async e => {
   } catch (err) { fehler(err); }
 };
 $("#logout").onclick = async () => { await api("POST", "/api/bring/logout"); await ladeBring(); };
+
+/* ---------- Darstellung (Hell / Dunkel / Automatisch) ---------- */
+function setzeTheme(t) {
+  if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+  else { t = "auto"; delete document.documentElement.dataset.theme; }
+  document.querySelectorAll("#theme button").forEach(b => b.setAttribute("aria-checked", String(b.dataset.theme === t)));
+  // Farbe der Statusleiste (iPhone/Android) passend setzen
+  const dunkel = t === "dark" || (t === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
+  document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.content = dunkel ? "#000000" : "#f2f2f7");
+  try { t === "auto" ? localStorage.removeItem("theme") : localStorage.setItem("theme", t); } catch {}
+}
+document.querySelectorAll("#theme button").forEach(b => b.onclick = () => setzeTheme(b.dataset.theme));
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => setzeTheme(document.documentElement.dataset.theme || "auto"));
+setzeTheme(document.documentElement.dataset.theme || "auto");
 
 /* ---------- Start ---------- */
 (async () => {
