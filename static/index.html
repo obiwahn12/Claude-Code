@@ -1004,8 +1004,10 @@ function zeigeGerichte() {
       gesehen.add(klein(e.artikel));
       li.push(zeileMitHaken(status[klein(e.artikel)], e.artikel, e.menge, "eigene Zutat", () => zutatEntfernen(e.artikel, t)));
     }
+    // Ohne abhakbare Zeile braucht es keinen Platzhalter links (sonst nur für bündige gemischte Listen)
+    const ohneHaken = !li.some(x => x.querySelector("input[type=checkbox]"));
     box.append(el("div", {class: "gruppe"}, kopf(`${TAG_NAME[t]} · ${g}`, t),
-      el("div", {class: "card list"}, el("ul", {class: "check"}, li),
+      el("div", {class: "card list"}, el("ul", {class: "check" + (ohneHaken ? " ohne-haken" : "")}, li),
         vorrat.length ? el("div", {class: "list-head", style: "border-top:.5px solid var(--line);padding-bottom:12px"},
           el("p", {class: "muted"}, "Aus dem Vorrat: " + vorrat.join(", "))) : null)));
   }
