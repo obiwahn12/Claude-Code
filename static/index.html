@@ -492,15 +492,15 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter
       </div>
     </div>
     <div class="days" id="days"></div>
-    <div id="schnell" class="hidden">
-      <h2 class="section" style="margin-left:4px">Regelmäßig einkaufen</h2>
-      <div class="schnell-chips" id="schnellChips" role="group" aria-label="Regelmäßige Zutaten zum Einkauf hinzufügen"></div>
-    </div>
     <div class="pruef-leiste">
       <button class="btn" id="pruefen">Zutaten prüfen</button>
       <span class="muted" id="pruefHinweis">Danach abhaken, was schon zuhause ist.</span>
     </div>
     <div id="ergebnis" class="hidden">
+      <div id="schnell" class="hidden">
+        <h2 class="section" style="margin-left:4px">Regelmäßig einkaufen</h2>
+        <div class="schnell-chips" id="schnellChips" role="group" aria-label="Regelmäßige Zutaten zum Einkauf hinzufügen"></div>
+      </div>
       <h2 style="margin-top:28px">Einkauf</h2>
       <div class="seg" role="group" aria-label="Ansicht"><button data-view="einkauf" class="active" aria-pressed="true">Einkaufsliste</button><button data-view="gericht" aria-pressed="false">Nach Gericht</button></div>
       <div id="viewEinkauf"></div>
