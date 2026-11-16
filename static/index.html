@@ -579,7 +579,7 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter
     <button type="button" class="link danger-text hidden" id="wahlLeeren">Entfernen</button>
   </div>
   <div class="sheet-filter">
-    <input id="wahlSuche" type="search" placeholder="Gericht oder Zutat suchen" aria-label="Gerichte durchsuchen" autocomplete="off">
+    <input id="wahlSuche" type="search" placeholder="Gericht oder Zutat suchen" aria-label="Gerichte durchsuchen" autocomplete="off" autofocus>
     <div class="seg kat-seg" id="wahlSeg" role="tablist" aria-label="Kategorie"></div>
   </div>
   <div class="sheet-liste recipes" id="wahlListe"></div>
@@ -926,6 +926,7 @@ function oeffneWahl(tag) {
   const d = $("#wahl"); if (!d.open) d.showModal();
   $("#wahlListe").scrollTop = 0;
   const markiert = $("#wahlListe .gewaehlt"); if (markiert) markiert.scrollIntoView({block: "center"});
+  $("#wahlSuche").focus({preventScroll: true});  // gleich lostippen können
 }
 function setzeGericht(tag, name) {
   woche.tage[tag] = name ? [name] : [];
