@@ -11,14 +11,18 @@ Familie: 5 Personen, isst nur vegetarisch/vegan. Milch = Haferdrink, Sahne = Soj
 Die Gerichte stehen auf einem Freeform-Board „Essenplan“ (Screenshot vom Nutzer); zu jedem
 Gericht gibt es ein Rezept in `rezepte/*.md` (`python3 bring.py rezepte` listet alle).
 
-Schickt der Nutzer den Wochenplan (Text oder Screenshot vom Board):
-```bash
-python3 bring.py -l Abendessen rezept Focaccia Eierkuchen "Chili sin Carne" -n   # Probelauf
-python3 bring.py -l Abendessen rezept Focaccia Eierkuchen "Chili sin Carne"
-```
-Gerichte mit Wochentag übergeben (`Mo=Focaccia "So=Chili sin Carne"`). Am Ende druckt das Skript
-eine Wochenübersicht (Zutaten je Gericht, Vorrat getrennt) – diese dem Nutzer **immer** am Ende
-ausgeben. Nur die Übersicht ohne Eintragen: `python3 bring.py woche Mo=Focaccia …`.
+Schickt der Nutzer den Wochenplan (Text oder Screenshot vom Board), **in zwei Schritten**:
+
+1. **Erst die Übersicht zeigen, nichts eintragen:**
+   ```bash
+   python3 bring.py woche Mo=Focaccia Di=Eierkuchen "So=Chili sin Carne"
+   ```
+   Dem Nutzer je Gericht die Zutaten als Markdown-Liste zeigen und fragen, was davon schon zuhause ist.
+2. **Nach der Antwort eintragen**, Vorhandenes mit `--ohne` weglassen:
+   ```bash
+   python3 bring.py -l Abendessen rezept Mo=Focaccia Di=Eierkuchen "So=Chili sin Carne" --ohne "Oliven, Reis"
+   ```
+   Danach die Wochenübersicht, die das Skript druckt, als Liste ausgeben.
 Teilnamen und kleine Tippfehler vom Board („Tacco-Bowls“) werden erkannt. Mengen gleicher Zutaten
 werden zusammengerechnet. Steht ein Artikel schon auf der Liste, meldet das Skript die Mengen –
 dem Nutzer sagen, falls dort zu wenig steht. „Reste“ ist kein Rezept.

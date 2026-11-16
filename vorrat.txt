@@ -3,7 +3,6 @@
 Salz
 Pfeffer
 Zucker
-Mehl
 Wasser
 Öl
 Olivenöl

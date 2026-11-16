@@ -250,18 +250,20 @@ def parse_plan(rezepte, args):
     return plan
 
 
-def wochen_uebersicht(plan, rezepte, vorrat):
-    out = ["", "=" * 40, "WOCHENÜBERSICHT", "=" * 40]
+def wochen_uebersicht(plan, rezepte, vorrat, ohne=()):
+    """Markdown: je Gericht eine Überschrift und die Zutaten als Liste."""
+    out = ["", "## Wochenübersicht"]
     for tag, name in plan:
-        out.append(f"\n{tag + ': ' if tag else ''}{name}")
+        out += ["", f"### {tag + ' – ' if tag else ''}{name}", ""]
         da = []
         for artikel, info in rezepte[name]["zutaten"]:
             if artikel.casefold() in vorrat:
                 da.append(artikel)
             else:
-                out.append(f"  • {artikel}{f' – {info}' if info else ''}")
+                zuhause = " – *zuhause*" if artikel.casefold() in ohne else ""
+                out.append(f"- {artikel}{f' ({info})' if info else ''}{zuhause}")
         if da:
-            out.append(f"  aus dem Vorrat: {', '.join(da)}")
+            out.append(f"- *aus dem Vorrat:* {', '.join(da)}")
     return "\n".join(out)
 
 
@@ -357,6 +359,8 @@ def main(argv=None):
     rz.add_argument("--vorrat", default=str(Path(__file__).with_name("vorrat.txt")))
     rz.add_argument("-n", "--probelauf", action="store_true",
                     help="nur anzeigen, nichts eintragen")
+    rz.add_argument("--ohne", action="append", default=[], metavar="ARTIKEL",
+                    help="diesmal nicht eintragen, weil zuhause (kommagetrennt, mehrfach möglich)")
     sub.add_parser("rezepte", help="alle Gerichte aus rezepte/ auflisten (ohne Login)")
     wo = sub.add_parser("woche", help="nur Wochenübersicht: Zutaten je Gericht (ohne Login)")
     wo.add_argument("gerichte", nargs="+", help="Gerichte, optional mit Tag: 'Mo=Focaccia'")
@@ -440,9 +444,13 @@ def main(argv=None):
             plan = parse_plan(rezepte, args.gerichte)
             vorrat = load_vorrat(args.vorrat)
             items = [z for _, name in plan for z in rezepte[name]["zutaten"]]
+            ohne = {s.strip().casefold() for o in args.ohne for s in o.split(",") if s.strip()}
+            for artikel in sorted({a for a, _ in items if a.casefold() in ohne}):
+                print(f"Übersprungen (zuhause): {artikel}")
+            items = [z for z in items if z[0].casefold() not in ohne]
             add_items(bring, list_uuid, merge_items(items),
                       vorrat, args.probelauf, load_names(args.locale))
-            print(wochen_uebersicht(plan, rezepte, vorrat))
+            print(wochen_uebersicht(plan, rezepte, vorrat, ohne))
     except BringError as e:
         print(f"Fehler: {e}", file=sys.stderr)
         return 1

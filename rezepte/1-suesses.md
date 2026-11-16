@@ -5,17 +5,20 @@ Alle Rezepte für 5 Personen. Milch = Haferdrink, Sahne = Soja-Sahne (wie auf eu
 ## Eierkuchen
 5 Portionen · ca. 30 min
 
+> Vegan, ohne Ei.
+
 ### Zutaten
 - Mehl | 500 g
-- Eier | 5
-- Haferdrink | 1 l
+- Haferdrink | 900 ml
+- Mineralwasser | 200 ml (mit Kohlensäure)
+- Backpulver | 1 TL
+- Zucker | 2 EL
 - Salz | 1 Prise
 - Öl | zum Braten
 - Apfelmus | 1 Glas
-- Zucker | zum Bestreuen
 
 ### Zubereitung
-1. Mehl, Eier, Haferdrink und Salz glatt rühren, 10 min quellen lassen.
+1. Mehl, Backpulver, Zucker und Salz mischen, Haferdrink und Mineralwasser unterrühren, 10 min quellen lassen (der Teig soll dickflüssig sein, sonst etwas Haferdrink nachgießen).
 2. Wenig Öl in der Pfanne erhitzen, dünne Eierkuchen von beiden Seiten goldbraun backen.
 3. Mit Apfelmus oder Zucker servieren.
 
