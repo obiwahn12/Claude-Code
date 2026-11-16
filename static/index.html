@@ -177,6 +177,16 @@ ul.check input[type=checkbox]:disabled { opacity: .45; }
 .tag { display: inline-block; font-size: 13px; border-radius: 6px; padding: 1px 7px; background: var(--fill); color: var(--muted);
        white-space: nowrap; vertical-align: 1px; }
 .tag.warn { color: var(--warn); }
+.section-row { display: flex; align-items: flex-end; justify-content: space-between; margin: 22px 0 7px; }
+.section-row h2.section { margin: 0 16px; }
+.section-row .plus { flex: none; display: grid; place-items: center; width: 44px; height: 36px; margin: -8px 4px -6px 0;
+                     background: none; border: 0; color: var(--tint); font-size: 28px; font-weight: 300; line-height: 1; }
+.zusatz { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr) auto; gap: 8px; padding: 10px 12px;
+          border-bottom: .5px solid var(--line); }
+.zusatz .btn { padding: 0 14px; font-size: 15px; }
+@media (max-width: 420px) { .zusatz { grid-template-columns: 1fr 1fr; } .zusatz .btn { grid-column: 1 / -1; } }
+.check-row .weg { flex: none; display: grid; place-items: center; width: 44px; height: 44px; margin: -10px -12px -10px 0;
+                  background: none; border: 0; color: var(--muted); font-size: 20px; }
 
 /* Rezepte */
 .recipes .list button { display: flex; align-items: center; gap: 8px; width: calc(100% - 16px); min-height: 44px; margin-left: 16px;
@@ -389,6 +399,7 @@ function zeigeListenAuswahl() {
 async function ladeWoche() {
   woche = await api("GET", "/api/woche");
   TAGE.forEach(t => woche.tage[t] = (woche.tage[t] || []).slice(0, 1));  // ein Gericht pro Tag
+  woche.extra = woche.extra || [];
   zeigeWoche(); zeigeListenAuswahl();
 }
 async function speichereWoche() { await api("PUT", "/api/woche", woche).catch(fehler); pruefung = null; $("#ergebnis").classList.add("hidden"); }
@@ -436,18 +447,73 @@ function finde(q) {
           ? rezepte.find(r => r.name.toLocaleLowerCase("de").includes(k)) : null);
 }
 $("#liste").onchange = e => { woche.liste = e.target.value; speichereWoche(); };
-$("#leeren").onclick = () => { if (!confirm("Alle Gerichte der Woche entfernen?")) return; TAGE.forEach(t => woche.tage[t] = []); zeigeWoche(); speichereWoche(); };
-
-$("#pruefen").onclick = async () => {
-  try {
-    pruefung = await api("POST", "/api/woche/pruefen");
-    if (!pruefung.artikel.length) { toast("Noch keine Gerichte geplant"); return; }
-    pruefung.artikel.forEach(a => a.kaufen = a.status === "neu");
-    $("#ergebnis").classList.remove("hidden");
-    zeigeErgebnis();
-    if (!pruefung.liste_geprueft) toast("Bring!-Liste nicht geprüft – unter „Bring!“ anmelden");
-  } catch (e) { fehler(e); }
+$("#leeren").onclick = () => {
+  if (!confirm("Alle Gerichte und eigenen Zutaten der Woche entfernen?")) return;
+  TAGE.forEach(t => woche.tage[t] = []); woche.extra = []; zeigeWoche(); speichereWoche();
 };
+
+const klein = s => s.toLocaleLowerCase("de");
+// Zutaten prüfen; mit behalten=true bleiben abgewählte Haken erhalten (z. B. nach „+ Zutat“)
+async function pruefe(behalten) {
+  const vorher = behalten && pruefung
+    ? Object.fromEntries(pruefung.artikel.filter(a => a.status === "neu").map(a => [klein(a.artikel), a.kaufen])) : {};
+  pruefung = await api("POST", "/api/woche/pruefen");
+  if (!pruefung.artikel.length) { $("#ergebnis").classList.add("hidden"); toast("Noch keine Gerichte geplant"); return; }
+  pruefung.artikel.forEach(a => a.kaufen = a.status === "neu" && (vorher[klein(a.artikel)] ?? true));
+  $("#ergebnis").classList.remove("hidden");
+  zeigeErgebnis();
+  if (!pruefung.liste_geprueft) toast("Bring!-Liste nicht geprüft – unter „Bring!“ anmelden");
+}
+$("#pruefen").onclick = () => pruefe(false).catch(fehler);
+
+// Eigene Zutaten (Freitext) speichern und Ergebnis neu berechnen, ohne die Haken zu verlieren
+async function speichereExtra() {
+  try { await api("PUT", "/api/woche", woche); await pruefe(true); } catch (e) { fehler(e); }
+}
+function zutatHinzufuegen(tag, artikel, menge) {
+  woche.extra = woche.extra || [];
+  woche.extra.push({artikel, menge, tag});
+  toast(`✓ ${artikel} hinzugefügt`);
+  speichereExtra();
+}
+function zutatEntfernen(artikel, tag) {
+  woche.extra = (woche.extra || []).filter(e => !(klein(e.artikel) === klein(artikel) && (tag === null || e.tag === tag)));
+  speichereExtra();
+}
+// Abschnittskopf mit „+“; öffnet über der Liste eine Zeile für eine eigene Zutat
+function kopf(titel, tag) {
+  const plus = tag === null ? null : el("button", {type: "button", class: "plus", title: "Zutat hinzufügen",
+    "aria-label": `Zutat hinzufügen: ${titel}`, onclick: e => {
+      const karte = e.currentTarget.closest(".section-row").nextElementSibling;
+      const offen = karte.querySelector(".zusatz");
+      if (offen) { offen.remove(); return; }
+      const artikel = el("input", {list: "artikelListe", placeholder: "Zutat", "aria-label": "Zutat", enterkeyhint: "next", autocomplete: "off"});
+      const menge = el("input", {placeholder: "Menge", "aria-label": "Menge", enterkeyhint: "done", autocomplete: "off"});
+      const form = el("form", {class: "zusatz", onsubmit: ev => {
+        ev.preventDefault();
+        const a = artikel.value.trim(); if (!a) return artikel.focus();
+        zutatHinzufuegen(tag, a, menge.value.trim());
+      }}, artikel, menge, el("button", {class: "btn", type: "submit"}, "Hinzufügen"));
+      karte.prepend(form); artikel.focus();
+    }}, "+");
+  return el("div", {class: "section-row"}, el("h2", {class: "section"}, titel), plus);
+}
+// Eine Zeile mit Haken; Haken gilt für die Zutat insgesamt (sie kommt einmal auf die Liste)
+function zeileMitHaken(a, text, menge, nebenzeile, entfernen) {
+  const aktiv = a && a.status === "neu";
+  const cb = el("input", {type: "checkbox", checked: aktiv ? a.kaufen : a ? false : true, disabled: !aktiv,
+    onchange: e => { a.kaufen = e.target.checked; zeigeErgebnis(); }});
+  const hinweis = !a ? null
+    : a.status === "liste" ? el("span", {class: "tag" + (a.dort !== a.menge ? " warn" : "")},
+        a.dort !== a.menge ? `auf der Liste: ${a.dort || "ohne Menge"}` : "auf der Liste")
+    : a.status === "vorrat" ? el("span", {class: "tag"}, "Vorrat")
+    : !a.kaufen ? el("span", {class: "tag"}, "zuhause") : null;
+  const weg = entfernen ? el("button", {type: "button", class: "weg", title: "entfernen", "aria-label": `${text} entfernen`,
+    onclick: e => { e.preventDefault(); e.stopPropagation(); entfernen(); }}, "×") : null;
+  return el("li", {}, el("label", {class: "check-row"}, cb, el("div", {class: "grow"},
+    el("div", {}, text, menge ? el("span", {class: "muted"}, ` · ${menge}`) : null, " ", hinweis),
+    nebenzeile ? el("small", {}, nebenzeile) : null), weg));
+}
 document.querySelectorAll("#ergebnis .seg button").forEach(b => b.onclick = () => {
   document.querySelectorAll("#ergebnis .seg button").forEach(x => { x.classList.toggle("active", x === b); x.setAttribute("aria-pressed", String(x === b)); });
   $("#viewEinkauf").classList.toggle("hidden", b.dataset.view !== "einkauf");
@@ -462,42 +528,44 @@ function zeigeErgebnis() {
   const box = $("#viewEinkauf"); box.replaceChildren();
   for (const [st, titel, hint] of gruppen) {
     const items = pruefung.artikel.filter(a => a.status === st);
-    if (!items.length) continue;
-    box.append(el("h2", {class: "section"}, `${titel} · ${items.length}`),
+    if (!items.length && st !== "neu") continue;  // „Einkaufen“ immer zeigen, damit das „+“ da ist
+    box.append(kopf(`${titel} · ${items.length}`, st === "neu" ? "" : null),
       el("div", {class: "card list"},
       hint ? el("div", {class: "list-head"}, el("p", {class: "muted"}, hint)) : null,
-      el("ul", {class: "check"}, items.map(a => {
-        const cb = el("input", {type: "checkbox", checked: a.kaufen, disabled: st !== "neu",
-          onchange: e => { a.kaufen = e.target.checked; zaehle(); zeigeGerichte(); }});
-        const extra = st === "liste" && a.dort !== a.menge ? el("span", {class: "tag warn"}, `dort: ${a.dort || "ohne Menge"}`) : null;
-        return el("li", {}, el("label", {class: "check-row"}, cb, el("div", {class: "grow"},
-          el("div", {}, a.artikel, a.menge ? el("span", {class: "muted"}, ` · ${a.menge}`) : null, " ", extra),
-          el("small", {}, a.gerichte.join(", ")))));
-      }))));
+      el("ul", {class: "check"}, items.map(a => zeileMitHaken(a, a.artikel, a.menge, a.gerichte.join(", "),
+        a.eigene ? () => zutatEntfernen(a.artikel, null) : null)))));
   }
   zeigeGerichte(); zaehle();
 }
 function zeigeGerichte() {
-  const status = Object.fromEntries(pruefung.artikel.map(a => [a.artikel.toLocaleLowerCase("de"), a]));
+  const status = Object.fromEntries(pruefung.artikel.map(a => [klein(a.artikel), a]));
+  const extra = woche.extra || [];
   const box = $("#viewGericht"); box.replaceChildren();
   for (const t of TAGE) for (const g of woche.tage[t] || []) {
     const r = rezepte.find(x => x.name === g); if (!r) continue;
-    const vorrat = [];
-    const li = [];
+    const vorrat = [], li = [], gesehen = new Set();
     for (const z of r.zutaten) {
-      const a = status[z.artikel.toLocaleLowerCase("de")];
+      const a = status[klein(z.artikel)];
+      gesehen.add(klein(z.artikel));
       if (a && a.status === "vorrat") { vorrat.push(z.artikel); continue; }
-      const zuhause = a && a.status === "neu" && !a.kaufen;
-      li.push(el("li", {}, el("div", {class: "check-row", style: "cursor:default"},
-        el("input", {type: "checkbox", checked: a ? (a.status === "neu" ? a.kaufen : false) : true, disabled: true, "aria-label": "wird gekauft"}),
-        el("div", {class: "grow"}, z.artikel, z.menge ? el("span", {class: "muted"}, ` · ${z.menge}`) : null, " ",
-          zuhause ? el("span", {class: "tag"}, "zuhause") : a && a.status === "liste" ? el("span", {class: "tag"}, "schon auf der Liste") : null))));
+      li.push(zeileMitHaken(a, z.artikel, z.menge));
     }
-    box.append(el("h2", {class: "section"}, `${TAG_NAME[t]} · ${g}`),
+    for (const e of extra.filter(e => e.tag === t && !gesehen.has(klein(e.artikel)))) {
+      gesehen.add(klein(e.artikel));
+      li.push(zeileMitHaken(status[klein(e.artikel)], e.artikel, e.menge, "eigene Zutat", () => zutatEntfernen(e.artikel, t)));
+    }
+    box.append(kopf(`${TAG_NAME[t]} · ${g}`, t),
       el("div", {class: "card list"}, el("ul", {class: "check"}, li),
         vorrat.length ? el("div", {class: "list-head", style: "border-top:.5px solid var(--line);padding-bottom:12px"},
           el("p", {class: "muted"}, "Aus dem Vorrat: " + vorrat.join(", "))) : null));
   }
+  // Eigene Zutaten ohne Gericht (oder deren Tag kein Gericht mehr hat)
+  const ohne = extra.filter(e => !e.tag || !(woche.tage[e.tag] || []).length);
+  box.append(kopf(`Eigene Zutaten · ${ohne.length}`, ""),
+    el("div", {class: "card list"}, el("ul", {class: "check"}, ohne.map(e =>
+      zeileMitHaken(status[klein(e.artikel)], e.artikel, e.menge, null, () => zutatEntfernen(e.artikel, e.tag)))),
+      ohne.length ? null : el("div", {class: "list-head", style: "padding-bottom:12px"},
+        el("p", {class: "muted"}, "Mit + Zutaten ohne Gericht hinzufügen, z. B. Brot fürs Frühstück."))));
 }
 function zaehle() {
   const n = pruefung.artikel.filter(a => a.status === "neu" && a.kaufen).length;

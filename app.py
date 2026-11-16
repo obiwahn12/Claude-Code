@@ -74,7 +74,21 @@ def lade_woche():
     w.setdefault("tage", {t: [] for t in TAGE})
     for t in TAGE:
         w["tage"].setdefault(t, [])
+    w.setdefault("extra", [])  # eigene Zutaten: [{"artikel", "menge", "tag"}], tag "" = ohne Gericht
     return w
+
+
+def extra_saeubern(liste):
+    """Eigene Zutaten aus der Anfrage prüfen (nur bekannte Felder, Tag Mo–So oder leer)."""
+    out = []
+    for e in liste or []:
+        if not isinstance(e, dict):
+            continue
+        artikel = str(e.get("artikel", "")).strip()[:100]
+        if artikel:
+            tag = e.get("tag") if e.get("tag") in TAGE else ""
+            out.append({"artikel": artikel, "menge": str(e.get("menge", "")).strip()[:100], "tag": tag})
+    return out[:200]
 
 
 def plan_pruefen(woche):
@@ -89,6 +103,14 @@ def plan_pruefen(woche):
             for z in rezepte[g]["zutaten"]:
                 zeilen.append((z["artikel"], z["menge"]))
                 gerichte.setdefault(z["artikel"].casefold(), []).append(f"{tag} {g}")
+    # Eigene Zutaten: zählen mit, werden aber nie als Vorrat weggefiltert
+    eigene = set()
+    for e in woche.get("extra", []):
+        zeilen.append((e["artikel"], e["menge"]))
+        key = e["artikel"].casefold()
+        eigene.add(key)
+        g = (woche["tage"].get(e["tag"]) or [""])[0] if e["tag"] else ""
+        gerichte.setdefault(key, []).append(f"{e['tag']} {g}".strip() if g else "Eigene")
     vorhanden, liste_ok = {}, False
     if bring_bereit():
         try:
@@ -104,9 +126,10 @@ def plan_pruefen(woche):
     artikel = []
     for name, menge in bring.merge_items(zeilen):
         key = name.casefold()
-        status = "vorrat" if key in vorrat else "liste" if key in vorhanden else "neu"
-        artikel.append({"artikel": name, "menge": menge, "status": status,
-                        "dort": vorhanden.get(key, ""), "gerichte": gerichte.get(key, [])})
+        status = ("vorrat" if key in vorrat and key not in eigene
+                  else "liste" if key in vorhanden else "neu")
+        artikel.append({"artikel": name, "menge": menge, "status": status, "eigene": key in eigene,
+                        "dort": vorhanden.get(key, ""), "gerichte": list(dict.fromkeys(gerichte.get(key, [])))})
     return {"artikel": artikel, "liste_geprueft": liste_ok}
 
 
@@ -153,7 +176,8 @@ def dispatch(method, path, lies_json):
     if path == "/api/woche" and method == "PUT":
         w = lies_json()
         woche = {"liste": str(w.get("liste") or "Abendessen"),
-                 "tage": {t: [str(g) for g in w.get("tage", {}).get(t, []) if g] for t in TAGE}}
+                 "tage": {t: [str(g) for g in w.get("tage", {}).get(t, []) if g] for t in TAGE},
+                 "extra": extra_saeubern(w.get("extra"))}
         WOCHE.write_text(json.dumps(woche, ensure_ascii=False, indent=2), encoding="utf-8")
         return {"ok": True}
     if path == "/api/woche/pruefen" and method == "POST":
