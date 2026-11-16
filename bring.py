@@ -261,7 +261,7 @@ def wochen_uebersicht(plan, rezepte, vorrat, ohne=()):
                 da.append(artikel)
             else:
                 zuhause = " – *zuhause*" if artikel.casefold() in ohne else ""
-                out.append(f"- {artikel}{f' ({info})' if info else ''}{zuhause}")
+                out.append(f"- [ ] {artikel}{f' ({info})' if info else ''}{zuhause}")
         if da:
             out.append(f"- *aus dem Vorrat:* {', '.join(da)}")
     return "\n".join(out)

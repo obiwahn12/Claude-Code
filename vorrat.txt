@@ -16,14 +16,12 @@ Basilikum (getrocknet)
 Thymian
 Currypulver
 Gemüsebrühe
-Backpulver
 Senf
 Ketchup
 Sojasauce
 # Gewürze und Backzutaten
 Zimt
 Vanillezucker
-Puderzucker
 Muskat
 Muskatnuss
 Kreuzkümmel

@@ -92,17 +92,14 @@ Alle Rezepte für 5 Personen. Milch = Haferdrink, Sahne = Soja-Sahne (wie auf eu
 - Haferdrink | 250 ml
 - Zucker | 50 g
 - Butter | 50 g
-- Eier | 1
 - Salz | 1 Prise
-- Vanillesoße | 1 l
-- Pflaumenmus | 1 Glas
 
 ### Zubereitung
 1. Hefe in lauwarmem Haferdrink mit 1 TL Zucker auflösen.
-2. Mit Mehl, restlichem Zucker, weicher Butter, Ei und Salz zu einem glatten Teig kneten, 45 min abgedeckt gehen lassen.
+2. Mit Mehl, restlichem Zucker, weicher Butter und Salz zu einem glatten Teig kneten, 45 min abgedeckt gehen lassen.
 3. 10 Klöße formen, nochmals 15 min gehen lassen.
 4. In einem Topf mit Dämpfeinsatz (oder Tuch über kochendem Wasser) zugedeckt 15–20 min dämpfen – Deckel nicht öffnen!
-5. Mit Vanillesoße und Pflaumenmus servieren.
+5. Warm servieren.
 
 ## Kaiserschmarren
 5 Portionen · ca. 30 min
@@ -114,14 +111,13 @@ Alle Rezepte für 5 Personen. Milch = Haferdrink, Sahne = Soja-Sahne (wie auf eu
 - Zucker | 3 EL
 - Vanillezucker | 1 Pck
 - Salz | 1 Prise
-- Rosinen | 50 g (optional)
 - Butter | 60 g
 - Puderzucker | zum Bestäuben
 - Apfelmus | 1 Glas
 
 ### Zubereitung
 1. Eier trennen. Eigelb, Mehl, Haferdrink, Zucker, Vanillezucker und Salz verrühren. Eiweiß steif schlagen und unterheben.
-2. Butter in einer großen Pfanne erhitzen, Teig (ggf. in 2 Portionen) einfüllen, Rosinen darauf streuen.
+2. Butter in einer großen Pfanne erhitzen, Teig (ggf. in 2 Portionen) einfüllen.
 3. Unterseite goldbraun backen, wenden, mit zwei Gabeln in Stücke reißen und fertig braten.
 4. Mit Puderzucker und Apfelmus servieren.
 
@@ -145,7 +141,7 @@ Alle Rezepte für 5 Personen. Milch = Haferdrink, Sahne = Soja-Sahne (wie auf eu
 4. Mit Ahornsirup und Beeren servieren.
 
 ## Apfelstrudel
-5 Portionen · ca. 70 min
+5 Portionen · ca. 60 min
 
 ### Zutaten
 - Strudelteig | 1 Pck (Kühlregal, 2 Blätter)
@@ -154,46 +150,43 @@ Alle Rezepte für 5 Personen. Milch = Haferdrink, Sahne = Soja-Sahne (wie auf eu
 - Zucker | 80 g
 - Zimt | 1 TL
 - Zitrone | 1
-- Semmelbrösel | 50 g
-- Butter | 100 g
-- Vanillesoße | 1 l
+- Butter | 80 g
 
 ### Zubereitung
 1. Ofen auf 200 °C vorheizen. Äpfel schälen, in dünne Scheiben schneiden, mit Zitronensaft, Zucker, Zimt und Rosinen mischen.
-2. Semmelbrösel in 30 g Butter anrösten.
-3. Strudelblätter mit geschmolzener Butter bestreichen, Brösel und Äpfel auf dem unteren Drittel verteilen, aufrollen.
-4. Mit Butter bestreichen und 35–40 min goldbraun backen.
-5. Mit Vanillesoße servieren.
+2. Strudelblätter mit geschmolzener Butter bestreichen, Äpfel auf dem unteren Drittel verteilen, aufrollen.
+3. Mit Butter bestreichen und 35–40 min goldbraun backen.
 
 ## Waffeln
 5 Portionen · ca. 30 min
+
+> Ohne Ei.
 
 ### Zutaten
 - Butter | 200 g
 - Zucker | 120 g
 - Vanillezucker | 1 Pck
-- Eier | 4
 - Mehl | 400 g
-- Backpulver | 1 TL
-- Haferdrink | 400 ml
+- Backpulver | 1 Pck
+- Haferdrink | 500 ml
 - Puderzucker | zum Bestäuben
-- Sauerkirschen | 1 Glas
 
 ### Zubereitung
-1. Butter, Zucker und Vanillezucker schaumig rühren, Eier einzeln unterrühren.
-2. Mehl mit Backpulver mischen und abwechselnd mit Haferdrink unterrühren.
+1. Butter schmelzen und mit Zucker und Vanillezucker verrühren.
+2. Mehl mit Backpulver mischen und abwechselnd mit dem Haferdrink zu einem dickflüssigen Teig verrühren, 10 min ruhen lassen.
 3. Im gefetteten Waffeleisen portionsweise backen.
-4. Mit Puderzucker und warmen Kirschen servieren.
+4. Mit Puderzucker bestäuben.
 
 ## Marillen-Klöße
 5 Portionen · ca. 60 min
 
+> Mit Kartoffelteig.
+
 ### Zutaten
-- Quark | 500 g
-- Butter | 150 g
-- Eier | 2
+- Kartoffeln | 1 kg (mehligkochend)
 - Mehl | 250 g
-- Weichweizengrieß | 50 g
+- Butter | 130 g
+- Eier | 1
 - Salz | 1 Prise
 - Aprikosen | 15 (frisch oder aus der Dose)
 - Würfelzucker | 15 Stück
@@ -202,10 +195,10 @@ Alle Rezepte für 5 Personen. Milch = Haferdrink, Sahne = Soja-Sahne (wie auf eu
 - Zimt | 1 TL
 
 ### Zubereitung
-1. Quark, 50 g weiche Butter, Eier, Mehl, Grieß und Salz zu einem Teig verkneten, 30 min kühlen.
-2. Aprikosen entsteinen, statt des Steins ein Stück Würfelzucker hineinstecken.
-3. Teig in 15 Stücke teilen, jede Aprikose damit umhüllen.
-4. Knödel in siedendem Salzwasser ca. 12 min ziehen lassen.
+1. Kartoffeln kochen, pellen und noch warm durch die Presse drücken, etwas abkühlen lassen.
+2. Mit Mehl, 30 g weicher Butter, Ei und Salz rasch zu einem Teig verkneten (nicht zu lange, sonst wird er klebrig).
+3. Aprikosen entsteinen, statt des Steins ein Stück Würfelzucker hineinstecken.
+4. Teig in 15 Stücke teilen, jede Aprikose damit umhüllen. In siedendem Salzwasser ca. 12 min ziehen lassen.
 5. Semmelbrösel in 100 g Butter mit Zucker und Zimt rösten, Knödel darin wälzen.
 
 ## Buchteln
