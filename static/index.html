@@ -392,6 +392,15 @@ ul.check input[type=checkbox]:checked::after { width: 7px; height: 13px; }
   #viewEinkauf .card.list > ul.check:first-child { margin-top: -1px; }
 }
 
+/* Knöpfe neben dem großen Titel (Zufall / Leeren) */
+.titel-aktionen { display: flex; gap: 8px; flex: none; margin-bottom: 14px; }
+.row:has(> .titel-aktionen) { flex-wrap: nowrap; }
+.row:has(> .titel-aktionen) h1.title { flex: 1 1 auto; min-width: 0; }
+@media (max-width: 420px) {
+  .titel-aktionen .btn { padding: 0 14px; font-size: 15px; }
+  .row:has(> .titel-aktionen) h1.title { font-size: 30px; }
+}
+
 /* Wochentag ohne Gericht */
 .tag-row .gericht.leer { color: var(--muted); font-weight: 400; }
 
@@ -459,7 +468,10 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter
   <section id="tab-woche">
     <div class="row" style="align-items:flex-end">
       <h1 class="title grow">Essenplan</h1>
-      <button class="btn sec" id="leeren" style="margin-bottom:14px">Leeren</button>
+      <div class="titel-aktionen">
+        <button class="btn sec" id="zufall" title="Woche zufällig füllen">Zufall</button>
+        <button class="btn sec" id="leeren">Leeren</button>
+      </div>
     </div>
     <div class="days" id="days"></div>
     <div id="schnell" class="hidden">
@@ -669,6 +681,20 @@ $("#leeren").onclick = () => {
 };
 
 const klein = s => s.toLocaleLowerCase("de");
+
+// Zufall: ganze Woche füllen – genau ein Süßes, genau ein Eintopf, der Rest herzhaft/Auflauf, keine Wiederholung
+$("#zufall").onclick = () => {
+  if (TAGE.some(t => (woche.tage[t] || []).length) && !confirm("Woche mit zufälligen Gerichten neu füllen? Die bisherigen Gerichte werden ersetzt.")) return;
+  const mischen = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const istKat = (r, anfang) => klein(r.kategorie).normalize("NFC").startsWith(anfang);
+  const suess = mischen(rezepte.filter(r => istKat(r, "süß")));
+  const eintopf = mischen(rezepte.filter(r => istKat(r, "eintopf") || istKat(r, "eintöpf")));
+  const rest = mischen(rezepte.filter(r => !suess.includes(r) && !eintopf.includes(r)));
+  const auswahl = [suess[0], eintopf[0]].filter(Boolean);
+  auswahl.push(...rest.slice(0, TAGE.length - auswahl.length));
+  mischen(auswahl).forEach((r, i) => woche.tage[TAGE[i]] = [r.name]);
+  zeigeWoche(); speichereWoche(); toast("🎲 Neue Woche gewürfelt");
+};
 // Abhakbar: neue Zutaten (Standard: kaufen) und Vorrat (Standard: nicht kaufen, außer er ist leer)
 const waehlbar = a => a && (a.status === "neu" || a.status === "vorrat");
 // Zutaten prüfen; mit behalten=true bleiben gesetzte/entfernte Haken erhalten (z. B. nach „+ Zutat“)
