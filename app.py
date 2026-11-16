@@ -30,6 +30,20 @@ STATIC = HERE / "static"
 DATA = Path(os.environ.get("ESSENPLAN_DATA") or HERE)
 VORRAT = DATA / "vorrat.txt"
 WOCHE = DATA / "woche.json"
+REGEL = DATA / "regelmaessig.txt"  # was fast jede Woche gekauft wird (Schnellauswahl)
+REGEL_START = """# Was fast jede Woche gekauft wird – erscheint im Essenplan zur Schnellauswahl.
+# Eine Zutat pro Zeile, optional mit Menge: „Joghurt | 500 g“. „#“ für Kommentare.
+Bananen
+Äpfel
+Toast
+Joghurt
+Skyr
+Quark
+Brot
+Salatgurke
+Tomaten
+Salat
+"""
 TAGE = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
 
 _lock = threading.Lock()  # Dateizugriffe nacheinander
@@ -170,6 +184,11 @@ def dispatch(method, path, lies_json):
         return {"text": VORRAT.read_text(encoding="utf-8") if VORRAT.exists() else ""}
     if path == "/api/vorrat" and method == "PUT":
         VORRAT.write_text(lies_json()["text"].rstrip() + "\n", encoding="utf-8")
+        return {"ok": True}
+    if path == "/api/regelmaessig" and method == "GET":
+        return {"text": REGEL.read_text(encoding="utf-8") if REGEL.exists() else REGEL_START}
+    if path == "/api/regelmaessig" and method == "PUT":
+        REGEL.write_text(lies_json()["text"].rstrip() + "\n", encoding="utf-8")
         return {"ok": True}
     if path == "/api/woche" and method == "GET":
         return lade_woche()
