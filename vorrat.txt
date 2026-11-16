@@ -1,0 +1,23 @@
+# Grundvorrat: Diese Zutaten sind immer zuhause und kommen NICHT auf die Liste.
+# Eine Zutat pro Zeile, Groß-/Kleinschreibung egal. Einfach ergänzen oder löschen.
+Salz
+Pfeffer
+Zucker
+Mehl
+Wasser
+Öl
+Olivenöl
+Sonnenblumenöl
+Rapsöl
+Essig
+Balsamico
+Paprikapulver
+Oregano
+Basilikum (getrocknet)
+Thymian
+Currypulver
+Gemüsebrühe
+Backpulver
+Senf
+Ketchup
+Sojasauce

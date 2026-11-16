@@ -185,6 +185,15 @@ def load_names(locale):
         return {}
 
 
+def load_vorrat(path):
+    """Grundvorrat (eine Zutat pro Zeile, '#' = Kommentar) als Menge kleingeschriebener Namen."""
+    try:
+        lines = Path(path).read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return set()
+    return {l.split("#")[0].strip().casefold() for l in lines if l.split("#")[0].strip()}
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(description="Bring!-Einkaufsliste per Kommandozeile")
     p.add_argument("-l", "--liste", default=os.environ.get("BRING_LIST"),
@@ -202,6 +211,12 @@ def main(argv=None):
     e.add_argument("artikel")
     r = sub.add_parser("entfernen", help="Artikel ganz entfernen")
     r.add_argument("artikel")
+    m = sub.add_parser("mehrere",
+                       help="viele Artikel von stdin hinzufügen (eine Zeile: 'Artikel | Info')")
+    m.add_argument("--vorrat", default=str(Path(__file__).with_name("vorrat.txt")),
+                   help="Datei mit Grundvorrat, der übersprungen wird")
+    m.add_argument("-n", "--probelauf", action="store_true",
+                   help="nur anzeigen, nichts eintragen")
     args = p.parse_args(argv)
 
     bring = Bring(country=args.locale.split("-")[-1])
@@ -243,6 +258,26 @@ def main(argv=None):
         elif args.cmd == "entfernen":
             bring.remove(list_uuid, args.artikel)
             print(f"Entfernt: {args.artikel}")
+        elif args.cmd == "mehrere":
+            vorrat = load_vorrat(args.vorrat)
+            purchase, _ = bring.items(list_uuid)
+            vorhanden = {it["name"].casefold() for it in purchase}
+            for line in sys.stdin:
+                line = line.strip()
+                if not line or line.startswith("#"):
+                    continue
+                name, _, info = (s.strip() for s in line.partition("|"))
+                key = name.casefold()
+                if key in vorrat:
+                    print(f"Übersprungen (Vorrat): {name}")
+                elif key in vorhanden:
+                    print(f"Schon auf der Liste: {name}")
+                else:
+                    if not args.probelauf:
+                        bring.add(list_uuid, name, info)
+                    vorhanden.add(key)
+                    print(f"{'Würde hinzufügen' if args.probelauf else 'Hinzugefügt'}: "
+                          f"{name}{f' ({info})' if info else ''}")
     except BringError as e:
         print(f"Fehler: {e}", file=sys.stderr)
         return 1
