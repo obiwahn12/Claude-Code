@@ -118,6 +118,26 @@ textarea { min-height: 160px; resize: vertical; line-height: 1.45; }
 .tag-row:focus-within { background: var(--fill); }
 .tag-row .clear { flex: none; display: grid; place-items: center; width: 44px; height: 44px; margin-right: 4px;
                   background: none; border: 0; color: var(--muted); font-size: 20px; line-height: 1; }
+.tag-row .gericht { flex: 1; min-width: 0; min-height: 48px; padding: 0 8px 0 0; background: none; border: 0; text-align: left;
+                    font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Ab Tablet-Breite: Tage als Kacheln nebeneinander */
+@media (min-width: 700px) {
+  .woche { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 8px;
+           background: none; box-shadow: none; overflow: visible; }
+  .tag-row { flex-direction: column; align-items: stretch; min-height: 116px; padding: 10px 12px 8px;
+             background: var(--card); border-radius: 10px; box-shadow: var(--shadow); }
+  .tag-row + .tag-row::before { display: none; }
+  .tag-name { width: auto; padding-right: 28px; margin-bottom: 6px; font-size: 13px; font-weight: 600;
+              text-transform: uppercase; letter-spacing: .2px; color: var(--muted); }
+  .tag-row.heute { box-shadow: inset 0 0 0 2px var(--tint); }
+  .tag-row.heute .tag-name { color: var(--tint); }
+  .tag-row .gericht { flex: none; min-height: 0; padding: 0; font-size: 15px; font-weight: 500; line-height: 1.3;
+                      white-space: normal; display: block; text-align: left; align-self: stretch; }
+  .tag-row input { flex: none; min-height: 32px; font-size: 15px; padding: 0; }
+  .tag-row:focus-within { background: var(--card); box-shadow: inset 0 0 0 2px var(--tint); }
+  .tag-row .clear { position: absolute; top: 2px; right: 0; width: 40px; height: 40px; margin: 0; font-size: 18px; }
+}
 
 /* Listen im iOS-Stil (gruppiert, Trennlinien eingerückt) */
 .list { padding: 0; overflow: hidden; }
@@ -353,20 +373,34 @@ function zeigeWoche() {
   $("#days").replaceChildren(el("div", {class: "card list woche"}, TAGE.map(t => {
     const g = (woche.tage[t] || [])[0] || "";
     const setze = name => { woche.tage[t] = name ? [name] : []; zeigeWoche(); speichereWoche(); };
-    const input = el("input", {list: "gerichte", value: g, placeholder: "Gericht wählen",
-      "aria-label": `Gericht am ${TAG_NAME[t]}`, enterkeyhint: "done", autocomplete: "off",
-      onfocus: e => e.target.select()});
-    input.addEventListener("change", () => {
-      const v = input.value.trim();
-      if (v === g) return;
-      if (!v) return setze("");
-      const r = finde(v);
-      if (!r) { toast(`„${v}“ gibt es noch nicht – unter Rezepte anlegen`); input.value = g; return; }
-      setze(r.name);
-    });
-    input.addEventListener("keydown", e => { if (e.key === "Enter") input.blur(); });
+    const eingabe = () => {
+      const input = el("input", {list: "gerichte", value: g, placeholder: "Auswählen …",
+        "aria-label": `Gericht am ${TAG_NAME[t]}`, enterkeyhint: "done", autocomplete: "off",
+        onfocus: e => e.target.select()});
+      let erledigt = false;
+      const fertig = () => {
+        if (erledigt) return; erledigt = true;
+        const v = input.value.trim();
+        if (v === g) return g ? zeigeWoche() : undefined;
+        if (!v) return setze("");
+        const r = finde(v);
+        if (!r) { toast(`„${v}“ gibt es noch nicht – unter Rezepte anlegen`); return zeigeWoche(); }
+        setze(r.name);
+      };
+      input.addEventListener("change", fertig);
+      input.addEventListener("blur", () => { if (g) fertig(); });  // Ändern abbrechen → Gericht wieder anzeigen
+      input.addEventListener("keydown", e => {
+        if (e.key === "Enter") input.blur();
+        if (e.key === "Escape") { input.value = g; input.blur(); }
+      });
+      return input;
+    };
+    // Gericht als Text (bricht in den Kacheln um); Tippen darauf öffnet die Auswahl
+    const anzeige = g ? el("button", {type: "button", class: "gericht", title: "Gericht ändern",
+      "aria-label": `${TAG_NAME[t]}: ${g} – ändern`, onclick: e => {
+        const input = eingabe(); e.currentTarget.replaceWith(input); input.focus(); }}, g) : eingabe();
     return el("div", {class: "tag-row" + (t === heute ? " heute" : "")},
-      el("span", {class: "tag-name"}, TAG_NAME[t]), input,
+      el("span", {class: "tag-name"}, TAG_NAME[t]), anzeige,
       g ? el("button", {type: "button", class: "clear", title: "entfernen", "aria-label": `${g} am ${TAG_NAME[t]} entfernen`,
         onclick: () => setze("")}, "×") : null);
   })));
