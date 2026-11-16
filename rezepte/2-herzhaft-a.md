@@ -34,8 +34,6 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Passierte Tomaten | 1 l
 - Zwiebeln | 1
 - Mozzarella | 2
-- Basilikum | 1 Topf
-- Parmesan | 80 g
 - Olivenöl | 2 EL
 - Zucker | 1 Prise
 
@@ -43,7 +41,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 1. Zwiebel fein würfeln, in Olivenöl anschwitzen.
 2. Passierte Tomaten zugeben, mit Salz, Pfeffer und Zucker 10 min köcheln.
 3. Gnocchi nach Packung garen (oder in der Pfanne anbraten), in die Sauce geben.
-4. Mozzarella zerzupfen und unterheben, mit Basilikum und Parmesan servieren.
+4. Mozzarella zerzupfen und unterheben.
 
 ## Gebackener Camembert mit Baguette und Salat
 5 Portionen · ca. 30 min
@@ -69,74 +67,60 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 4. Camembert mit Preiselbeeren, Baguette und Salat servieren.
 
 ## Sushi
-5 Portionen · ca. 75 min
+5 Portionen · ca. 60 min
 
 ### Zutaten
 - Sushireis | 750 g
-- Reisessig | 100 ml
-- Zucker | 3 EL
 - Noriblätter | 10
 - Salatgurke | 1
 - Avocados | 2
-- Möhren | 2
-- Paprika | 1
 - Frischkäse | 200 g
 - Sojasauce | 1 Flasche
 - Wasabi | 1 Tube
-- Sushi-Ingwer | 1 Glas
-- Sesam | 3 EL
 
 ### Zubereitung
-1. Reis waschen, bis das Wasser klar ist, nach Packung kochen.
-2. Reisessig mit Zucker und 2 TL Salz erwärmen, unter den heißen Reis heben, abkühlen lassen.
-3. Gemüse und Avocado in Streifen schneiden.
-4. Noriblatt auf eine Bambusmatte legen, dünn mit Reis belegen (oben 2 cm frei lassen), Füllung und Frischkäse darauf, fest aufrollen.
-5. Mit nassem Messer in Stücke schneiden. Mit Sojasauce, Wasabi und Ingwer servieren.
+1. Reis waschen, bis das Wasser klar ist, nach Packung kochen und abkühlen lassen.
+2. Gurke und Avocado in Streifen schneiden.
+3. Noriblatt auf eine Bambusmatte legen, dünn mit Reis belegen (oben 2 cm frei lassen), Gurke, Avocado und Frischkäse darauf, fest aufrollen.
+4. Mit nassem Messer in Stücke schneiden. Mit Sojasauce und Wasabi servieren.
 
 ## Taco-Bowls
-5 Portionen · ca. 35 min
+5 Portionen · ca. 40 min
 
 ### Zutaten
 - Reis | 500 g
-- Soja-Hack | 300 g
+- Süßkartoffeln | 1 kg
 - Taco-Gewürz | 1 Pck
 - Kidneybohnen | 2 Dosen
 - Mais | 1 Dose
 - Tomaten | 4
-- Paprika | 2
-- Avocados | 2
-- Salat | 1 Kopf
-- Limetten | 2
-- Saure Sahne | 200 g
+- Zwiebeln | 1
 - Geriebener Käse | 200 g
 - Tortilla-Chips | 1 Tüte
-- Zwiebeln | 1
+- Öl | zum Braten
 
 ### Zubereitung
-1. Reis kochen.
-2. Zwiebel würfeln, mit Soja-Hack anbraten, Taco-Gewürz und etwas Wasser zugeben. Bohnen dazugeben und erwärmen.
-3. Tomaten, Paprika, Salat und Avocado klein schneiden, Avocado mit Limettensaft beträufeln.
-4. Schüsseln mit Reis, Hack-Bohnen-Mischung, Mais, Gemüse, Käse und Saurer Sahne füllen, Chips dazu.
+1. Reis kochen. Süßkartoffeln würfeln, mit Öl und der Hälfte des Taco-Gewürzes mischen und bei 200 °C ca. 25 min backen.
+2. Zwiebel würfeln und anbraten, abgetropfte Bohnen und restliches Taco-Gewürz mit etwas Wasser zugeben und erwärmen.
+3. Tomaten klein schneiden.
+4. Schüsseln mit Reis, Süßkartoffeln, Bohnen, Mais, Tomaten und Käse füllen, Chips dazu.
 
 ## Falafel-Wraps
-5 Portionen · ca. 40 min
+5 Portionen · ca. 20 min
 
 ### Zutaten
-- Falafel-Mischung | 2 Pck
+- Falafel | 750 g (fertig)
 - Wraps | 10
 - Salat | 1 Kopf
 - Tomaten | 4
 - Salatgurke | 1
-- Rotkohl | 1/4 Kopf
 - Hummus | 200 g
 - Joghurt | 300 g
-- Minze | 1 Bund (optional)
-- Öl | zum Braten
 
 ### Zubereitung
-1. Falafel nach Packung anrühren, quellen lassen, Bällchen formen und in Öl ausbacken.
-2. Joghurt mit Minze, Salz und Pfeffer verrühren.
-3. Gemüse klein schneiden, Rotkohl fein hobeln.
+1. Falafel nach Packung im Ofen oder in der Pfanne erwärmen.
+2. Joghurt mit Salz und Pfeffer verrühren.
+3. Salat, Tomaten und Gurke klein schneiden.
 4. Wraps kurz erwärmen, mit Hummus bestreichen, mit Gemüse, Falafel und Joghurtsoße füllen und einrollen.
 
 ## Sweet Chili Wraps Insta
@@ -162,22 +146,19 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 3. Wraps mit Frischkäse bestreichen, mit Gemüse, Mais und Veggi-Chicken belegen, mit Sweet-Chili-Sauce beträufeln und einrollen.
 
 ## Eier-Reis-Gemüse-Pfanne
-5 Portionen · ca. 30 min
+5 Portionen · ca. 25 min
 
 ### Zutaten
 - Reis | 500 g
 - Eier | 6
-- Paprika | 2
-- Zucchini | 1
-- Möhren | 3
-- Erbsen | 300 g TK
+- TK-Gemüse | 1 kg (z. B. Gemüsepfanne)
 - Frühlingszwiebeln | 1 Bund
 - Sojasauce | 5 EL
 - Öl | zum Braten
 
 ### Zubereitung
 1. Reis kochen (am besten schon am Vortag).
-2. Gemüse würfeln und in Öl 5–7 min anbraten, Erbsen zugeben.
+2. TK-Gemüse in Öl 6–8 min braten.
 3. Reis zugeben und mitbraten. An den Rand schieben, Eier in die Mitte schlagen, stocken lassen und unterrühren.
 4. Mit Sojasauce abschmecken, Frühlingszwiebeln darüberstreuen.
 
@@ -191,16 +172,13 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Mais | 1 Dose
 - Paprika | 2
 - Frühlingszwiebeln | 1 Bund
-- Salsa | 1 Glas
 - Saure Sahne | 200 g
-- Avocados | 2
-- Limetten | 1
 
 ### Zubereitung
 1. Bohnen und Mais abtropfen lassen, Paprika würfeln, Frühlingszwiebeln in Ringe schneiden.
 2. Je eine Tortilla mit Käse, Gemüse und Bohnen belegen, mit Käse bestreuen, zweite Tortilla darauf.
 3. In einer trockenen Pfanne von beiden Seiten je 2–3 min backen, bis der Käse schmilzt. In Stücke schneiden.
-4. Avocado mit Limettensaft und Salz zu Guacamole zerdrücken. Mit Salsa und Saurer Sahne servieren.
+4. Mit Saurer Sahne servieren.
 
 ## Gebratener Reis mit asiatischem Gemüse
 5 Portionen · ca. 30 min
@@ -601,27 +579,30 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 4. Quark mit Schnittlauch verrühren. Mit Gurken und Salat servieren.
 
 ## Kartoffeln Wraps Insta
-5 Portionen · ca. 45 min
+5 Portionen · ca. 60 min
 
-> Das Original vom Instagram-Rezept kenne ich nicht – das ist eine Standardversion mit Ofenkartoffeln. Schick mir gern den Link.
+> Kartoffel-Wraps mit Hot Honey Halloumi (Instagram: piaundhalloumi). Mengen für den Teig geschätzt –
+> der obere Teil des Rezepts fehlt noch.
 
 ### Zutaten
-- Kartoffeln | 1 kg
-- Paprikapulver | 2 TL
-- Wraps | 10
-- Paprika | 2
-- Mais | 1 Dose
-- Salat | 1 Kopf
-- Geriebener Käse | 200 g
-- Saure Sahne | 200 g
-- Schnittlauch | 1 Bund
-- Olivenöl | 4 EL
+- Kartoffeln | 1,5 kg (festkochend)
+- Geriebener Käse | 250 g
+- Halloumi | 3 Pck (à 225 g)
+- Honig | 4 EL
+- Crispy Chili Öl | 2 EL
+- Crème fraîche | 200 g
+- Parmesan | 50 g
+- Zitrone | 1
+- Feldsalat | 150 g
+- Tomaten | 3
+- Salatgurke | 1
 
 ### Zubereitung
-1. Kartoffeln in kleine Würfel schneiden, mit Öl, Paprikapulver und Salz bei 220 °C 25–30 min knusprig backen.
-2. Saure Sahne mit Schnittlauch, Salz und Pfeffer verrühren.
-3. Wraps mit Sour Cream bestreichen, mit Kartoffeln, Paprika, Mais, Salat und Käse füllen.
-4. Einrollen und in der Pfanne kurz von beiden Seiten anrösten.
+1. Kartoffeln fein reiben, Flüssigkeit gut ausdrücken, mit Salz und Pfeffer würzen. Mit dem Käse mischen und als dünne runde Fladen auf Backpapier verteilen.
+2. Bei 180 °C Umluft ca. 30 min goldbraun backen, bis die Kartoffeln gar sind und der Käse knusprig ist. Kurz abkühlen lassen.
+3. Halloumi klein würfeln und in einer Pfanne goldbraun anbraten. Honig und Crispy Chili Öl dazugeben und kurz glasieren.
+4. Dressing: Crème fraîche, geriebenen Parmesan, Zitronensaft und 1 TL Honig verrühren, mit Salz und Pfeffer abschmecken.
+5. Wraps vorsichtig vom Backpapier lösen, mit Dressing bestreichen, mit Feldsalat, Tomate, Gurke und Halloumi belegen und zusammenklappen.
 
 ## Kartoffeln mit Rosenkohl
 5 Portionen · ca. 40 min
