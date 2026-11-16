@@ -419,6 +419,17 @@ ul.check input[type=checkbox]:checked::after { width: 7px; height: 13px; }
 @media (max-width: 420px) { .zusatz.ohne-menge { grid-template-columns: 1fr auto; } .zusatz.ohne-menge .btn { grid-column: auto; } }
 #tab-vorrat .section-row:first-child { margin-top: 18px; }
 
+/* Ab Tablet: „An Bring! senden“ schwebt fest am unteren Rand, solange das Prüf-Ergebnis offen ist */
+@media (min-width: 700px) {
+  .senden-leiste { position: fixed; z-index: 9; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translateX(-50%);
+                   width: min(560px, calc(100% - 40px)); margin: 0; padding: 10px; border-radius: 999px;
+                   background: var(--glass-strong); box-shadow: 0 12px 40px rgba(0, 0, 0, .18); }
+  .senden-leiste #sendenInfo:empty { display: none; }
+  .senden-leiste #sendenInfo { margin: 6px 0 2px !important; }
+  main:has(#tab-woche:not(.hidden) #ergebnis:not(.hidden)) { padding-bottom: 120px; }
+  body:has(#tab-woche:not(.hidden) #ergebnis:not(.hidden)) #toast { bottom: calc(100px + env(safe-area-inset-bottom)); }
+}
+
 /* Wochentag ohne Gericht */
 .tag-row .gericht.leer { color: var(--muted); font-weight: 400; }
 
@@ -505,7 +516,7 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter
       <div class="seg" role="group" aria-label="Ansicht"><button data-view="einkauf" class="active" aria-pressed="true">Einkaufsliste</button><button data-view="gericht" aria-pressed="false">Nach Gericht</button></div>
       <div id="viewEinkauf"></div>
       <div id="viewGericht" class="hidden"></div>
-      <div class="card">
+      <div class="card senden-leiste">
         <button class="btn block" id="senden">An Bring! senden</button>
         <p class="muted" id="sendenInfo" style="margin:8px 0 0;text-align:center"></p>
       </div>
