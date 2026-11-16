@@ -21,3 +21,21 @@ Backpulver
 Senf
 Ketchup
 Sojasauce
+# Gewürze und Backzutaten
+Zimt
+Vanillezucker
+Puderzucker
+Muskat
+Muskatnuss
+Kreuzkümmel
+Kurkuma
+Majoran
+Kümmel
+Lorbeerblätter
+Kräuter der Provence
+Bohnenkraut
+Garam Masala
+Paprikapulver geräuchert
+Speisestärke
+Meersalz
+Tomatenmark

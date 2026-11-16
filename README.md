@@ -27,3 +27,16 @@ python3 bring.py entfernen Milch     # ganz löschen
 python3 bring.py -l Zuhause zeigen   # andere Liste
 python3 bring.py --json zeigen       # Rohdaten als JSON
 ```
+
+## Rezepte und Wochenplan
+
+In `rezepte/` liegen Rezepte (5 Personen, vegetarisch/vegan) für alle Gerichte vom Essenplan.
+
+```bash
+python3 bring.py rezepte                                    # alle Gerichte
+python3 bring.py -l Abendessen rezept Pizza "Chili sin" -n  # Probelauf
+python3 bring.py -l Abendessen rezept Pizza "Chili sin"     # Zutaten eintragen
+```
+
+Zutaten aus `vorrat.txt` werden übersprungen, gleiche Zutaten zusammengerechnet und
+Katalogartikel unter ihrem Bring!-Namen eingetragen (mit Bild und Ladenbereich).

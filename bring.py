@@ -18,8 +18,10 @@ Beispiele:
 """
 
 import argparse
+import difflib
 import json
 import os
+import re
 import sys
 import time
 import urllib.error
@@ -194,6 +196,112 @@ def load_vorrat(path):
     return {l.split("#")[0].strip().casefold() for l in lines if l.split("#")[0].strip()}
 
 
+REZEPTE_DIR = Path(__file__).with_name("rezepte")
+
+
+def load_rezepte(directory):
+    """Liest rezepte/*.md: '# Kategorie', '## Gericht', '### Zutaten' mit '- Artikel | Menge'."""
+    rezepte = {}
+    files = sorted(Path(directory).glob("*.md"))
+    if not files:
+        raise BringError(f"Keine Rezepte in {directory} gefunden.")
+    for f in files:
+        kategorie, name, section = f.stem, None, None
+        for line in f.read_text(encoding="utf-8").splitlines():
+            if line.startswith("# "):
+                kategorie = line[2:].strip()
+            elif line.startswith("## "):
+                name = line[3:].strip()
+                rezepte[name] = {"kategorie": kategorie, "zutaten": []}
+                section = None
+            elif line.startswith("### "):
+                section = line[4:].strip().casefold()
+            elif name and section == "zutaten" and line.startswith("- "):
+                artikel, _, info = (s.strip() for s in line[2:].partition("|"))
+                rezepte[name]["zutaten"].append((artikel, info))
+    return rezepte
+
+
+def find_rezept(rezepte, query):
+    q = query.casefold()
+    by_key = {n.casefold(): n for n in rezepte}
+    if q in by_key:
+        return by_key[q]
+    teil = [n for k, n in by_key.items() if q in k]
+    if len(teil) == 1:
+        return teil[0]
+    if not teil:  # Tippfehler wie 'Tacco-Bowls' -> 'Taco-Bowls'
+        nah = difflib.get_close_matches(q, by_key, n=2, cutoff=0.8)
+        if len(nah) == 1:
+            return by_key[nah[0]]
+    vorschlaege = teil or [by_key[k] for k in difflib.get_close_matches(q, by_key, n=3, cutoff=0.5)]
+    hint = f" Meintest du: {', '.join(vorschlaege)}?" if vorschlaege else ""
+    raise BringError(f"Gericht '{query}' nicht eindeutig gefunden.{hint}")
+
+
+_MENGE = re.compile(r"^(\d+(?:,\d+)?)\s*([A-Za-zäöüÄÖÜß.]+)?$")
+_PLURAL = {"Dose": "Dosen", "Glas": "Gläser", "Kopf": "Köpfe", "Würfel": "Würfel"}
+
+
+def _sum_infos(infos):
+    """'250 g' + '300 g' -> '550 g'; sonst Angaben mit ' + ' verbinden."""
+    if len(infos) < 2:
+        return infos[0] if infos else ""
+    total, unit = 0.0, None
+    for info in infos:
+        m = _MENGE.match(info)
+        if not m:
+            return " + ".join(infos)
+        u = _PLURAL.get(m.group(2), m.group(2))
+        if unit is not None and u != unit:
+            return " + ".join(infos)
+        unit = u
+        total += float(m.group(1).replace(",", "."))
+    num = f"{total:g}".replace(".", ",")
+    if unit and total == 1:
+        unit = {v: k for k, v in _PLURAL.items()}.get(unit, unit)
+    return f"{num} {unit}" if unit else num
+
+
+def merge_items(items):
+    """Gleiche Artikel aus mehreren Rezepten zusammenfassen."""
+    merged = {}
+    for name, info in items:
+        entry = merged.setdefault(name.casefold(), [name, []])
+        if info:
+            entry[1].append(info)
+    return [(name, _sum_infos(infos)) for name, infos in merged.values()]
+
+
+def add_items(bring, list_uuid, items, vorrat, probelauf=False, names=None):
+    """Trägt Artikel ein. names: Bring!-Katalog {interner Schlüssel: Anzeigename}.
+
+    Katalogartikel werden unter ihrem internen Schlüssel eingetragen (z. B. 'Paprika'
+    -> 'Peperoni'), damit Bring! Bild und Ladenbereich zuordnet.
+    """
+    names = names or {}
+    katalog = {v.casefold(): k for k, v in names.items()}
+    purchase, _ = bring.items(list_uuid)
+    vorhanden = {}
+    for it in purchase:
+        for n in (it["name"], names.get(it["name"], it["name"])):
+            vorhanden[n.casefold()] = it.get("specification", "")
+    for name, info in items:
+        key = name.casefold()
+        if key in vorrat:
+            print(f"Übersprungen (Vorrat): {name}")
+        elif key in vorhanden:
+            dort = vorhanden[key]
+            extra = f" – dort: {dort or 'ohne Menge'}, benötigt: {info}" if info and info != dort else ""
+            print(f"Schon auf der Liste: {name}{extra}")
+        else:
+            if not probelauf:
+                bring.add(list_uuid, katalog.get(key, name), info)
+            vorhanden[key] = info
+            print(f"{'Würde hinzufügen' if probelauf else 'Hinzugefügt'}: "
+                  f"{name}{f' ({info})' if info else ''}")
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(description="Bring!-Einkaufsliste per Kommandozeile")
     p.add_argument("-l", "--liste", default=os.environ.get("BRING_LIST"),
@@ -217,7 +325,28 @@ def main(argv=None):
                    help="Datei mit Grundvorrat, der übersprungen wird")
     m.add_argument("-n", "--probelauf", action="store_true",
                    help="nur anzeigen, nichts eintragen")
+    rz = sub.add_parser("rezept",
+                        help="Zutaten eines oder mehrerer Gerichte aus rezepte/ hinzufügen")
+    rz.add_argument("gerichte", nargs="+", help="Gerichtnamen (Teilname reicht)")
+    rz.add_argument("--vorrat", default=str(Path(__file__).with_name("vorrat.txt")))
+    rz.add_argument("-n", "--probelauf", action="store_true",
+                    help="nur anzeigen, nichts eintragen")
+    sub.add_parser("rezepte", help="alle Gerichte aus rezepte/ auflisten (ohne Login)")
     args = p.parse_args(argv)
+
+    if args.cmd == "rezepte":
+        try:
+            rezepte = load_rezepte(REZEPTE_DIR)
+        except BringError as e:
+            print(f"Fehler: {e}", file=sys.stderr)
+            return 1
+        kategorie = None
+        for name, r in rezepte.items():
+            if r["kategorie"] != kategorie:
+                kategorie = r["kategorie"]
+                print(f"\n{kategorie}")
+            print(f"  {name}")
+        return 0
 
     bring = Bring(country=args.locale.split("-")[-1])
     try:
@@ -259,25 +388,24 @@ def main(argv=None):
             bring.remove(list_uuid, args.artikel)
             print(f"Entfernt: {args.artikel}")
         elif args.cmd == "mehrere":
-            vorrat = load_vorrat(args.vorrat)
-            purchase, _ = bring.items(list_uuid)
-            vorhanden = {it["name"].casefold() for it in purchase}
+            items = []
             for line in sys.stdin:
                 line = line.strip()
-                if not line or line.startswith("#"):
-                    continue
-                name, _, info = (s.strip() for s in line.partition("|"))
-                key = name.casefold()
-                if key in vorrat:
-                    print(f"Übersprungen (Vorrat): {name}")
-                elif key in vorhanden:
-                    print(f"Schon auf der Liste: {name}")
-                else:
-                    if not args.probelauf:
-                        bring.add(list_uuid, name, info)
-                    vorhanden.add(key)
-                    print(f"{'Würde hinzufügen' if args.probelauf else 'Hinzugefügt'}: "
-                          f"{name}{f' ({info})' if info else ''}")
+                if line and not line.startswith("#"):
+                    name, _, info = (s.strip() for s in line.partition("|"))
+                    items.append((name, info))
+            add_items(bring, list_uuid, merge_items(items),
+                      load_vorrat(args.vorrat), args.probelauf, load_names(args.locale))
+        elif args.cmd == "rezept":
+            rezepte = load_rezepte(REZEPTE_DIR)
+            items = []
+            for query in args.gerichte:
+                name = find_rezept(rezepte, query)
+                print(f"Rezept: {name}")
+                items += rezepte[name]["zutaten"]
+            print()
+            add_items(bring, list_uuid, merge_items(items),
+                      load_vorrat(args.vorrat), args.probelauf, load_names(args.locale))
     except BringError as e:
         print(f"Fehler: {e}", file=sys.stderr)
         return 1
