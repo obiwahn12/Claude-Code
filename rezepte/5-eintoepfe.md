@@ -15,14 +15,13 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Zwiebeln | 1
 - Champignons | 75 g
 - Spargel | 125 g weiße Spargelköpfe
-- Weißwein | 60 ml, vegan
 - Senf | 1 TL
 - Soja-Sahne | 300 ml
 - Gemüsebrühe | 300 ml
 - Mehl | 5 EL
 - Vegane Butter | 5 EL
 - Zitrone | 1
-- Petersilie | glatt, zum Servieren
+- TK-Kräuter
 - Muskat | 1 Prise
 - Öl | zum Braten
 
@@ -39,7 +38,7 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 ### Zutaten
 - Soja-Hack | 400 g
 - Kidneybohnen | 2 Dosen
-- Mais | 1 Dose
+- Dosen-Mais | 1 Dose
 - Gehackte Tomaten | 2 Dosen
 - Paprika | 2
 - Zwiebeln | 2
