@@ -65,7 +65,6 @@ header { position: sticky; top: 0; z-index: 10; background: var(--bar); border-b
          padding-top: env(safe-area-inset-top); }
 .bar { max-width: 980px; margin: 0 auto; padding: 8px max(16px, env(safe-area-inset-right)) 8px max(16px, env(safe-area-inset-left));
        display: flex; gap: 16px; align-items: center; min-height: 52px; }
-.app-name { font-size: 17px; font-weight: 600; margin: 0 auto 0 0; }
 nav { display: flex; background: var(--fill); border-radius: 9px; padding: 2px; }
 nav button { display: flex; align-items: center; gap: 6px; background: none; border: 0; min-height: 36px; padding: 0 14px;
              border-radius: 7px; color: var(--text); font-size: 15px; font-weight: 500; }
@@ -74,7 +73,7 @@ nav button[aria-selected="true"] { background: var(--card); box-shadow: 0 1px 4p
 .badge-ok { color: var(--tint); }
 
 /* Schalter Hell / Dunkel / Automatisch */
-.theme { display: flex; background: var(--fill); border-radius: 9px; padding: 2px; flex: none; order: 2; }
+.theme { display: flex; background: var(--fill); border-radius: 9px; padding: 2px; flex: none; order: 2; margin-left: auto; }
 .theme button { display: grid; place-items: center; width: 40px; min-height: 32px; border: 0; background: none;
                 border-radius: 7px; color: var(--muted); }
 .theme button svg { width: 18px; height: 18px; }
@@ -84,7 +83,6 @@ nav button[aria-selected="true"] { background: var(--card); box-shadow: 0 1px 4p
 @media (max-width: 699px) {
   header { position: static; background: none; border: 0; -webkit-backdrop-filter: none; backdrop-filter: none; }
   header .bar { min-height: 44px; padding-top: 6px; padding-bottom: 0; justify-content: flex-end; }
-  .app-name { display: none; }
   nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; border-radius: 0; padding: 0;
         padding-bottom: env(safe-area-inset-bottom); background: var(--bar); border-top: .5px solid var(--line);
         -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); }
@@ -210,7 +208,6 @@ ul.check input[type=checkbox]:disabled { opacity: .45; }
 </head>
 <body>
 <header><div class="bar">
-  <span class="app-name">Essenplan</span>
   <div class="theme" id="theme" role="radiogroup" aria-label="Darstellung">
     <button type="button" role="radio" data-theme="auto" title="Automatisch (wie das Gerät)" aria-label="Automatisch">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
@@ -222,7 +219,7 @@ ul.check input[type=checkbox]:disabled { opacity: .45; }
   <nav role="tablist" aria-label="Bereiche">
     <button role="tab" data-tab="woche" aria-selected="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
-      <span>Woche</span></button>
+      <span>Essenplan</span></button>
     <button role="tab" data-tab="rezepte" aria-selected="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5v-15z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19M9 7.5h6M9 11h4"/></svg>
       <span>Rezepte</span></button>
@@ -239,7 +236,7 @@ ul.check input[type=checkbox]:disabled { opacity: .45; }
   <!-- ===== Woche ===== -->
   <section id="tab-woche">
     <div class="row" style="align-items:flex-end">
-      <h1 class="title grow">Woche</h1>
+      <h1 class="title grow">Essenplan</h1>
       <button class="btn sec" id="leeren" style="margin-bottom:14px">Leeren</button>
     </div>
     <div class="days" id="days"></div>
