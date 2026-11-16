@@ -682,18 +682,25 @@ $("#leeren").onclick = () => {
 
 const klein = s => s.toLocaleLowerCase("de");
 
-// Zufall: ganze Woche füllen – genau ein Süßes, genau ein Eintopf, der Rest herzhaft/Auflauf, keine Wiederholung
+// Zufall: nur freie Tage füllen. In der ganzen Woche höchstens ein Süßes und ein Eintopf (fehlt einer, kommt
+// genau einer dazu, solange Tage frei sind), der Rest herzhaft/Auflauf, keine Wiederholung.
 $("#zufall").onclick = () => {
-  if (TAGE.some(t => (woche.tage[t] || []).length) && !confirm("Woche mit zufälligen Gerichten neu füllen? Die bisherigen Gerichte werden ersetzt.")) return;
+  const frei = TAGE.filter(t => !(woche.tage[t] || []).length);
+  if (!frei.length) { toast("Alle Tage sind schon belegt"); return; }
   const mischen = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const istKat = (r, anfang) => klein(r.kategorie).normalize("NFC").startsWith(anfang);
-  const suess = mischen(rezepte.filter(r => istKat(r, "süß")));
-  const eintopf = mischen(rezepte.filter(r => istKat(r, "eintopf") || istKat(r, "eintöpf")));
-  const rest = mischen(rezepte.filter(r => !suess.includes(r) && !eintopf.includes(r)));
-  const auswahl = [suess[0], eintopf[0]].filter(Boolean);
-  auswahl.push(...rest.slice(0, TAGE.length - auswahl.length));
-  mischen(auswahl).forEach((r, i) => woche.tage[TAGE[i]] = [r.name]);
-  zeigeWoche(); speichereWoche(); toast("🎲 Neue Woche gewürfelt");
+  const istSuess = r => istKat(r, "süß"), istEintopf = r => istKat(r, "eintopf") || istKat(r, "eintöpf");
+  const geplant = TAGE.flatMap(t => woche.tage[t] || []).map(n => rezepte.find(r => r.name === n)).filter(Boolean);
+  const frisch = r => !geplant.includes(r);
+  const pflicht = mischen([
+    !geplant.some(istSuess) && mischen(rezepte.filter(r => istSuess(r) && frisch(r)))[0],
+    !geplant.some(istEintopf) && mischen(rezepte.filter(r => istEintopf(r) && frisch(r)))[0],
+  ].filter(Boolean)).slice(0, frei.length);
+  const rest = mischen(rezepte.filter(r => !istSuess(r) && !istEintopf(r) && frisch(r)));
+  const auswahl = [...pflicht, ...rest.slice(0, frei.length - pflicht.length)];
+  mischen(auswahl).forEach((r, i) => woche.tage[frei[i]] = [r.name]);
+  zeigeWoche(); speichereWoche();
+  toast(`🎲 ${auswahl.length} ${auswahl.length === 1 ? "Tag" : "Tage"} gefüllt`);
 };
 // Abhakbar: neue Zutaten (Standard: kaufen) und Vorrat (Standard: nicht kaufen, außer er ist leer)
 const waehlbar = a => a && (a.status === "neu" || a.status === "vorrat");
