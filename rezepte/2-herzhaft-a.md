@@ -189,58 +189,51 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Tofu | 400 g
 - Eier | 4
 - Frühlingszwiebeln | 1 Bund
-- Ingwer | 1 Stück
 - Sojasauce | 6 EL
-- Sesamöl | 2 EL
 - Öl | zum Braten
 
 ### Zubereitung
 1. Reis kochen (am besten am Vortag) und abkühlen lassen.
 2. Tofu würfeln und knusprig braten, herausnehmen.
-3. Ingwer kurz anbraten, Gemüse zugeben und 5 min braten.
+3. Gemüse in Öl 5 min braten.
 4. Reis zugeben und kräftig mitbraten. Eier hineinschlagen, unterrühren.
-5. Tofu zurückgeben, mit Sojasauce und Sesamöl würzen, Frühlingszwiebeln darüber.
+5. Tofu zurückgeben, mit Sojasauce würzen, Frühlingszwiebeln darüber.
 
 ## Döner
-5 Portionen · ca. 30 min
+5 Portionen · ca. 25 min
 
 ### Zutaten
-- Fladenbrot | 2
+- Wraps | 10
 - Veggi-Döner | 600 g (Seitan- oder Soja-Kebab)
 - Salat | 1 Kopf
 - Tomaten | 4
 - Salatgurke | 1
-- Rotkohl | 1/4 Kopf
-- Zwiebeln | 1 rote
 - Feta | 200 g
-- Joghurt | 500 g
+- Dressing | 1 Flasche (z. B. Joghurt-Kräuter)
 - Öl | zum Braten
 
 ### Zubereitung
-1. Joghurt mit Salz und Pfeffer verrühren (Kräutersoße), optional mit Chili eine scharfe Soße abzweigen.
-2. Gemüse schneiden, Rotkohl und Zwiebel fein hobeln.
-3. Veggi-Döner in Öl knusprig braten.
-4. Fladenbrot aufbacken, in Stücke schneiden, aufschneiden und mit allem füllen. Feta darüberbröseln.
+1. Salat, Tomaten und Gurke klein schneiden.
+2. Veggi-Döner in Öl knusprig braten.
+3. Wraps kurz erwärmen, mit Döner, Gemüse und zerbröseltem Feta füllen, Dressing darüber und einrollen.
 
 ## Teriyaki-Nudeln
 5 Portionen · ca. 25 min
 
 ### Zutaten
-- Mie-Nudeln | 500 g
+- Spaghetti | 500 g
 - Tofu | 400 g
-- Brokkoli | 1
-- Paprika | 2
+- Weißkohl | 1/2 Kopf
 - Möhren | 2
-- Frühlingszwiebeln | 1 Bund
-- Teriyaki-Sauce | 1 Flasche
-- Sesam | 2 EL
+- Sojasauce | 8 EL
+- Zucker | 1 EL
 - Öl | zum Braten
 
 ### Zubereitung
-1. Nudeln nach Packung garen.
+1. Spaghetti nach Packung garen.
 2. Tofu würfeln und knusprig braten, herausnehmen.
-3. Brokkoli in Röschen, Paprika und Möhren in Streifen schneiden, 5 min im Wok braten.
-4. Nudeln, Tofu und Teriyaki-Sauce zugeben, gut durchschwenken. Mit Frühlingszwiebeln und Sesam bestreuen.
+3. Weißkohl in feine Streifen, Möhren in Stifte schneiden, im Wok oder einer großen Pfanne 6–8 min braten.
+4. Spaghetti und Tofu zugeben, Sojasauce mit Zucker verrühren, darübergeben und gut durchschwenken.
 
 ## Ofengemüse
 5 Portionen · ca. 50 min
@@ -252,17 +245,18 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Zucchini | 2
 - Möhren | 4
 - Zwiebeln | 3 rote
-- Kichererbsen | 1 Dose
-- Feta | 200 g
+- Brokkoli | 1
+- Brechbohnen | 500 g
+- Halloumi | 2 Pck (à 225 g)
 - Olivenöl | 6 EL
-- Rosmarin | 1 Bund
 - Joghurt | 500 g
 
 ### Zubereitung
 1. Ofen auf 200 °C Umluft vorheizen.
-2. Kartoffeln, Süßkartoffeln und Möhren in Spalten, restliches Gemüse in grobe Stücke schneiden.
-3. Mit Kichererbsen, Öl, Rosmarin, Salz und Pfeffer auf zwei Blechen verteilen, 35–40 min backen. Nach 25 min Feta darüberbröseln.
-4. Joghurt mit Salz und Pfeffer als Dip dazu.
+2. Kartoffeln, Süßkartoffeln und Möhren in Spalten, restliches Gemüse in grobe Stücke, Brokkoli in Röschen schneiden.
+3. Mit Öl, Salz und Pfeffer auf zwei Blechen verteilen, 35–40 min backen. Brokkoli und Bohnen nach 15 min dazugeben.
+4. Halloumi in Scheiben schneiden und die letzten 10 min mitbacken (oder in der Pfanne braten).
+5. Joghurt mit Salz und Pfeffer als Dip dazu.
 
 ## Veganes Rührei
 5 Portionen · ca. 20 min
@@ -294,14 +288,13 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Birnen | 3
 - Ziegenkäse | 300 g (oder Camembert)
 - Zwiebeln | 1 rote
-- Walnüsse | 75 g
 - Honig | 3 EL
 - Rucola | 100 g
 
 ### Zubereitung
 1. Ofen auf 220 °C vorheizen.
 2. Teig ausrollen, mit gewürztem Schmand bestreichen.
-3. Birnen in dünne Spalten, Zwiebel in Ringe schneiden, mit Käse und Walnüssen verteilen.
+3. Birnen in dünne Spalten, Zwiebel in Ringe schneiden, mit Käse verteilen.
 4. 12–15 min backen, mit Honig beträufeln und Rucola belegen.
 
 ## Gnocchi in Gemüse-Sauce
@@ -339,18 +332,18 @@ Alle Rezepte für 5 Personen, vegetarisch/vegan.
 - Zucchini | 2
 - Champignons | 500 g
 - Baguette | 2
-- Kräuterbutter | 1
+- Butter | 125 g
+- Kräuter | 1 Bund (z. B. Petersilie, Schnittlauch)
 - Salat | 1 Kopf
 - Tomaten | 4
 - Grillsoße | 2
 - Olivenöl | 4 EL
-- Holzkohle | 1 Sack
 
 ### Zubereitung
 1. Gemüse in grillfertige Stücke schneiden, mit Öl, Salz, Pfeffer und Kräutern marinieren, Champignons auf Spieße stecken.
 2. Maiskolben vorkochen (10 min), dann grillen.
 3. Würstchen, Grillkäse und Gemüse grillen.
-4. Mit Baguette, Kräuterbutter, Salat und Soßen servieren.
+4. Weiche Butter mit gehackten Kräutern und Salz zu Kräuterbutter verrühren. Mit Baguette, Salat und Soßen servieren.
 
 ## Pizza
 5 Portionen · ca. 40 min + 1 h Gehzeit
