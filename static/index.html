@@ -498,15 +498,6 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter
 /* Hinweis-Meldung als Glas-Kapsel */
 #toast { background: var(--glass-strong); border: 1px solid var(--glass-edge); border-radius: 999px; padding: 14px 22px; }
 
-/* Einkaufslisten: Häkchen und × oben an der ersten Textzeile ausrichten (ruhiger bei unterschiedlich hohen Zeilen) */
-.check-row { align-items: flex-start; }
-ul.check input[type=checkbox], .haken-platz { margin-top: -1px; }
-.haken-platz { flex: none; width: 26px; height: 26px; }
-.check-row .weg { align-self: flex-start; margin-top: -10px; }
-/* „Steht schon auf der Bring!-Liste“: ganz ohne Kreis, Trennlinien bis an den Rand */
-ul.check.ohne-haken .haken-platz { display: none; }
-ul.check.ohne-haken li + li::before, #viewEinkauf ul.check.ohne-haken li::before { left: 20px; }
-
 /* Weiche Animationen: Bereichswechsel und Prüf-Ergebnis */
 @keyframes rein { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 .rein { animation: rein .55s cubic-bezier(.25, .7, .25, 1) both; }
@@ -948,11 +939,9 @@ function kopf(titel, tag) {
 // Eine Zeile mit Haken; Haken gilt für die Zutat insgesamt (sie kommt einmal auf die Liste)
 function zeileMitHaken(a, text, menge, nebenzeile, entfernen) {
   const aktiv = waehlbar(a);
-  // Steht schon auf der Bring!-Liste: kein Kreis (nur Platzhalter, damit gemischte Listen bündig bleiben)
-  const cb = a && a.status === "liste" ? el("span", {class: "haken-platz", "aria-hidden": "true"})
-    : el("input", {type: "checkbox", checked: aktiv ? a.kaufen : a ? false : true, disabled: !aktiv,
-      "aria-label": a && a.status === "vorrat" ? `${text} nachkaufen` : `${text} kaufen`,
-      onchange: e => { a.kaufen = e.target.checked; zeigeErgebnis(); }});
+  const cb = el("input", {type: "checkbox", checked: aktiv ? a.kaufen : a ? false : true, disabled: !aktiv,
+    "aria-label": a && a.status === "vorrat" ? `${text} nachkaufen` : `${text} kaufen`,
+    onchange: e => { a.kaufen = e.target.checked; zeigeErgebnis(); }});
   const hinweis = !a ? null
     : a.status === "liste" ? el("span", {class: "tag" + (a.dort !== a.menge ? " warn" : "")},
         a.dort !== a.menge ? `auf der Liste: ${a.dort || "ohne Menge"}` : "auf der Liste")
@@ -982,7 +971,7 @@ function zeigeErgebnis() {
     box.append(kopf(`${titel} · ${items.length}`, st === "neu" ? "" : null),
       el("div", {class: "card list"},
       hint ? el("div", {class: "list-head"}, el("p", {class: "muted"}, hint)) : null,
-      el("ul", {class: "check" + (st === "liste" ? " ohne-haken" : "")}, items.map(a => zeileMitHaken(a, a.artikel, a.menge, a.gerichte.join(", "),
+      el("ul", {class: "check"}, items.map(a => zeileMitHaken(a, a.artikel, a.menge, a.gerichte.join(", "),
         a.eigene ? () => zutatEntfernen(a.artikel, null) : null)))));
   }
   zeigeGerichte(); zaehle();
@@ -1004,10 +993,8 @@ function zeigeGerichte() {
       gesehen.add(klein(e.artikel));
       li.push(zeileMitHaken(status[klein(e.artikel)], e.artikel, e.menge, "eigene Zutat", () => zutatEntfernen(e.artikel, t)));
     }
-    // Ohne abhakbare Zeile braucht es keinen Platzhalter links (sonst nur für bündige gemischte Listen)
-    const ohneHaken = !li.some(x => x.querySelector("input[type=checkbox]"));
     box.append(el("div", {class: "gruppe"}, kopf(`${TAG_NAME[t]} · ${g}`, t),
-      el("div", {class: "card list"}, el("ul", {class: "check" + (ohneHaken ? " ohne-haken" : "")}, li),
+      el("div", {class: "card list"}, el("ul", {class: "check"}, li),
         vorrat.length ? el("div", {class: "list-head", style: "border-top:.5px solid var(--line);padding-bottom:12px"},
           el("p", {class: "muted"}, "Aus dem Vorrat: " + vorrat.join(", "))) : null)));
   }
