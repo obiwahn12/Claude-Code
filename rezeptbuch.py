@@ -16,10 +16,12 @@ Format je Datei:
     1. Schritt
 """
 
+import os
 import re
 from pathlib import Path
 
-REZEPTE_DIR = Path(__file__).with_name("rezepte")
+# Auf dem Webserver per ESSENPLAN_DATA in den Datenordner umgelenkt (siehe manitu/essenplan.cgi).
+REZEPTE_DIR = Path(os.environ.get("ESSENPLAN_DATA") or Path(__file__).parent) / "rezepte"
 
 
 def _parse_section(name, text):

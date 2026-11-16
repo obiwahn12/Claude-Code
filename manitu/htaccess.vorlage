@@ -1,0 +1,27 @@
+# Essenplan auf dem Webserver – wird von manitu/paket.py zu .htaccess.
+# {{AUTHUSERFILE}} ersetzt paket.py durch den vollen Server-Pfad zur .htpasswd.
+
+# Ordnerinhalt nie auflisten
+Options -Indexes
+
+# Passwort nur über HTTPS abfragen; über http:// gibt es gar keinen Zugriff
+<If "%{HTTPS} == 'on'">
+    AuthType Basic
+    AuthName "Essenplan"
+    AuthUserFile "{{AUTHUSERFILE}}"
+    Require valid-user
+</If>
+<Else>
+    Require all denied
+</Else>
+
+# Code und Daten nie direkt ausliefern (zusätzlich zur Umleitung unten)
+<FilesMatch "(^\.|\.(py|md|json|txt|lock|vorlage)$)">
+    Require all denied
+</FilesMatch>
+
+# Alle Anfragen gehen an essenplan.cgi (PATH_INFO = /api/...)
+DirectoryIndex essenplan.cgi
+RewriteEngine On
+RewriteRule ^essenplan\.cgi - [L]
+RewriteRule ^(.*)$ essenplan.cgi/$1 [L]

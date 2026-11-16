@@ -12,6 +12,7 @@ nur das Anmelde-Token (~/.cache/bring-cli/token.json).
 
 import argparse
 import json
+import os
 import socket
 import threading
 from http import HTTPStatus
@@ -24,8 +25,11 @@ import rezeptbuch
 
 HERE = Path(__file__).resolve().parent
 STATIC = HERE / "static"
-VORRAT = HERE / "vorrat.txt"
-WOCHE = HERE / "woche.json"
+# Datenordner (vorrat.txt, woche.json, rezepte/): Standard neben dem Skript,
+# auf dem Webserver per ESSENPLAN_DATA umgelenkt (siehe manitu/essenplan.cgi).
+DATA = Path(os.environ.get("ESSENPLAN_DATA") or HERE)
+VORRAT = DATA / "vorrat.txt"
+WOCHE = DATA / "woche.json"
 TAGE = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
 
 _lock = threading.Lock()  # Dateizugriffe nacheinander
@@ -40,12 +44,19 @@ def katalog():
     return _names
 
 
-def bring_status():
+def bring_bereit():
+    """Mit gespeichertem Token anmelden, falls noch nicht geschehen. True, wenn angemeldet."""
     if _bring.auth is None:
         try:
             _bring.login()  # nur mit gespeichertem Token
         except bring.BringError:
-            return {"angemeldet": False}
+            return False
+    return True
+
+
+def bring_status():
+    if not bring_bereit():
+        return {"angemeldet": False}
     try:
         listen = [l["name"] for l in _bring.lists()]
     except bring.BringError:
@@ -79,7 +90,7 @@ def plan_pruefen(woche):
                 zeilen.append((z["artikel"], z["menge"]))
                 gerichte.setdefault(z["artikel"].casefold(), []).append(f"{tag} {g}")
     vorhanden, liste_ok = {}, False
-    if _bring.auth:
+    if bring_bereit():
         try:
             names = katalog()
             uuid = _bring.resolve_list(woche["liste"])
@@ -118,6 +129,52 @@ def an_bring(liste, artikel):
     return neu
 
 
+def dispatch(method, path, lies_json):
+    """API-Anfrage beantworten. lies_json() liefert den JSON-Body. None = nicht gefunden.
+
+    Wird vom lokalen Server (Handler) und vom CGI-Einstieg (manitu/essenplan.cgi) genutzt.
+    """
+    if path == "/api/rezepte" and method == "GET":
+        return {"rezepte": rezeptbuch.load_all(), "kategorien": rezeptbuch.kategorien()}
+    if path == "/api/rezepte" and method == "POST":
+        d = lies_json()
+        rezeptbuch.save(d["rezept"], alter_name=d.get("alter_name"), datei=d.get("datei"))
+        return {"ok": True}
+    if path.startswith("/api/rezepte/") and method == "DELETE":
+        rezeptbuch.delete(unquote(path[len("/api/rezepte/"):]))
+        return {"ok": True}
+    if path == "/api/vorrat" and method == "GET":
+        return {"text": VORRAT.read_text(encoding="utf-8") if VORRAT.exists() else ""}
+    if path == "/api/vorrat" and method == "PUT":
+        VORRAT.write_text(lies_json()["text"].rstrip() + "\n", encoding="utf-8")
+        return {"ok": True}
+    if path == "/api/woche" and method == "GET":
+        return lade_woche()
+    if path == "/api/woche" and method == "PUT":
+        w = lies_json()
+        woche = {"liste": str(w.get("liste") or "Abendessen"),
+                 "tage": {t: [str(g) for g in w.get("tage", {}).get(t, []) if g] for t in TAGE}}
+        WOCHE.write_text(json.dumps(woche, ensure_ascii=False, indent=2), encoding="utf-8")
+        return {"ok": True}
+    if path == "/api/woche/pruefen" and method == "POST":
+        return plan_pruefen(lade_woche())
+    if path == "/api/bring" and method == "GET":
+        return bring_status()
+    if path == "/api/bring/login" and method == "POST":
+        d = lies_json()
+        _bring.login(d.get("email", "").strip(), d.get("password", ""))
+        return bring_status()
+    if path == "/api/bring/logout" and method == "POST":
+        _bring.logout()
+        return {"angemeldet": False}
+    if path == "/api/bring/senden" and method == "POST":
+        if not bring_bereit():
+            raise bring.BringError("Nicht bei Bring! angemeldet.")
+        d = lies_json()
+        return {"hinzugefuegt": an_bring(d["liste"], d.get("artikel", []))}
+    return None
+
+
 class Handler(BaseHTTPRequestHandler):
     server_version = "Essenplan/1.0"
 
@@ -144,7 +201,7 @@ class Handler(BaseHTTPRequestHandler):
         path = urlparse(self.path).path
         try:
             with _lock:
-                result = self._dispatch(method, path)
+                result = dispatch(method, path, self._json)
             if result is None:
                 self._send(404, {"fehler": "Nicht gefunden"})
             else:
@@ -169,48 +226,6 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_DELETE(self):
         self._route("DELETE")
-
-    # ---------- API ----------
-    def _dispatch(self, method, path):
-        if path == "/api/rezepte" and method == "GET":
-            return {"rezepte": rezeptbuch.load_all(), "kategorien": rezeptbuch.kategorien()}
-        if path == "/api/rezepte" and method == "POST":
-            d = self._json()
-            rezeptbuch.save(d["rezept"], alter_name=d.get("alter_name"), datei=d.get("datei"))
-            return {"ok": True}
-        if path.startswith("/api/rezepte/") and method == "DELETE":
-            rezeptbuch.delete(unquote(path[len("/api/rezepte/"):]))
-            return {"ok": True}
-        if path == "/api/vorrat" and method == "GET":
-            return {"text": VORRAT.read_text(encoding="utf-8") if VORRAT.exists() else ""}
-        if path == "/api/vorrat" and method == "PUT":
-            VORRAT.write_text(self._json()["text"].rstrip() + "\n", encoding="utf-8")
-            return {"ok": True}
-        if path == "/api/woche" and method == "GET":
-            return lade_woche()
-        if path == "/api/woche" and method == "PUT":
-            w = self._json()
-            woche = {"liste": str(w.get("liste") or "Abendessen"),
-                     "tage": {t: [str(g) for g in w.get("tage", {}).get(t, []) if g] for t in TAGE}}
-            WOCHE.write_text(json.dumps(woche, ensure_ascii=False, indent=2), encoding="utf-8")
-            return {"ok": True}
-        if path == "/api/woche/pruefen" and method == "POST":
-            return plan_pruefen(lade_woche())
-        if path == "/api/bring" and method == "GET":
-            return bring_status()
-        if path == "/api/bring/login" and method == "POST":
-            d = self._json()
-            _bring.login(d.get("email", "").strip(), d.get("password", ""))
-            return bring_status()
-        if path == "/api/bring/logout" and method == "POST":
-            _bring.logout()
-            return {"angemeldet": False}
-        if path == "/api/bring/senden" and method == "POST":
-            if not _bring.auth:
-                raise bring.BringError("Nicht bei Bring! angemeldet.")
-            d = self._json()
-            return {"hinzugefuegt": an_bring(d["liste"], d.get("artikel", []))}
-        return None
 
 
 def lan_ip():

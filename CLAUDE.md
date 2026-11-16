@@ -56,6 +56,12 @@ Bei Zweifeln, ob etwas Grundvorrat ist (z. B. Butter, Eier), eintragen und es in
 `rezepte/*.md` verlustfrei). Läuft beim Nutzer auf einem Windows-PC „obiwahn“ (`start.bat`). Rezeptänderungen aus
 der App landen in den .md-Dateien dort – vor Änderungen hier ggf. abgleichen.
 
+Webserver (manitu, CGI): `manitu/essenplan.cgi` ruft `app.dispatch()` auf, `manitu/htaccess.vorlage`
+leitet alles dorthin um und schützt per Basic-Auth (nur HTTPS). `python manitu/paket.py --serverpfad …`
+baut das Upload-Paket in `manitu/upload/` (nicht im Git). Daten liegen dort in `daten/`
+(`ESSENPLAN_DATA`); Rezeptänderungen aus der Online-App sind dann nur auf dem Server.
+`--mit-daten` nur beim ersten Hochladen, sonst werden Online-Änderungen überschrieben.
+
 ## Zugang
 
 - Login braucht `BRING_EMAIL` und `BRING_PASSWORD` als Umgebungsvariablen. Nie in Dateien,

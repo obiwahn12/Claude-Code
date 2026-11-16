@@ -1,2 +1,4 @@
 *.bat text eol=crlf
 *.command text eol=lf
+*.cgi text eol=lf
+manitu/htaccess.vorlage text eol=lf
