@@ -401,6 +401,24 @@ ul.check input[type=checkbox]:checked::after { width: 7px; height: 13px; }
   .row:has(> .titel-aktionen) h1.title { font-size: 30px; }
 }
 
+/* Listen-Editor (Vorrat / Regelmäßig): Einträge als Raster mit × */
+.item-grid { list-style: none; margin: 0; padding: 6px; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 2px; }
+.item-grid .item { display: flex; align-items: center; min-height: 52px; padding-left: 14px; border-radius: 14px; font-size: 17px; }
+.item-grid .item:hover { background: var(--fill); }
+.item-grid .item .grow { min-width: 0; overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto; }
+.item-grid .item .muted { font-size: 15px; }
+.item-grid .weg { flex: none; display: grid; place-items: center; width: 44px; height: 44px; background: none; border: 0;
+                  color: var(--muted); font-size: 20px; border-radius: 999px; }
+.item-grid .weg:hover { color: var(--danger); }
+@media (max-width: 699px) {
+  .item-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; }
+  .item-grid .item { padding-left: 12px; font-size: 16px; }
+  .item-grid .weg { width: 40px; }
+}
+.zusatz.ohne-menge { grid-template-columns: minmax(0, 1fr) auto; }
+@media (max-width: 420px) { .zusatz.ohne-menge { grid-template-columns: 1fr auto; } .zusatz.ohne-menge .btn { grid-column: auto; } }
+#tab-vorrat .section-row:first-child { margin-top: 18px; }
+
 /* Wochentag ohne Gericht */
 .tag-row .gericht.leer { color: var(--muted); font-weight: 400; }
 
@@ -530,20 +548,12 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter
   <!-- ===== Vorrat ===== -->
   <section id="tab-vorrat" class="hidden">
     <h1 class="title">Vorrat</h1>
-    <p class="muted" style="margin:0 4px 12px">Was hier steht, kommt nie auf die Einkaufsliste – Grundvorrat und Dinge, die niemand mag. Eine Zutat pro Zeile, „#“ für Kommentare.</p>
-    <div class="card">
-      <label for="vorrat" style="position:absolute;left:-9999px">Vorrat</label>
-      <textarea id="vorrat" style="min-height:50vh;background:none;padding:0"></textarea>
-    </div>
-    <button class="btn block" id="vorratSave">Speichern</button>
+    <p class="muted" style="margin:0 4px 4px">Was hier steht, kommt nicht auf die Einkaufsliste – Grundvorrat und Dinge, die niemand mag. Mit + hinzufügen, mit × entfernen; wird sofort gespeichert.</p>
+    <div id="vorratListe"></div>
 
-    <h2 style="margin:36px 4px 6px">Regelmäßig einkaufen</h2>
-    <p class="muted" style="margin:0 4px 12px">Was ihr fast jede Woche kauft. Erscheint im Essenplan zum schnellen Hinzufügen. Eine Zutat pro Zeile, optional mit Menge: „Joghurt | 500 g“.</p>
-    <div class="card">
-      <label for="regel" style="position:absolute;left:-9999px">Regelmäßig einkaufen</label>
-      <textarea id="regel" style="min-height:260px;background:none;padding:0"></textarea>
-    </div>
-    <button class="btn block" id="regelSave">Speichern</button>
+    <h1 class="title" style="margin-top:40px">Regelmäßig</h1>
+    <p class="muted" style="margin:0 4px 4px">Was ihr fast jede Woche kauft. Erscheint im Essenplan zum schnellen Hinzufügen.</p>
+    <div id="regelListe"></div>
   </section>
 
   <!-- ===== Bring ===== -->
@@ -748,10 +758,10 @@ function zeigeSchnell() {
 }
 async function ladeRegel() {
   const text = (await api("GET", "/api/regelmaessig")).text;
-  $("#regel").value = text; leseRegel(text); zeigeSchnell();
+  regelEditor.setze(text); leseRegel(text); zeigeSchnell();
 }
-$("#regelSave").onclick = () => api("PUT", "/api/regelmaessig", {text: $("#regel").value})
-  .then(() => { leseRegel($("#regel").value); zeigeSchnell(); toast("✓ Gespeichert"); }).catch(fehler);
+const regelEditor = listenEditor({box: $("#regelListe"), ersterTitel: "Jede Woche", mitMenge: true,
+  speichern: async text => { leseRegel(text); zeigeSchnell(); await api("PUT", "/api/regelmaessig", {text}); }});
 function zutatHinzufuegen(tag, artikel, menge) {
   woche.extra = woche.extra || [];
   woche.extra.push({artikel, menge, tag});
@@ -994,8 +1004,67 @@ $("#eDelete").onclick = async () => {
 };
 
 /* ---------- Vorrat ---------- */
-async function ladeVorrat() { $("#vorrat").value = (await api("GET", "/api/vorrat")).text; }
-$("#vorratSave").onclick = () => api("PUT", "/api/vorrat", {text: $("#vorrat").value}).then(() => toast("✓ Vorrat gespeichert")).catch(fehler);
+/* Listen-Editor für Textdateien mit einer Zutat pro Zeile (vorrat.txt, regelmaessig.txt).
+   „#“-Zeilen vor dem ersten Eintrag sind Hinweise (bleiben unsichtbar erhalten), spätere „#“-Zeilen
+   beginnen einen Abschnitt. Jede Änderung wird sofort gespeichert. */
+function listenEditor({box, ersterTitel, mitMenge, speichern}) {
+  let zeilen = [], offen = null;
+  const gruppen = () => {
+    const g = []; let akt = null, ersterEintrag = false;
+    zeilen.forEach((z, i) => {
+      const t = z.trim();
+      if (!t) return;
+      if (t.startsWith("#")) {
+        if (!ersterEintrag) return;  // einleitende Hinweise
+        akt = {titel: t.replace(/^#+\s*/, ""), kopf: i, items: []}; g.push(akt); return;
+      }
+      if (!akt) { akt = {titel: ersterTitel, kopf: -1, items: []}; g.push(akt); }
+      ersterEintrag = true;
+      const [artikel, ...rest] = t.split("|");
+      akt.items.push({i, artikel: artikel.trim(), menge: rest.join("|").trim()});
+    });
+    if (!g.length) g.push({titel: ersterTitel, kopf: -1, items: []});
+    return g;
+  };
+  const sichern = async () => {
+    try { await speichern(zeilen.join("\n")); } catch (e) { fehler(e); }
+  };
+  function zeichne() {
+    box.replaceChildren(...gruppen().flatMap((g, gi) => {
+      const plus = el("button", {type: "button", class: "plus", title: "Hinzufügen", "aria-label": `Zu „${g.titel}“ hinzufügen`,
+        "aria-expanded": String(offen === gi), onclick: () => { offen = offen === gi ? null : gi; zeichne(); }}, "+");
+      const karte = el("div", {class: "card list"});
+      if (offen === gi) {
+        const artikel = el("input", {list: "artikelListe", placeholder: "Zutat", "aria-label": "Zutat", autocomplete: "off", enterkeyhint: mitMenge ? "next" : "done"});
+        const menge = mitMenge ? el("input", {placeholder: "Menge (optional)", "aria-label": "Menge", autocomplete: "off", enterkeyhint: "done"}) : null;
+        karte.append(el("form", {class: "zusatz" + (mitMenge ? "" : " ohne-menge"), onsubmit: ev => {
+          ev.preventDefault();
+          const a = artikel.value.trim(); if (!a) return artikel.focus();
+          if (g.items.some(x => klein(x.artikel) === klein(a)) || gruppen().some(gg => gg.items.some(x => klein(x.artikel) === klein(a)))) {
+            toast(`„${a}“ steht schon drin`); artikel.select(); return;
+          }
+          const m = menge ? menge.value.trim() : "";
+          const nach = g.items.length ? g.items[g.items.length - 1].i : g.kopf;  // ans Ende des Abschnitts
+          zeilen.splice(nach + 1, 0, m ? `${a} | ${m}` : a);
+          zeichne(); sichern();
+          const neu = box.querySelectorAll(".zusatz input")[0]; if (neu) neu.focus();  // gleich die nächste eingeben
+        }}, artikel, menge, el("button", {class: "btn", type: "submit"}, "Hinzufügen")));
+        setTimeout(() => { if (document.activeElement === document.body || !box.contains(document.activeElement)) artikel.focus(); });
+      }
+      karte.append(g.items.length
+        ? el("ul", {class: "item-grid"}, g.items.map(x => el("li", {class: "item"},
+            el("span", {class: "grow"}, x.artikel, x.menge ? el("span", {class: "muted"}, ` · ${x.menge}`) : null),
+            el("button", {type: "button", class: "weg", title: "Entfernen", "aria-label": `${x.artikel} entfernen`,
+              onclick: () => { zeilen.splice(x.i, 1); zeichne(); sichern(); toast(`${x.artikel} entfernt`); }}, "×"))))
+        : el("div", {class: "list-head", style: "padding-bottom:16px"}, el("p", {class: "muted"}, "Noch leer – mit + hinzufügen.")));
+      return [el("div", {class: "section-row"}, el("h2", {class: "section"}, `${g.titel} · ${g.items.length}`), plus), karte];
+    }));
+  }
+  return {setze(text) { zeilen = text.replace(/\s+$/, "").split("\n"); zeichne(); }};
+}
+const vorratEditor = listenEditor({box: $("#vorratListe"), ersterTitel: "Grundvorrat", mitMenge: false,
+  speichern: text => api("PUT", "/api/vorrat", {text})});
+async function ladeVorrat() { vorratEditor.setze((await api("GET", "/api/vorrat")).text); }
 
 /* ---------- Bring ---------- */
 $("#bringOut").onsubmit = async e => {
