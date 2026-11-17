@@ -180,6 +180,16 @@ ul.check input[type=checkbox]:disabled { opacity: .45; }
 .tag { display: inline-block; font-size: 13px; border-radius: 6px; padding: 1px 7px; background: var(--fill); color: var(--muted);
        white-space: nowrap; vertical-align: 1px; }
 .tag.warn { color: var(--warn); }
+.tag.schrank { color: var(--tint); }
+.tag.schrank.warn { color: var(--warn); }
+/* Vorrat-Seite: Bestand aus dem Vorratsschrank (nur ansehen) */
+.section-row .oeffnen { flex: none; margin: -8px 14px -6px 0; min-height: 40px; display: inline-flex; align-items: center; gap: 4px;
+                        color: var(--tint); font-size: 15px; text-decoration: none; }
+.item-grid .item .anzahl { flex: none; margin-right: 12px; font-size: 13px; font-weight: 600; color: var(--tint);
+                           background: var(--fill); border-radius: 999px; padding: 2px 9px; }
+.item-grid.schrank .item { padding-right: 2px; }
+.mehr-knopf { display: block; width: 100%; min-height: 48px; border: 0; border-top: .5px solid var(--line); background: none;
+              color: var(--tint); font-size: 16px; }
 .section-row { display: flex; align-items: flex-end; justify-content: space-between; margin: 22px 0 7px; }
 .section-row h2.section { margin: 0 16px; }
 .section-row .plus { flex: none; display: grid; place-items: center; width: 44px; height: 36px; margin: -8px 4px -6px 0;
@@ -676,6 +686,7 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter
     <h1 class="title">Vorrat</h1>
     <p class="muted" style="margin:0 4px 4px">Was hier steht, kommt nicht auf die Einkaufsliste – Grundvorrat und Dinge, die niemand mag. Mit + hinzufügen, mit × entfernen; wird sofort gespeichert.</p>
     <div id="vorratListe"></div>
+    <div id="schrankListe" class="hidden"></div>
 
     <h1 class="title" style="margin-top:40px">Regelmäßig</h1>
     <p class="muted" style="margin:0 4px 4px">Was ihr fast jede Woche kauft. Erscheint im Essenplan zum schnellen Hinzufügen.</p>
@@ -864,8 +875,10 @@ $("#zufall").onclick = () => {
   zeigeWoche(); speichereWoche();
   toast(`🎲 ${auswahl.length} ${auswahl.length === 1 ? "Tag" : "Tage"} gefüllt`);
 };
-// Abhakbar: neue Zutaten (Standard: kaufen) und Vorrat (Standard: nicht kaufen, außer er ist leer)
-const waehlbar = a => a && (a.status === "neu" || a.status === "vorrat");
+// Abhakbar: neue Zutaten (Standard: kaufen), Vorrat (Standard: nicht kaufen, außer er ist leer) und
+// was im Vorratsschrank liegt (Standard: nicht kaufen – außer es reicht nachweislich nicht)
+const waehlbar = a => a && (a.status === "neu" || a.status === "vorrat" || a.status === "schrank");
+const standardKaufen = a => a.status === "neu" || (a.status === "schrank" && a.schrank.reicht === false);
 // Zutaten prüfen; mit behalten=true bleiben gesetzte/entfernte Haken erhalten (z. B. nach „+ Zutat“)
 async function pruefe(behalten) {
   const vorher = behalten && pruefung
@@ -873,7 +886,7 @@ async function pruefe(behalten) {
   pruefung = await api("POST", "/api/woche/pruefen");
   const warZu = $("#ergebnis").classList.contains("hidden");
   if (!pruefung.artikel.length) { $("#ergebnis").classList.add("hidden"); toast("Noch keine Gerichte geplant"); return; }
-  pruefung.artikel.forEach(a => a.kaufen = waehlbar(a) && (vorher[klein(a.artikel) + "|" + a.status] ?? a.status === "neu"));
+  pruefung.artikel.forEach(a => a.kaufen = waehlbar(a) && (vorher[klein(a.artikel) + "|" + a.status] ?? standardKaufen(a)));
   $("#ergebnis").classList.remove("hidden");
   zeigeErgebnis();
   if (warZu) {  // erstes Einblenden: Abschnitte nacheinander weich einblenden, ggf. sanft hinscrollen
@@ -960,7 +973,11 @@ function zeileMitHaken(a, text, menge, nebenzeile, entfernen) {
     : a.status === "liste" ? el("span", {class: "tag" + (a.dort !== a.menge ? " warn" : "")},
         a.dort !== a.menge ? `auf der Liste: ${a.dort || "ohne Menge"}` : "auf der Liste")
     : a.status === "vorrat" ? el("span", {class: "tag" + (a.kaufen ? " warn" : "")}, a.kaufen ? "nachkaufen" : "Vorrat")
+    : a.status === "schrank" ? el("span", {class: "tag schrank" + (a.schrank.reicht === false ? " warn" : "")},
+        a.schrank.reicht === false ? `nur ${a.schrank.anzahl} im Schrank` : "im Schrank")
     : !a.kaufen ? el("span", {class: "tag"}, "zuhause") : null;
+  // Womit abgeglichen wurde – zur Kontrolle unter der Zeile
+  if (a && a.status === "schrank") nebenzeile = `Schrank: ${a.schrank.text}` + (nebenzeile ? ` · ${nebenzeile}` : "");
   const weg = entfernen ? el("button", {type: "button", class: "weg", title: "entfernen", "aria-label": `${text} entfernen`,
     onclick: e => { e.preventDefault(); e.stopPropagation(); entfernen(); }}, "×") : null;
   return el("li", {}, el("label", {class: "check-row"}, cb, el("div", {class: "grow"},
@@ -977,8 +994,10 @@ function zeigeErgebnis() {
   const box = $("#viewEinkauf"); box.replaceChildren();
   box.append(kopf(`Zutaten · ${pruefung.artikel.length}`, ""),
     el("div", {class: "card list"}, el("div", {class: "list-head", style: "padding-bottom:14px"},
-      el("p", {class: "muted"}, "Haken weg bei allem, was schon zuhause ist. Vorrat nur anhaken, wenn er leer ist."))));
-  const rang = {neu: 0, vorrat: 1, liste: 2};
+      el("p", {class: "muted"}, pruefung.schrank_angebunden
+        ? "Haken weg bei allem, was schon zuhause ist. Was im Vorratsschrank liegt, ist schon abgehakt – bei Bedarf wieder anhaken."
+        : "Haken weg bei allem, was schon zuhause ist. Vorrat nur anhaken, wenn er leer ist."))));
+  const rang = {neu: 0, schrank: 1, vorrat: 2, liste: 3};
   const gruppen = {};
   for (const a of pruefung.artikel) (gruppen[a.abteilung || "Eigene Artikel"] ||= []).push(a);
   const reihenfolge = pruefung.abteilungen || [];
@@ -1227,7 +1246,32 @@ function listenEditor({box, ersterTitel, mitMenge, speichern}) {
 }
 const vorratEditor = listenEditor({box: $("#vorratListe"), ersterTitel: "Grundvorrat", mitMenge: false,
   speichern: text => api("PUT", "/api/vorrat", {text})});
-async function ladeVorrat() { vorratEditor.setze((await api("GET", "/api/vorrat")).text); }
+async function ladeVorrat() { vorratEditor.setze((await api("GET", "/api/vorrat")).text); ladeSchrank().catch(() => {}); }
+
+/* Bestand aus dem Vorratsschrank (Nachbar-App /vorrat/): nur ansehen, bearbeitet wird dort */
+let schrankAlle = false;
+async function ladeSchrank() {
+  const d = await api("GET", "/api/schrank");
+  const box = $("#schrankListe");
+  box.classList.toggle("hidden", !d.angebunden);
+  if (!d.angebunden) return;
+  const zeige = () => {
+    const sicht = schrankAlle ? d.artikel : d.artikel.slice(0, 12);
+    const karte = el("div", {class: "card list"},
+      d.artikel.length
+        ? el("ul", {class: "item-grid schrank"}, sicht.map(s => el("li", {class: "item", title: s.abteilung},
+            el("span", {class: "grow"}, s.name), el("span", {class: "anzahl", "aria-label": `${s.menge} Stück`}, String(s.menge)))))
+        : el("div", {class: "list-head", style: "padding-bottom:16px"}, el("p", {class: "muted"}, "Der Vorratsschrank ist leer.")),
+      d.artikel.length > 12 ? el("button", {type: "button", class: "mehr-knopf", "aria-expanded": String(schrankAlle),
+        onclick: () => { schrankAlle = !schrankAlle; zeige(); }}, schrankAlle ? "Weniger anzeigen" : `Alle ${d.artikel.length} anzeigen`) : null);
+    box.replaceChildren(
+      el("div", {class: "section-row"}, el("h2", {class: "section"}, `Im Vorratsschrank · ${d.artikel.length}`),
+        el("a", {class: "oeffnen", href: "../vorrat/"}, "Öffnen ↗")),
+      el("p", {class: "muted", style: "margin:0 20px 10px"}, "Wird beim Zutaten-Prüfen als „zuhause“ vorgeschlagen. Ändern im Vorratsschrank."),
+      karte);
+  };
+  zeige();
+}
 
 /* ---------- Bring ---------- */
 $("#bringOut").onsubmit = async e => {

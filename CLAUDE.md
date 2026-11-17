@@ -57,6 +57,13 @@ Bei Zweifeln, ob etwas Grundvorrat ist (z. B. Butter, Eier), eintragen und es in
 sonst feste Liste/Stichworte, sonst „Eigene Artikel“ – neue Rezept-Zutaten dort ergänzen). Läuft im Alltag online (siehe unten); lokal nur zum Testen
 (`python app.py`). Rezeptänderungen aus der Online-App landen auf dem Server – vor Änderungen hier abgleichen.
 
+Vorratsschrank-Anbindung: `schrank.py` liest den Bestand der Schwester-App (/vorrat/, Repo
+`D:\work\webdev\inventory`) nur – Pfad über `VORRATSSCHRANK_BESTAND` (setzt `manitu/essenplan.cgi`), lokal
+ohne Variable aus. „Zutaten prüfen“ markiert Treffer als Status `schrank` (abgehakt = nicht kaufen, außer
+`reicht` ist False bei Dosen/Gläsern). Abgleich: gleiche Sorte, Oberbegriff am Wortende mit Ausnahmen
+(`ANDERES_PRODUKT`) und gleicher Bring!-Abteilung, `ZUORDNUNG` (Spaghetti → Nudeln …). Pflege/Haushalt
+(gespeicherte `abteilung` im Bestand) werden ignoriert. Vorrat-Seite zeigt den Schrank nur an (`/api/schrank`).
+
 Webserver (manitu, CGI): `manitu/essenplan.cgi` ruft `app.dispatch()` auf, `manitu/htaccess.vorlage`
 leitet alles dorthin um und schützt per Basic-Auth (nur HTTPS). `python manitu/paket.py --serverpfad …`
 baut das Upload-Paket in `manitu/upload/` (nicht im Git). Daten liegen dort in `daten/`

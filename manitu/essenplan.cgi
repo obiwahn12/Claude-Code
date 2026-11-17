@@ -15,6 +15,8 @@ HERE = Path(__file__).resolve().parent
 DATA = HERE / "daten"
 os.environ["ESSENPLAN_DATA"] = str(DATA)
 os.environ["XDG_CACHE_HOME"] = str(DATA / "cache")  # Bring!-Token + Artikelkatalog
+# Bestand der Vorratsschrank-App im Nachbarordner /vorrat/ (wird nur gelesen)
+os.environ.setdefault("VORRATSSCHRANK_BESTAND", str(HERE.parent / "vorrat" / "daten" / "bestand.json"))
 sys.path.insert(0, str(HERE))
 
 import app  # noqa: E402

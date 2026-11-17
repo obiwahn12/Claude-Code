@@ -23,6 +23,7 @@ from urllib.parse import unquote, urlparse
 import abteilungen
 import bring
 import rezeptbuch
+import schrank
 
 HERE = Path(__file__).resolve().parent
 STATIC = HERE / "static"
@@ -139,15 +140,25 @@ def plan_pruefen(woche):
         except bring.BringError:
             pass
     abteilung, reihenfolge = abteilungen.zuordner("de-DE")
+    im_schrank = schrank.laden(abteilung)  # None = Vorratsschrank nicht angebunden
     artikel = []
     for name, menge in bring.merge_items(zeilen):
         key = name.casefold()
         status = ("vorrat" if key in vorrat and key not in eigene
                   else "liste" if key in vorhanden else "neu")
-        artikel.append({"artikel": name, "menge": menge, "status": status, "eigene": key in eigene,
-                        "abteilung": abteilung(name),
-                        "dort": vorhanden.get(key, ""), "gerichte": list(dict.fromkeys(gerichte.get(key, [])))})
-    return {"artikel": artikel, "abteilungen": reihenfolge, "liste_geprueft": liste_ok}
+        eintrag = {"artikel": name, "menge": menge, "status": status, "eigene": key in eigene,
+                   "abteilung": abteilung(name),
+                   "dort": vorhanden.get(key, ""), "gerichte": list(dict.fromkeys(gerichte.get(key, [])))}
+        if status == "neu":  # nicht Grundvorrat, nicht schon auf der Liste: liegt es im Vorratsschrank?
+            treffer = schrank.finden(name, eintrag["abteilung"], im_schrank)
+            if treffer:
+                anzahl = sum(t["menge"] for t in treffer)
+                eintrag.update(status="schrank", schrank={
+                    "text": ", ".join(f"{t['menge']}× {t['name']}" for t in treffer),
+                    "anzahl": anzahl, "reicht": schrank.reicht(menge, anzahl)})
+        artikel.append(eintrag)
+    return {"artikel": artikel, "abteilungen": reihenfolge, "liste_geprueft": liste_ok,
+            "schrank_angebunden": im_schrank is not None}
 
 
 def an_bring(liste, artikel):
@@ -204,6 +215,14 @@ def dispatch(method, path, lies_json):
         return {"ok": True}
     if path == "/api/woche/pruefen" and method == "POST":
         return plan_pruefen(lade_woche())
+    if path == "/api/schrank" and method == "GET":  # Lebensmittel im Vorratsschrank (nur lesen)
+        abteilung, reihenfolge = abteilungen.zuordner("de-DE")
+        im_schrank = schrank.laden(abteilung)
+        if im_schrank is None:
+            return {"angebunden": False, "artikel": []}
+        rang = {a: i for i, a in enumerate(reihenfolge)}
+        im_schrank.sort(key=lambda s: (rang.get(s["abteilung"], len(rang)), s["name"].casefold()))
+        return {"angebunden": True, "artikel": im_schrank}
     if path == "/api/bring" and method == "GET":
         return bring_status()
     if path == "/api/bring/login" and method == "POST":
