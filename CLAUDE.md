@@ -57,6 +57,10 @@ Bei Zweifeln, ob etwas Grundvorrat ist (z. B. Butter, Eier), eintragen und es in
 sonst feste Liste/Stichworte, sonst „Eigene Artikel“ – neue Rezept-Zutaten dort ergänzen). Läuft im Alltag online (siehe unten); lokal nur zum Testen
 (`python app.py`). Rezeptänderungen aus der Online-App landen auf dem Server – vor Änderungen hier abgleichen.
 
+„Heute“-Ansicht (Kochansicht, eigener Menüpunkt): Gericht des Tages aus `woche.json` mit Meta/Hinweis,
+Zutaten als Abhakliste und Zubereitung als Schritte (aus „1. …“-Zeilen), blätterbar Mo–So. Abgehakt wird nur im
+Browser (localStorage `kochen|Tag|Gericht`); Wake Lock hält den Bildschirm an, solange die Ansicht offen ist.
+
 Vorratsschrank-Anbindung: `schrank.py` liest den Bestand der Schwester-App (/vorrat/, Repo
 `D:\work\webdev\inventory`) nur – Pfad über `VORRATSSCHRANK_BESTAND` (setzt `manitu/essenplan.cgi`), lokal
 ohne Variable aus. „Zutaten prüfen“ markiert Treffer als Status `schrank` (abgehakt = nicht kaufen, außer

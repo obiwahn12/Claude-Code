@@ -221,9 +221,11 @@ ul.check input[type=checkbox]:disabled { opacity: .45; }
 .kat-leiste { position: sticky; top: var(--kopf-h, 64px); z-index: 8; display: flex; gap: 8px; overflow-x: auto;
               margin: 0 -20px 4px; padding: 6px 20px 10px; scrollbar-width: none; scroll-padding-inline: 20px; }
 .kat-leiste::-webkit-scrollbar { display: none; }
-/* klebt die Leiste oben: Glasfläche dahinter, damit die Liste nicht durchscheint */
-.kat-leiste.klebt { background: var(--glass-strong); box-shadow: 0 .5px 0 var(--line);
-                    -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
+/* am Desktop: mit der Maus ziehen; weicher Rand zeigt, dass es weitergeht */
+.kat-leiste { cursor: grab; -webkit-mask-image: linear-gradient(to right, transparent 0, #000 22px, #000 calc(100% - 22px), transparent);
+              mask-image: linear-gradient(to right, transparent 0, #000 22px, #000 calc(100% - 22px), transparent); }
+.kat-leiste.zieht { cursor: grabbing; scroll-behavior: auto; }
+.kat-leiste.zieht button { pointer-events: none; }
 .kat-leiste button { flex: none; display: inline-flex; align-items: center; gap: 7px; min-height: 40px; padding: 0 16px;
                      border-radius: 999px; border: 1px solid var(--glass-edge); background: var(--glass-strong); color: var(--text);
                      font-size: 15px; font-weight: 500; white-space: nowrap; box-shadow: var(--glass-shadow);
@@ -609,6 +611,24 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter
                      -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
   header .bar { padding-bottom: 10px; }
 }
+
+/* ---------- Heute: Kochansicht ---------- */
+.heute-kopf { align-items: flex-end; flex-wrap: nowrap; }
+.heute-kopf .titel-aktionen .btn { width: 48px; padding: 0; font-size: 26px; font-weight: 400; }
+.heute-gericht { font-size: 26px; line-height: 1.2; font-weight: 700; margin: 0 0 6px; }
+.heute-meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
+.heute-hinweis { margin: 14px 0 0; padding: 12px 14px; border-radius: 14px; background: var(--fill); font-size: 15px; line-height: 1.45; }
+.heute-zeile .link { flex: none; min-height: 40px; padding: 0 4px; margin: -8px 14px -6px 0; background: none; border: 0; color: var(--tint); font-size: 15px; }
+ul.check li.erledigt .check-row > .grow { opacity: .45; text-decoration: line-through; }
+ol.schritte { list-style: none; margin: 0; padding: 0; }
+ol.schritte li + li { border-top: .5px solid var(--line); }
+ol.schritte button { display: flex; gap: 14px; align-items: flex-start; width: 100%; padding: 16px 20px; background: none; border: 0;
+                     text-align: left; font-size: 18px; line-height: 1.5; color: var(--text); }
+ol.schritte .nr { flex: none; display: grid; place-items: center; width: 30px; height: 30px; margin-top: 1px; border-radius: 50%;
+                  background: var(--accent); color: var(--accent-text); font-size: 15px; font-weight: 700; }
+ol.schritte li.erledigt button { color: var(--muted); }
+ol.schritte li.erledigt .nr { background: var(--fill); color: var(--muted); }
+.wachhalten { margin: 18px 4px 0; text-align: center; }
 </style>
 </head>
 <body>
@@ -626,6 +646,9 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
   </div>
   <nav role="tablist" aria-label="Bereiche" id="hauptnav">
+    <button role="tab" data-tab="heute" aria-selected="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h16v6.5A3.5 3.5 0 0 1 16.5 20h-9A3.5 3.5 0 0 1 4 16.5z"/><path d="M2.5 10h19M9 6.5c0-1 1-1.5 1-2.5M13 6.5c0-1 1-1.5 1-2.5"/></svg>
+      <span>Heute</span></button>
     <button role="tab" data-tab="woche" aria-selected="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
       <span>Essenplan</span></button>
@@ -642,6 +665,18 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter
 </div></header>
 
 <main>
+  <!-- ===== Heute (Kochansicht) ===== -->
+  <section id="tab-heute" class="hidden">
+    <div class="row heute-kopf">
+      <div class="grow"><h1 class="title" id="heuteTag">Heute</h1></div>
+      <div class="titel-aktionen">
+        <button class="btn sec" id="heuteZurueck" aria-label="Vorheriger Tag">‹</button>
+        <button class="btn sec" id="heuteVor" aria-label="Nächster Tag">›</button>
+      </div>
+    </div>
+    <div id="heuteInhalt"></div>
+  </section>
+
   <!-- ===== Woche ===== -->
   <section id="tab-woche">
     <div class="row" style="align-items:flex-end">
@@ -825,6 +860,8 @@ function zeigeTab(t) {
   window.scrollTo(0, 0);
   document.querySelectorAll("main > section").forEach(s => s.classList.toggle("hidden", s.id !== "tab-" + t));
   if (t === "rezepte") hoehenMessen();  // Tab-Leiste ist erst jetzt sichtbar
+  if (t === "heute") { heuteTag = null; zeigeHeute(); }
+  wachhalten(t === "heute");
   try { localStorage.setItem("tab", t); } catch {}
 }
 
@@ -859,6 +896,7 @@ async function ladeWoche() {
 }
 async function speichereWoche() { await api("PUT", "/api/woche", woche).catch(fehler); pruefung = null; $("#ergebnis").classList.add("hidden"); }
 function zeigeWoche() {
+  if (heuteSichtbar()) zeigeHeute();  // z. B. Gericht in „Heute“ gewählt
   const heute = TAGE[(new Date().getDay() + 6) % 7];
   $("#days").replaceChildren(el("div", {class: "card list woche"}, TAGE.map(t => {
     const g = (woche.tage[t] || [])[0] || "";
@@ -1205,13 +1243,28 @@ function hoehenMessen() {
   document.documentElement.style.setProperty("--leiste-h", `${Math.round($("#katLeiste").offsetHeight || 56)}px`);
 }
 addEventListener("resize", hoehenMessen);
-// Leiste klebt oben? -> Klasse „klebt“ (Glas-Hintergrund)
-function klebtPruefen() {
+// Tab-Leiste am Desktop: Mausrad scrollt waagerecht, mit gedrückter Maustaste ziehen
+(() => {
   const l = $("#katLeiste"); if (!l) return;
-  const kopf = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--kopf-h")) || 64;
-  l.classList.toggle("klebt", l.offsetParent !== null && scrollY > 0 && l.getBoundingClientRect().top <= kopf + 1);
-}
-addEventListener("scroll", klebtPruefen, {passive: true});
+  l.addEventListener("wheel", e => {
+    if (l.scrollWidth <= l.clientWidth || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+    l.scrollLeft += e.deltaY; e.preventDefault();
+  }, {passive: false});
+  let start = null, gezogen = false;
+  l.addEventListener("pointerdown", e => {
+    if (e.pointerType !== "mouse" || e.button !== 0) return;
+    start = {x: e.clientX, links: l.scrollLeft}; gezogen = false;
+  });
+  addEventListener("pointermove", e => {
+    if (!start) return;
+    const dx = e.clientX - start.x;
+    if (!gezogen && Math.abs(dx) > 5) { gezogen = true; l.classList.add("zieht"); }
+    if (gezogen) l.scrollLeft = start.links - dx;
+  });
+  addEventListener("pointerup", () => { start = null; l.classList.remove("zieht"); });
+  // nach dem Ziehen keinen Tab auswählen
+  l.addEventListener("click", e => { if (gezogen) { e.stopPropagation(); e.preventDefault(); gezogen = false; } }, true);
+})();
 
 /* ---------- Gericht-Auswahl (Blatt / Fenster) ---------- */
 let wahl = {tag: null, kat: null};
@@ -1407,10 +1460,90 @@ document.querySelectorAll("#theme button").forEach(b => b.onclick = () => setzeT
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => setzeTheme(document.documentElement.dataset.theme || "auto"));
 setzeTheme(document.documentElement.dataset.theme || "auto");
 
+
+/* ---------- Heute: Kochansicht ---------- */
+let heuteTag = null;  // gezeigter Wochentag (null = heute)
+const tagHeute = () => TAGE[(new Date().getDay() + 6) % 7];
+// Abgehakte Zutaten/Schritte je Tag und Gericht merken (überlebt Neuladen und Tab-Wechsel)
+const kochSchluessel = (tag, g) => `kochen|${tag}|${g}`;
+function kochStand(tag, g) { try { return JSON.parse(localStorage.getItem(kochSchluessel(tag, g))) || {z: [], s: []}; } catch { return {z: [], s: []}; } }
+function kochSpeichern(tag, g, st) { try { localStorage.setItem(kochSchluessel(tag, g), JSON.stringify(st)); } catch {} }
+// Zubereitung in Schritte zerlegen: „1. …“-Zeilen bzw. Absätze
+function schritte(text) {
+  return String(text || "").split(/\n+/).map(z => z.replace(/^\s*\d+[.)]\s*/, "").trim()).filter(Boolean);
+}
+function zeigeHeute() {
+  const tag = heuteTag || tagHeute();
+  const istHeute = tag === tagHeute();
+  $("#heuteTag").textContent = istHeute ? "Heute" : TAG_NAME[tag];
+  const box = $("#heuteInhalt");
+  const g = (woche.tage[tag] || [])[0];
+  if (!g) {
+    box.replaceChildren(el("div", {class: "card"},
+      el("p", {style: "margin:0 0 14px"}, istHeute ? "Für heute ist kein Gericht geplant." : `Für ${TAG_NAME[tag]} ist kein Gericht geplant.`),
+      el("button", {class: "btn", type: "button", onclick: () => oeffneWahl(tag)}, "Gericht wählen")));
+    return;
+  }
+  const r = rezepte.find(x => x.name === g);
+  const st = kochStand(tag, g);
+  const neu = () => { kochSpeichern(tag, g, st); zeigeHeute(); };
+  const teile = [el("div", {class: "card"},
+    el("p", {class: "muted", style: "margin:0 0 4px"}, istHeute ? TAG_NAME[tag] : "Vorschau"),
+    el("h2", {class: "heute-gericht"}, g),
+    r && r.meta ? el("div", {class: "heute-meta"}, ...r.meta.split("·").map(m => el("span", {class: "tag"}, m.trim()))) : null,
+    r && r.hinweis ? el("p", {class: "heute-hinweis"}, r.hinweis) : null,
+    r ? null : el("p", {class: "muted", style: "margin:8px 0 0"}, "Zu diesem Gericht gibt es kein Rezept."))];
+  if (r) {
+    const zFertig = r.zutaten.filter((_, i) => st.z.includes(i)).length;
+    teile.push(
+      el("div", {class: "section-row heute-zeile"}, el("h2", {class: "section"}, `Zutaten · ${zFertig}/${r.zutaten.length}`),
+        st.z.length || st.s.length ? el("button", {class: "link", type: "button", onclick: () => { st.z = []; st.s = []; neu(); }}, "Zurücksetzen") : null),
+      el("div", {class: "card list"}, el("ul", {class: "check"}, r.zutaten.map((z, i) => {
+        const fertig = st.z.includes(i);
+        return el("li", {class: fertig ? "erledigt" : ""}, el("label", {class: "check-row"},
+          el("input", {type: "checkbox", checked: fertig, "aria-label": `${z.artikel} erledigt`, onchange: e => {
+            st.z = e.target.checked ? [...st.z, i] : st.z.filter(x => x !== i); neu(); }}),
+          el("div", {class: "grow"}, z.artikel, z.menge ? el("span", {class: "muted"}, ` · ${z.menge}`) : null)));
+      }))));
+    const liste = schritte(r.zubereitung);
+    if (liste.length) teile.push(
+      el("h2", {class: "section"}, `Zubereitung · ${liste.filter((_, i) => st.s.includes(i)).length}/${liste.length}`),
+      el("div", {class: "card list"}, el("ol", {class: "schritte"}, liste.map((s, i) => {
+        const fertig = st.s.includes(i);
+        return el("li", {class: fertig ? "erledigt" : ""}, el("button", {type: "button", "aria-pressed": String(fertig),
+          onclick: () => { st.s = fertig ? st.s.filter(x => x !== i) : [...st.s, i]; neu(); }},
+          el("span", {class: "nr", "aria-hidden": "true"}, fertig ? "✓" : String(i + 1)), el("span", {}, s)));
+      }))));
+  }
+  if ("wakeLock" in navigator) teile.push(el("p", {class: "muted wachhalten"}, "Der Bildschirm bleibt an, solange diese Ansicht offen ist."));
+  box.replaceChildren(...teile);
+}
+function heuteBlaettern(schritt) {
+  const i = TAGE.indexOf(heuteTag || tagHeute());
+  heuteTag = TAGE[(i + schritt + 7) % 7];
+  if (heuteTag === tagHeute()) heuteTag = null;
+  zeigeHeute(); scrollTo({top: 0});
+}
+$("#heuteZurueck").onclick = () => heuteBlaettern(-1);
+$("#heuteVor").onclick = () => heuteBlaettern(1);
+
+// Bildschirm anlassen, solange „Heute“ sichtbar ist (Wake Lock; der Browser gibt ihn beim Wegwechseln frei)
+let wachSperre = null;
+async function wachhalten(an) {
+  try {
+    if (an && !wachSperre && "wakeLock" in navigator && document.visibilityState === "visible") {
+      wachSperre = await navigator.wakeLock.request("screen");
+      wachSperre.addEventListener("release", () => { wachSperre = null; });
+    } else if (!an && wachSperre) { await wachSperre.release(); wachSperre = null; }
+  } catch { wachSperre = null; }
+}
+const heuteSichtbar = () => !$("#tab-heute").classList.contains("hidden");
+document.addEventListener("visibilitychange", () => wachhalten(heuteSichtbar()));
+
 /* ---------- Start ---------- */
 (async () => {
   try { const t = localStorage.getItem("tab"); if (t) zeigeTab(t); } catch {}
-  try { await ladeRezepte(); await ladeWoche(); wocheEinblenden(); await ladeRegel(); await ladeBring(); await ladeVorrat(); }
+  try { await ladeRezepte(); await ladeWoche(); wocheEinblenden(); if (heuteSichtbar()) zeigeHeute(); await ladeRegel(); await ladeBring(); await ladeVorrat(); }
   catch (e) { fehler(e); }
 })();
 </script>
