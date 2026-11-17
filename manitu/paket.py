@@ -71,27 +71,36 @@ def text_kopieren(quelle, ziel, ersetzen=None):
     ziel.write_bytes(t.encode("utf-8"))
 
 
-def main():
-    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--serverpfad", required=True,
-                   help="voller Pfad zum Webspace-Ordner der Domain, z. B. /home/sites/site123/web/domain.de")
-    p.add_argument("--ordner", default="essen", help="Unterordner auf der Website (Standard: essen)")
-    p.add_argument("--mit-daten", action="store_true", help="daten/ mit Rezepten und Vorrat mitliefern")
-    p.add_argument("--passwort", metavar="BENUTZER", help=".htpasswd mit diesem Benutzernamen anlegen")
-    a = p.parse_args()
+SERVERPFAD = "/home/sites/site100037548/web/luise-und-peter.de"  # Webspace-Ordner der Domain (manitu)
 
-    ziel = HIER / "upload" / a.ordner
+
+def bauen(serverpfad=SERVERPFAD, ordner="essen"):
+    """Upload-Paket (nur Programmdateien, ohne daten/ und .htpasswd) nach manitu/upload/<ordner>/ bauen."""
+    ziel = HIER / "upload" / ordner
     if ziel.exists():
         shutil.rmtree(ziel)
     ziel.mkdir(parents=True)
-
-    server = f"{a.serverpfad.rstrip('/')}/{a.ordner}"
+    server = f"{serverpfad.rstrip('/')}/{ordner}"
     text_kopieren(HIER / "essenplan.cgi", ziel / "essenplan.cgi")
     text_kopieren(HIER / "htaccess.vorlage", ziel / ".htaccess",
                   {"{{AUTHUSERFILE}}": f"{server}/.htpasswd"})
     for name in ("app.py", "abteilungen.py", "bring.py", "rezeptbuch.py"):
         text_kopieren(REPO / name, ziel / name)
     text_kopieren(REPO / "static" / "index.html", ziel / "static" / "index.html")
+    return ziel
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument("--serverpfad", default=SERVERPFAD,
+                   help=f"voller Pfad zum Webspace-Ordner der Domain (Standard: {SERVERPFAD})")
+    p.add_argument("--ordner", default="essen", help="Unterordner auf der Website (Standard: essen)")
+    p.add_argument("--mit-daten", action="store_true", help="daten/ mit Rezepten und Vorrat mitliefern")
+    p.add_argument("--passwort", metavar="BENUTZER", help=".htpasswd mit diesem Benutzernamen anlegen")
+    a = p.parse_args()
+
+    ziel = bauen(a.serverpfad, a.ordner)
+    server = f"{a.serverpfad.rstrip('/')}/{a.ordner}"
 
     if a.mit_daten:
         for md in sorted((REPO / "rezepte").glob("*.md")):
