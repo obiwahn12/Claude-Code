@@ -621,6 +621,19 @@ ol.schritte .nr { flex: none; display: grid; place-items: center; width: 30px; h
                   background: var(--accent); color: var(--accent-text); font-size: 15px; font-weight: 700; }
 ol.schritte li.erledigt button { color: var(--muted); }
 ol.schritte li.erledigt .nr { background: var(--fill); color: var(--muted); }
+
+/* Neu-laden-Knopf: nur auf Touch-Geräten (iPhone/iPad) und in der App vom Home-Bildschirm */
+.neuladen-btn { display: none; place-items: center; flex: none; order: 2; margin-left: auto; width: 48px; height: 48px; padding: 0;
+                border-radius: 999px; color: var(--text); background: var(--glass-strong); border: 1px solid var(--glass-edge);
+                box-shadow: var(--glass-shadow); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
+.neuladen-btn svg { width: 22px; height: 22px; }
+.neuladen-btn:active { opacity: .7; }
+.neuladen-btn.dreht svg { animation: neuladen-drehen .7s linear infinite; }
+@keyframes neuladen-drehen { to { transform: rotate(360deg); } }
+@media (hover: none) and (pointer: coarse), (display-mode: standalone) {
+  .neuladen-btn { display: grid; }
+  .neuladen-btn ~ .theme { order: 3; margin-left: 0; }
+}
 </style>
 </head>
 <body>
@@ -628,6 +641,9 @@ ol.schritte li.erledigt .nr { background: var(--fill); color: var(--muted); }
   <button type="button" class="menu-btn" id="menuBtn" aria-label="Menü" aria-expanded="false" aria-controls="hauptnav">
     <svg class="auf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     <svg class="zu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <button type="button" class="neuladen-btn" id="neuLaden" aria-label="Neu laden" title="Neu laden">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v4.5h-4.5"/></svg>
   </button>
   <div class="theme" id="theme" role="radiogroup" aria-label="Darstellung">
     <button type="button" role="radio" data-theme="auto" title="Automatisch (wie das Gerät)" aria-label="Automatisch">
@@ -1414,6 +1430,9 @@ $("#bringOut").onsubmit = async e => {
   } catch (err) { fehler(err); }
 };
 $("#logout").onclick = async () => { await api("POST", "/api/bring/logout"); await ladeBring(); };
+
+// Neu laden (Kopfzeile, Touch-Geräte): holt die Seite frisch vom Server
+$("#neuLaden").onclick = () => { $("#neuLaden").classList.add("dreht"); location.reload(); };
 
 /* ---------- Darstellung (Hell / Dunkel / Automatisch) ---------- */
 function setzeTheme(t) {
