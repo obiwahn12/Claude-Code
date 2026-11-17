@@ -621,7 +621,6 @@ ol.schritte .nr { flex: none; display: grid; place-items: center; width: 30px; h
                   background: var(--accent); color: var(--accent-text); font-size: 15px; font-weight: 700; }
 ol.schritte li.erledigt button { color: var(--muted); }
 ol.schritte li.erledigt .nr { background: var(--fill); color: var(--muted); }
-.wachhalten { margin: 18px 4px 0; text-align: center; }
 </style>
 </head>
 <body>
@@ -1486,7 +1485,6 @@ function zeigeHeute() {
           el("span", {class: "nr", "aria-hidden": "true"}, fertig ? "✓" : String(i + 1)), el("span", {}, s)));
       }))));
   }
-  if ("wakeLock" in navigator) teile.push(el("p", {class: "muted wachhalten"}, "Der Bildschirm bleibt an, solange diese Ansicht offen ist."));
   box.replaceChildren(...teile);
 }
 function heuteBlaettern(schritt) {
