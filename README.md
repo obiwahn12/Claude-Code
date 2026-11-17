@@ -49,8 +49,8 @@ python3 app.py          # http://localhost:8765
 python3 app.py --lan    # zusätzlich im WLAN erreichbar (Handy/iPad) – ohne Passwortschutz
 ```
 
-Doppelklick zum Starten: Windows `start.bat`, Mac `start.command`. Unter Windows Python von
-https://www.python.org/downloads/ installieren (Haken bei „Add python.exe to PATH“). Beim ersten
+Im Alltag läuft die App online auf dem Webspace (siehe `manitu/`); lokal nur zum Testen.
+Unter Windows Python von https://www.python.org/downloads/ installieren. Beim ersten
 Start mit `--lan` fragt die Windows-Firewall – „Private Netzwerke“ erlauben.
 
 - **Woche:** Gerichte pro Tag auswählen → „Zutaten prüfen“ → abhaken, was zuhause ist →
