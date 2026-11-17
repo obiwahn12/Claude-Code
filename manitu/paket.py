@@ -74,9 +74,10 @@ def text_kopieren(quelle, ziel, ersetzen=None):
 SERVERPFAD = "/home/sites/site100037548/web/luise-und-peter.de"  # Webspace-Ordner der Domain (manitu)
 
 
-def bauen(serverpfad=SERVERPFAD, ordner="essen"):
-    """Upload-Paket (nur Programmdateien, ohne daten/ und .htpasswd) nach manitu/upload/<ordner>/ bauen."""
-    ziel = HIER / "upload" / ordner
+def bauen(serverpfad=SERVERPFAD, ordner="essen", ziel=None):
+    """Upload-Paket (nur Programmdateien, ohne daten/ und .htpasswd) nach ziel bauen
+    (Standard: manitu/upload/<ordner>/). Liefert den Ordner."""
+    ziel = Path(ziel) if ziel else HIER / "upload" / ordner
     if ziel.exists():
         shutil.rmtree(ziel)
     ziel.mkdir(parents=True)

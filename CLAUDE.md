@@ -62,10 +62,11 @@ leitet alles dorthin um und schützt per Basic-Auth (nur HTTPS). `python manitu/
 baut das Upload-Paket in `manitu/upload/` (nicht im Git). Daten liegen dort in `daten/`
 (`ESSENPLAN_DATA`); Rezeptänderungen aus der Online-App sind dann nur auf dem Server.
 `--mit-daten` nur beim ersten Hochladen, sonst werden Online-Änderungen überschrieben.
-Updates hochladen: `python manitu/hochladen.py` (FTPS auf ngcobalt403.manitu.net, Konto ftp200030314) –
-baut das Paket, fragt das FTP-Passwort verdeckt ab, lädt nur geänderte Programmdateien hoch und setzt
-die Rechte; `daten/` und `.htpasswd` fasst es nie an. `-n` = Probelauf, `--alle` = alles. Das Passwort
-gibt der Nutzer selbst im Terminal ein – nie danach fragen, es entgegennehmen oder speichern.
+Updates hochladen: `python manitu/hochladen.py` – per SSH als ssh300011556@ngcobalt403.manitu.net mit dem
+Schlüssel `~/.ssh/manitu_upload` (Host-Key in `~/.ssh/known_hosts_manitu`), kein Passwort nötig. Vergleicht
+Prüfsummen mit dem Server, lädt nur geänderte Programmdateien hoch und setzt die Rechte; `daten/` und
+`.htpasswd` fasst es nie an. `-n` = Probelauf, `--alle` = alles neu. Online-Rezepte lassen sich per SSH
+lesen (`daten/rezepte/`), z. B. um sie vor Rezeptänderungen im Repo abzugleichen.
 
 ## Zugang
 
