@@ -148,7 +148,7 @@ body {{ margin:0; min-height:100dvh; display:grid; place-items:center; padding:2
   font:17px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif; }}
 form {{ width:min(380px,100%); padding:28px 24px; border-radius:28px; background:var(--glass); border:1px solid var(--edge);
   -webkit-backdrop-filter:saturate(180%) blur(28px); backdrop-filter:saturate(180%) blur(28px); box-shadow:0 10px 34px rgba(0,0,0,.12); }}
-h1 {{ font-size:28px; margin:0 0 4px; }} p {{ margin:0 0 18px; color:var(--muted); font-size:15px; }}
+h1 {{ font-size:28px; margin:0 0 18px; }}
 input {{ width:100%; min-height:54px; border:0; border-radius:16px; padding:14px 16px; font:inherit; font-size:18px; color:inherit; background:var(--fill); }}
 button {{ width:100%; min-height:54px; margin-top:14px; border:0; border-radius:999px; background:var(--accent); color:#fff; font:inherit; font-weight:600; }}
 .fehler {{ color:var(--danger); margin:12px 2px 0; }}
@@ -156,7 +156,6 @@ button {{ width:100%; min-height:54px; margin-top:14px; border:0; border-radius:
 </style></head><body>
 <form method="post" action="login">
   <h1>{html.escape(app_name)}</h1>
-  <p>Familienpasswort eingeben – gilt dann ein halbes Jahr auf diesem Gerät, für Essenplan und Vorratsschrank.</p>
   <input type="password" name="passwort" autocomplete="current-password" aria-label="Passwort" placeholder="Passwort" required autofocus>
   <input type="text" name="benutzer" value="familie" autocomplete="username" hidden>
   {meldung_html}
