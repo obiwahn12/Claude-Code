@@ -64,8 +64,14 @@ ohne Variable aus. „Zutaten prüfen“ markiert Treffer als Status `schrank` (
 (`ANDERES_PRODUKT`) und gleicher Bring!-Abteilung, `ZUORDNUNG` (Spaghetti → Nudeln …). Pflege/Haushalt
 (gespeicherte `abteilung` im Bestand) werden ignoriert. Vorrat-Seite zeigt den Schrank nur an (`/api/schrank`).
 
+Anmeldung: Cookie statt Basic-Auth, gemeinsam für /essen/ und /vorrat/ – `anmeldung.py` (identisch in beiden Repos,
+Änderungen in beide übernehmen). Passwort-Hash + Geheimnis liegen in `<Domain>/.anmeldung/passwort.json`
+(`ANMELDUNG_DIR`, setzt das CGI; lokal ohne Variable = keine Anmeldung). Neues Passwort setzt der Nutzer selbst mit
+`python manitu/passwort.py` (im Essenplan-Repo; fragt verdeckt, lädt nur den Hash hoch, meldet alle Geräte ab) –
+nie das Passwort entgegennehmen. Cookie 180 Tage, wird bei Nutzung verlängert; 5 Fehlversuche = 15 Min. Sperre.
+
 Webserver (manitu, CGI): `manitu/essenplan.cgi` ruft `app.dispatch()` auf, `manitu/htaccess.vorlage`
-leitet alles dorthin um und schützt per Basic-Auth (nur HTTPS). `python manitu/paket.py --serverpfad …`
+leitet alles dorthin um (nur HTTPS). `python manitu/paket.py --serverpfad …`
 baut das Upload-Paket in `manitu/upload/` (nicht im Git). Daten liegen dort in `daten/`
 (`ESSENPLAN_DATA`); Rezeptänderungen aus der Online-App sind dann nur auf dem Server.
 `--mit-daten` nur beim ersten Hochladen, sonst werden Online-Änderungen überschrieben.

@@ -1,19 +1,13 @@
 # Essenplan auf dem Webserver – wird von manitu/paket.py zu .htaccess.
-# {{AUTHUSERFILE}} ersetzt paket.py durch den vollen Server-Pfad zur .htpasswd.
 
 # Ordnerinhalt nie auflisten
 Options -Indexes
 
-# Passwort nur über HTTPS abfragen; über http:// gibt es gar keinen Zugriff
-<If "%{HTTPS} == 'on'">
-    AuthType Basic
-    AuthName "Essenplan"
-    AuthUserFile "{{AUTHUSERFILE}}"
-    Require valid-user
-</If>
-<Else>
+# Nur über HTTPS; die Anmeldung (Cookie, gemeinsam mit der Schwester-App) macht die App selbst
+# (anmeldung.py). Über http:// gibt es gar keinen Zugriff.
+<If "%{HTTPS} != 'on'">
     Require all denied
-</Else>
+</If>
 
 # Code und Daten nie direkt ausliefern (zusätzlich zur Umleitung unten)
 <FilesMatch "(^\.|\.(py|md|json|txt|lock|vorlage)$)">

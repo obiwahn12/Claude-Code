@@ -17,8 +17,11 @@ os.environ["ESSENPLAN_DATA"] = str(DATA)
 os.environ["XDG_CACHE_HOME"] = str(DATA / "cache")  # Bring!-Token + Artikelkatalog
 # Bestand der Vorratsschrank-App im Nachbarordner /vorrat/ (wird nur gelesen)
 os.environ.setdefault("VORRATSSCHRANK_BESTAND", str(HERE.parent / "vorrat" / "daten" / "bestand.json"))
+# Gemeinsame Anmeldung beider Apps (Passwort-Hash + Geheimnis), siehe anmeldung.py
+os.environ.setdefault("ANMELDUNG_DIR", str(HERE.parent / ".anmeldung"))
 sys.path.insert(0, str(HERE))
 
+import anmeldung  # noqa: E402
 import app  # noqa: E402
 import bring  # noqa: E402
 
@@ -27,19 +30,22 @@ try:
 except ImportError:  # Windows (lokaler Test)
     fcntl = None
 
-GRUND = {200: "OK", 400: "Bad Request", 404: "Not Found", 405: "Method Not Allowed",
-         500: "Internal Server Error"}
+GRUND = {200: "OK", 303: "See Other", 400: "Bad Request", 401: "Unauthorized", 404: "Not Found",
+         405: "Method Not Allowed", 429: "Too Many Requests", 500: "Internal Server Error", 503: "Service Unavailable"}
 
 
-def antworte(code, body, ctype="application/json; charset=utf-8"):
-    data = body if isinstance(body, bytes) else json.dumps(body, ensure_ascii=False).encode()
-    kopf = (f"Status: {code} {GRUND.get(code, '')}\r\n"
-            f"Content-Type: {ctype}\r\n"
-            f"Content-Length: {len(data)}\r\n"
-            "Cache-Control: no-store\r\n"
-            "X-Content-Type-Options: nosniff\r\n\r\n")
+def senden(code, header, data):
+    kopf = f"Status: {code} {GRUND.get(code, '')}\r\n" + "".join(f"{k}: {v}\r\n" for k, v in header)
+    kopf += (f"Content-Length: {len(data)}\r\n"
+             "Cache-Control: no-store\r\n"
+             "X-Content-Type-Options: nosniff\r\n\r\n")
     sys.stdout.buffer.write(kopf.encode() + data)
     sys.stdout.buffer.flush()
+
+
+def antworte(code, body, ctype="application/json; charset=utf-8", extra=()):
+    data = body if isinstance(body, bytes) else json.dumps(body, ensure_ascii=False).encode()
+    senden(code, [("Content-Type", ctype), *extra], data)
 
 
 def lies_json():
@@ -55,10 +61,20 @@ def main():
     if not path.startswith("/"):
         path = "/" + path
 
+    basis = os.environ.get("SCRIPT_NAME", "").rsplit("/", 1)[0]  # z. B. „/essen“
+    seite = anmeldung.anfrage(method, path, os.environ, sys.stdin.buffer, "Essenplan", basis)
+    if seite:
+        return senden(*seite)
+    ok, extra = anmeldung.angemeldet(os.environ)
+    if not ok:
+        if path.startswith("/api/"):
+            return antworte(401, {"fehler": "Bitte neu anmelden.", "anmelden": True})
+        return senden(303, [("Location", f"{basis}/login")], b"")
+
     if path in ("/", "/index.html"):
         if method != "GET":
             return antworte(405, {"fehler": "Nicht erlaubt"})
-        return antworte(200, (app.STATIC / "index.html").read_bytes(), "text/html; charset=utf-8")
+        return antworte(200, (app.STATIC / "index.html").read_bytes(), "text/html; charset=utf-8", extra)
     if not path.startswith("/api/"):
         return antworte(404, {"fehler": "Nicht gefunden"})
 
@@ -71,7 +87,7 @@ def main():
         if result is None:
             antworte(404, {"fehler": "Nicht gefunden"})
         else:
-            antworte(200, result)
+            antworte(200, result, extra=extra)
     except (ValueError, KeyError, bring.BringError) as e:
         antworte(400, {"fehler": str(e)})
     except Exception as e:  # noqa: BLE001 – Fehler an die Oberfläche melden

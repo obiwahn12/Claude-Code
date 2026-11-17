@@ -757,6 +757,7 @@ async function api(method, path, body) {
   // relativ aufrufen, damit die App auch in einem Unterordner läuft (z. B. /essen/ auf dem Webserver)
   const r = await fetch(path.replace(/^\//, ""), {method, headers: {"Content-Type": "application/json"}, body: body ? JSON.stringify(body) : undefined});
   const d = await r.json().catch(() => ({}));
+  if (r.status === 401 && d.anmelden) { location.href = "login"; throw new Error("Bitte neu anmelden"); }  // Anmeldung abgelaufen
   if (!r.ok) throw new Error(d.fehler || r.statusText);
   return d;
 }
