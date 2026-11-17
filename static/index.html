@@ -217,15 +217,8 @@ ul.check input[type=checkbox]:disabled { opacity: .45; }
 .seg button.active { background: var(--card); box-shadow: 0 1px 4px rgba(0, 0, 0, .12); font-weight: 600; }
 .kat-seg { max-width: none; margin-bottom: 4px; }
 .kat-seg.inaktiv { opacity: .4; }
-/* Rezepte: Kategorien als Tab-Leiste (wischbar, klebt unter der Kopfzeile) – wie im Vorratsschrank */
-.kat-leiste { position: sticky; top: var(--kopf-h, 64px); z-index: 8; display: flex; gap: 8px; overflow-x: auto;
-              margin: 0 -20px 4px; padding: 6px 20px 10px; scrollbar-width: none; scroll-padding-inline: 20px; }
-.kat-leiste::-webkit-scrollbar { display: none; }
-/* am Desktop: mit der Maus ziehen; weicher Rand zeigt, dass es weitergeht */
-.kat-leiste { cursor: grab; -webkit-mask-image: linear-gradient(to right, transparent 0, #000 22px, #000 calc(100% - 22px), transparent);
-              mask-image: linear-gradient(to right, transparent 0, #000 22px, #000 calc(100% - 22px), transparent); }
-.kat-leiste.zieht { cursor: grabbing; scroll-behavior: auto; }
-.kat-leiste.zieht button { pointer-events: none; }
+/* Kategorien als Tab-Leiste: bricht um (kein Scrollen nötig); Innenabstand lässt Platz für die Schatten */
+.kat-leiste { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 -8px 6px; padding: 10px 8px 16px; }
 .kat-leiste button { flex: none; display: inline-flex; align-items: center; gap: 7px; min-height: 40px; padding: 0 16px;
                      border-radius: 999px; border: 1px solid var(--glass-edge); background: var(--glass-strong); color: var(--text);
                      font-size: 15px; font-weight: 500; white-space: nowrap; box-shadow: var(--glass-shadow);
@@ -1240,31 +1233,9 @@ function indexZeigen(vorhanden) {
 function hoehenMessen() {
   const kopf = document.querySelector("header").getBoundingClientRect().height;
   document.documentElement.style.setProperty("--kopf-h", `${Math.round(kopf)}px`);
-  document.documentElement.style.setProperty("--leiste-h", `${Math.round($("#katLeiste").offsetHeight || 56)}px`);
+  document.documentElement.style.setProperty("--leiste-h", "0px");  // Leiste klebt nicht (bricht um)
 }
 addEventListener("resize", hoehenMessen);
-// Tab-Leiste am Desktop: Mausrad scrollt waagerecht, mit gedrückter Maustaste ziehen
-(() => {
-  const l = $("#katLeiste"); if (!l) return;
-  l.addEventListener("wheel", e => {
-    if (l.scrollWidth <= l.clientWidth || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
-    l.scrollLeft += e.deltaY; e.preventDefault();
-  }, {passive: false});
-  let start = null, gezogen = false;
-  l.addEventListener("pointerdown", e => {
-    if (e.pointerType !== "mouse" || e.button !== 0) return;
-    start = {x: e.clientX, links: l.scrollLeft}; gezogen = false;
-  });
-  addEventListener("pointermove", e => {
-    if (!start) return;
-    const dx = e.clientX - start.x;
-    if (!gezogen && Math.abs(dx) > 5) { gezogen = true; l.classList.add("zieht"); }
-    if (gezogen) l.scrollLeft = start.links - dx;
-  });
-  addEventListener("pointerup", () => { start = null; l.classList.remove("zieht"); });
-  // nach dem Ziehen keinen Tab auswählen
-  l.addEventListener("click", e => { if (gezogen) { e.stopPropagation(); e.preventDefault(); gezogen = false; } }, true);
-})();
 
 /* ---------- Gericht-Auswahl (Blatt / Fenster) ---------- */
 let wahl = {tag: null, kat: null};
