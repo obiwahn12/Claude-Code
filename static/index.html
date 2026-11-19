@@ -110,12 +110,13 @@ h2.section { font-size: 13px; line-height: 18px; font-weight: 400; text-transfor
 .hidden { display: none !important; }
 label { display: block; font-size: 13px; color: var(--muted); margin: 14px 0 6px; }
 label:first-child { margin-top: 0; }
+label .muted { font-size: inherit; opacity: .85; }   /* Klammer-Hinweis nicht größer als die Beschriftung */
 
 input, select, textarea { width: 100%; min-height: 44px; background: var(--fill); border: 0; border-radius: 10px;
                           padding: 10px 12px; font-size: 17px; appearance: none; -webkit-appearance: none; }
 select { padding-right: 36px; background-repeat: no-repeat; background-position: right 12px center; background-size: 12px;
          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%238e8e93' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
-input::placeholder, textarea::placeholder { color: var(--muted); opacity: .8; }
+input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }  /* volle Deckkraft: ≥ 4,5:1 auch im Dunkelmodus */
 textarea { min-height: 160px; resize: vertical; line-height: 1.45; }
 
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 18px;
@@ -215,8 +216,8 @@ ul.check input[type=checkbox]:disabled { opacity: .45; }
 .seg { display: flex; width: 100%; max-width: 420px; background: var(--fill); border-radius: 9px; padding: 2px; margin-bottom: 14px; }
 .seg button { flex: 1; min-height: 32px; border: 0; background: none; border-radius: 7px; font-size: 13px; font-weight: 500; }
 .seg button.active { background: var(--card); box-shadow: 0 1px 4px rgba(0, 0, 0, .12); font-weight: 600; }
-.kat-seg { max-width: none; margin-bottom: 4px; }
-.kat-seg.inaktiv { opacity: .4; }
+.kat-leiste.inaktiv { opacity: .4; }  /* Gericht-Auswahl: während der Suche gilt die Kategorie nicht */
+.sheet-filter .kat-leiste { padding-bottom: 10px; }
 /* Kategorien als Tab-Leiste: bricht um (kein Scrollen nötig); Innenabstand lässt Platz für die Schatten */
 .kat-leiste { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 -8px 6px; padding: 10px 8px 16px; }
 .kat-leiste button { flex: none; display: inline-flex; align-items: center; gap: 7px; min-height: 40px; padding: 0 16px;
@@ -306,6 +307,10 @@ main:has(#tab-rezepte:not(.hidden) #rezeptListe:not(.hidden) .index-leiste:not(.
 
 html { background-color: var(--wall-base); }  /* Safari färbt damit auch die Statusleiste */
 body { background: transparent; }
+/* Browser-Oberflächen in den App-Farben: Markierung, Cursor, Formular-Akzent, Bildlaufleiste */
+::selection { background: color-mix(in srgb, var(--accent) 32%, transparent); }
+html { caret-color: var(--tint); accent-color: var(--accent);
+       scrollbar-color: color-mix(in srgb, var(--muted) 45%, transparent) transparent; }
 body::before { content: ""; position: fixed; inset: 0; z-index: -1; background: var(--wall); pointer-events: none; }
 :focus-visible { border-radius: 14px; }
 
@@ -360,7 +365,6 @@ select { padding-right: 40px; background-position: right 16px center; }
 .seg { border-radius: 999px; padding: 4px; margin-bottom: 18px; background: var(--fill); }
 .seg button { min-height: 40px; border-radius: 999px; font-size: 14px; }
 .seg button.active { background: var(--card); box-shadow: 0 2px 8px rgba(0, 0, 0, .10); }
-.kat-seg { margin-bottom: 6px; }
 
 /* Listen: höhere Zeilen, größere Häkchen */
 .check-row { min-height: 56px; padding: 14px 20px; gap: 16px; }
@@ -470,12 +474,8 @@ ul.check input[type=checkbox]:checked::after { width: 7px; height: 13px; }
                  background: var(--glass-strong); box-shadow: 0 12px 40px rgba(0, 0, 0, .18); }
 .senden-leiste #sendenInfo:empty { display: none; }
 .senden-leiste #sendenInfo { margin: 6px 0 2px !important; }
-body:has(#tab-woche:not(.hidden) #ergebnis:not(.hidden)) #toast { bottom: calc(100px + env(safe-area-inset-bottom)); }
-@media (max-width: 699px) {
-  /* Handy: über der schwebenden Tab-Leiste */
-  .senden-leiste { bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 30px); padding: 8px; }
-  body:has(#tab-woche:not(.hidden) #ergebnis:not(.hidden)) #toast { bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 106px); }
-}
+/* Hinweis-Meldungen setzen sich per JS über den klebenden Senden-Knopf (siehe toast()) */
+@media (max-width: 699px) { .senden-leiste { padding: 8px; } }
 
 /* Handy: Navigation als Burger-Menü oben links statt Tab-Leiste unten */
 .menu-btn { display: none; place-items: center; width: 48px; height: 48px; padding: 0; border-radius: 999px; color: var(--text);
@@ -500,7 +500,6 @@ header.menu-offen .menu-btn .zu { display: block; }
   main { padding-bottom: calc(40px + env(safe-area-inset-bottom)) !important; }
   .senden-leiste { bottom: calc(18px + env(safe-area-inset-bottom)); }
   #toast { bottom: calc(24px + env(safe-area-inset-bottom)); }
-  body:has(#tab-woche:not(.hidden) #ergebnis:not(.hidden)) #toast { bottom: calc(100px + env(safe-area-inset-bottom)); }
   h1.title { margin-top: 8px; }
 }
 @keyframes menu-rein { from { opacity: 0; transform: translateY(-6px) scale(.98); } }
@@ -589,7 +588,11 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter
   .tag-row input, .tag-row .gericht { min-height: 64px; font-size: 18px; }
 
   /* Vorrat-Raster, Schnellauswahl, Menü */
-  .item-grid .item { min-height: 58px; font-size: 17px; }
+  .item-grid .item { min-height: 58px; padding-left: 10px; font-size: 16px; }
+  .item-grid .weg { width: 36px; margin-left: -2px; }
+  /* Rezept-Editor: Mengenfeld breiter, weniger Innenabstand, damit „1 Würfel“ o. Ä. sichtbar bleibt */
+  .zut { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) 40px; gap: 8px; }
+  .zut input { padding-left: 12px; padding-right: 10px; }
   .schnell-chip { min-height: 48px; padding: 0 20px; font-size: 17px; }
   .schnell-chips { gap: 10px; }
   nav button { min-height: 58px; font-size: 18px; }
@@ -607,7 +610,8 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter
 
 /* ---------- Heute: Kochansicht ---------- */
 .heute-kopf { align-items: flex-end; flex-wrap: nowrap; }
-.heute-kopf .titel-aktionen .btn { width: 48px; padding: 0; font-size: 26px; font-weight: 400; }
+.heute-kopf .titel-aktionen .btn { width: 48px; padding: 0; }
+.heute-kopf .titel-aktionen .btn-icon { width: 22px; height: 22px; margin: 0; }
 .heute-gericht { font-size: 26px; line-height: 1.2; font-weight: 700; margin: 0 0 6px; }
 .heute-meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
 .heute-hinweis { margin: 14px 0 0; padding: 12px 14px; border-radius: 14px; background: var(--fill); font-size: 15px; line-height: 1.45; }
@@ -678,8 +682,8 @@ ol.schritte li.erledigt .nr { background: var(--fill); color: var(--muted); }
     <div class="row heute-kopf">
       <div class="grow"><h1 class="title" id="heuteTag">Heute</h1></div>
       <div class="titel-aktionen">
-        <button class="btn sec" id="heuteZurueck" aria-label="Vorheriger Tag">‹</button>
-        <button class="btn sec" id="heuteVor" aria-label="Nächster Tag">›</button>
+        <button class="btn sec" id="heuteZurueck" aria-label="Vorheriger Tag"><svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 5.5L8 12l6.5 6.5"/></svg></button>
+        <button class="btn sec" id="heuteVor" aria-label="Nächster Tag"><svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 5.5L16 12l-6.5 6.5"/></svg></button>
       </div>
     </div>
     <div id="heuteInhalt"></div>
@@ -799,7 +803,7 @@ ol.schritte li.erledigt .nr { background: var(--fill); color: var(--muted); }
   </div>
   <div class="sheet-filter">
     <input id="wahlSuche" type="search" placeholder="Gericht oder Zutat suchen" aria-label="Gerichte durchsuchen" autocomplete="off" autofocus>
-    <div class="seg kat-seg" id="wahlSeg" role="tablist" aria-label="Kategorie"></div>
+    <div class="kat-leiste" id="wahlSeg" role="tablist" aria-label="Kategorie"></div>
   </div>
   <div class="sheet-liste recipes" id="wahlListe"></div>
 </dialog>
@@ -824,7 +828,13 @@ function el(tag, attrs = {}, ...kids) {
   for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(k));
   return e;
 }
-function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2800); }
+function toast(msg) {
+  const t = $("#toast"); t.textContent = msg;
+  // Über dem klebenden Senden-Knopf erscheinen, falls er gerade im Bild ist (seine Höhe schwankt je nach Hinweis)
+  const leiste = document.querySelector(".senden-leiste"), r = leiste?.getBoundingClientRect();
+  t.style.bottom = r && leiste.offsetParent && r.height && r.top < innerHeight && r.bottom > 0 ? `${Math.round(innerHeight - r.top + 12)}px` : "";
+  t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2800);
+}
 async function api(method, path, body) {
   // relativ aufrufen, damit die App auch in einem Unterordner läuft (z. B. /essen/ auf dem Webserver)
   const r = await fetch(path.replace(/^\//, ""), {method, headers: {"Content-Type": "application/json"}, body: body ? JSON.stringify(body) : undefined});
@@ -1150,9 +1160,10 @@ function rezeptAuswahl(opt) {
   const alleKat = [...new Set(rezepte.map(r => r.kategorie))];
   const kat = alleKat.includes(opt.kat) ? opt.kat : alleKat[0];
   box.replaceChildren();
-  // Umschalter: eine Kategorie zeigen; während der Suche gilt er nicht (Suche über alle)
-  seg.replaceChildren(...alleKat.map(k => el("button", {type: "button", role: "tab", class: k === kat ? "active" : "",
-    "aria-selected": String(k === kat), onclick: () => opt.onKat(k)}, k)));
+  // Kategorie-Leiste wie auf der Rezepte-Seite (Chips mit Anzahl); während der Suche gilt sie nicht (Suche über alle)
+  const anzahl = k => rezepte.filter(r => r.kategorie === k).length;
+  seg.replaceChildren(...alleKat.map(k => el("button", {type: "button", role: "tab",
+    "aria-selected": String(k === kat), onclick: () => opt.onKat(k)}, k, el("small", {}, String(anzahl(k))))));
   seg.classList.toggle("inaktiv", !!q);
   const abschnitt = (titel, liste) => box.append(el("h2", {class: "section"}, titel), el("div", {class: "card list"}, liste.map(zeile)));
   const sortiert = liste => [...liste].sort((a, b) => a.name.localeCompare(b.name, "de"));
