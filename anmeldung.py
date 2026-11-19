@@ -1,6 +1,6 @@
 """Gemeinsame Anmeldung für Essenplan (/essen/) und Vorratsschrank (/vorrat/) – per Cookie statt Basic-Auth.
 
-GLEICHE DATEI in beiden Repos (Claude-Code und inventory) – Änderungen in beide übernehmen.
+GLEICHE DATEI in beiden Repos (essenplan und inventory) – Änderungen in beide übernehmen.
 
 - Ein Familienpasswort, gespeichert nur als PBKDF2-Hash in <Domain>/.anmeldung/passwort.json
   (gesetzt mit manitu/passwort.py im Essenplan-Repo; der Ordner ist per .htaccess gesperrt).

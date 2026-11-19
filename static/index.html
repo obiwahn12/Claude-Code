@@ -539,6 +539,7 @@ dialog.sheet::backdrop { background: rgba(0, 0, 0, .28); -webkit-backdrop-filter
 
 /* Hinweis-Meldung als Glas-Kapsel */
 #toast { background: var(--glass-strong); border: 1px solid var(--glass-edge); border-radius: 999px; padding: 14px 22px; }
+#toast.fehler { color: var(--danger); font-weight: 600; }
 
 /* Weiche Animationen: Bereichswechsel und Prüf-Ergebnis */
 @keyframes rein { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
@@ -650,7 +651,7 @@ ol.schritte li.erledigt .nr { background: var(--fill); color: var(--muted); }
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v4.5h-4.5"/></svg>
   </button>
   <div class="theme" id="theme" role="radiogroup" aria-label="Darstellung">
-    <button type="button" role="radio" data-theme="auto" title="Automatisch (wie das Gerät)" aria-label="Automatisch">
+    <button type="button" role="radio" data-theme="auto" title="Wie das Gerät" aria-label="Automatisch">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
     <button type="button" role="radio" data-theme="light" title="Hell" aria-label="Hell">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg></button>
@@ -669,7 +670,7 @@ ol.schritte li.erledigt .nr { background: var(--fill); color: var(--muted); }
       <span>Rezepte</span></button>
     <button role="tab" data-tab="vorrat" aria-selected="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M5 9v9.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V9M10 13h4"/></svg>
-      <span>Vorrat</span></button>
+      <span>Grundvorrat</span></button>
     <button role="tab" data-tab="bring" aria-selected="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2.2l2.2 11h10.4l2-7.5H6.4"/><circle cx="9" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/></svg>
       <span id="bringTab">Bring!</span></button>
@@ -744,7 +745,7 @@ ol.schritte li.erledigt .nr { background: var(--fill); color: var(--muted); }
       <input id="eMeta" placeholder="5 Portionen · ca. 30 min">
       <label for="eHinweis">Hinweis</label>
       <input id="eHinweis">
-      <label>Zutaten <span class="muted">(Artikel · Menge)</span></label>
+      <label>Zutaten</label>
       <div id="eZutaten"></div>
       <button class="btn sec" id="eAdd">+ Zutat</button>
       <label for="eSchritte">Zubereitung</label>
@@ -757,15 +758,15 @@ ol.schritte li.erledigt .nr { background: var(--fill); color: var(--muted); }
     <button class="btn danger block hidden" id="eDelete">Rezept löschen</button>
   </section>
 
-  <!-- ===== Vorrat ===== -->
+  <!-- ===== Grundvorrat (intern weiter „vorrat“) ===== -->
   <section id="tab-vorrat" class="hidden">
-    <h1 class="title">Vorrat</h1>
-    <p class="muted" style="margin:0 4px 4px">Was hier steht, kommt nicht auf die Einkaufsliste – Grundvorrat und Dinge, die niemand mag. Mit + hinzufügen, mit × entfernen; wird sofort gespeichert.</p>
+    <h1 class="title">Grundvorrat</h1>
+    <p class="muted" style="margin:0 4px 4px">Was hier steht, kommt nicht auf die Einkaufsliste. Das sind Grundvorrat und Dinge, die niemand mag. Änderungen werden sofort gespeichert.</p>
     <div id="vorratListe"></div>
     <div id="schrankListe" class="hidden"></div>
 
     <h1 class="title" style="margin-top:40px">Regelmäßig</h1>
-    <p class="muted" style="margin:0 4px 4px">Was ihr fast jede Woche kauft. Erscheint im Essenplan zum schnellen Hinzufügen.</p>
+    <p class="muted" style="margin:0 4px 4px">Was ihr fast jede Woche kauft. Erscheint nach „Zutaten prüfen“ zum schnellen Hinzufügen.</p>
     <div id="regelListe"></div>
   </section>
 
@@ -828,8 +829,9 @@ function el(tag, attrs = {}, ...kids) {
   for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(k));
   return e;
 }
-function toast(msg) {
+function toast(msg, art = "") {
   const t = $("#toast"); t.textContent = msg;
+  t.classList.toggle("fehler", art === "fehler");  // Fehler: rote Schrift statt Warn-Emoji
   // Über dem klebenden Senden-Knopf erscheinen, falls er gerade im Bild ist (seine Höhe schwankt je nach Hinweis)
   const leiste = document.querySelector(".senden-leiste"), r = leiste?.getBoundingClientRect();
   t.style.bottom = r && leiste.offsetParent && r.height && r.top < innerHeight && r.bottom > 0 ? `${Math.round(innerHeight - r.top + 12)}px` : "";
@@ -843,7 +845,7 @@ async function api(method, path, body) {
   if (!r.ok) throw new Error(d.fehler || r.statusText);
   return d;
 }
-const fehler = e => toast("⚠️ " + e.message);
+const fehler = e => toast(e.message, "fehler");
 
 /* ---------- Tabs ---------- */
 document.querySelectorAll("nav button").forEach(b => b.onclick = () => { zeigeTab(b.dataset.tab); menu(false); });
@@ -920,7 +922,7 @@ function zeigeWoche() {
     const g = (woche.tage[t] || [])[0] || "";
     // Gericht als Text (bricht in den Kacheln um); Tippen öffnet die Auswahl nach Kategorien
     const anzeige = el("button", {type: "button", class: "gericht" + (g ? "" : " leer"), "aria-haspopup": "dialog",
-      "aria-label": g ? `${TAG_NAME[t]}: ${g} – ändern` : `Gericht für ${TAG_NAME[t]} wählen`,
+      "aria-label": g ? `${TAG_NAME[t]}: ${g}, ändern` : `Gericht für ${TAG_NAME[t]} wählen`,
       onclick: () => oeffneWahl(t)}, g || "Wählen …");
     return el("div", {class: "tag-row" + (t === heute ? " heute" : "")},
       el("span", {class: "tag-name"}, TAG_NAME[t]), anzeige,
@@ -960,7 +962,7 @@ $("#zufall").onclick = () => {
   const auswahl = [...pflicht, ...rest.slice(0, frei.length - pflicht.length)];
   mischen(auswahl).forEach((r, i) => woche.tage[frei[i]] = [r.name]);
   zeigeWoche(); speichereWoche();
-  toast(`🎲 ${auswahl.length} ${auswahl.length === 1 ? "Tag" : "Tage"} gefüllt`);
+  toast(`${auswahl.length} ${auswahl.length === 1 ? "Tag" : "Tage"} gefüllt`);
 };
 // Abhakbar: neue Zutaten (Standard: kaufen), Vorrat (Standard: nicht kaufen, außer er ist leer) und
 // was im Vorratsschrank liegt (Standard: nicht kaufen – außer es reicht nachweislich nicht)
@@ -983,7 +985,7 @@ async function pruefe(behalten) {
     const oben = e.getBoundingClientRect().top;
     if (oben > innerHeight * .7) scrollTo({top: scrollY + oben - 90, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
   }
-  if (!pruefung.liste_geprueft) toast("Bring!-Liste nicht geprüft – unter „Bring!“ anmelden");
+  if (!pruefung.liste_geprueft) toast("Bring!-Liste nicht geprüft. Bitte unter „Bring!“ anmelden.");
 }
 $("#pruefen").onclick = () => pruefe(false).catch(fehler);
 
@@ -1025,7 +1027,7 @@ const regelEditor = listenEditor({box: $("#regelListe"), ersterTitel: "Jede Woch
 function zutatHinzufuegen(tag, artikel, menge) {
   woche.extra = woche.extra || [];
   woche.extra.push({artikel, menge, tag});
-  toast(`✓ ${artikel} hinzugefügt`);
+  toast(`${artikel} hinzugefügt`);
   speichereExtra();
 }
 function zutatEntfernen(artikel, tag) {
@@ -1059,7 +1061,7 @@ function zeileMitHaken(a, text, menge, nebenzeile, entfernen) {
   const hinweis = !a ? null
     : a.status === "liste" ? el("span", {class: "tag" + (a.dort !== a.menge ? " warn" : "")},
         a.dort !== a.menge ? `auf der Liste: ${a.dort || "ohne Menge"}` : "auf der Liste")
-    : a.status === "vorrat" ? el("span", {class: "tag" + (a.kaufen ? " warn" : "")}, a.kaufen ? "nachkaufen" : "Vorrat")
+    : a.status === "vorrat" ? el("span", {class: "tag" + (a.kaufen ? " warn" : "")}, a.kaufen ? "nachkaufen" : "Grundvorrat")
     : a.status === "schrank" ? el("span", {class: "tag schrank" + (a.schrank.reicht === false ? " warn" : "")},
         a.schrank.reicht === false ? `nur ${a.schrank.anzahl} im Schrank` : "im Schrank")
     : !a.kaufen ? el("span", {class: "tag"}, "zuhause") : null;
@@ -1082,8 +1084,8 @@ function zeigeErgebnis() {
   box.append(kopf(`Zutaten · ${pruefung.artikel.length}`, ""),
     el("div", {class: "card list"}, el("div", {class: "list-head", style: "padding-bottom:14px"},
       el("p", {class: "muted"}, pruefung.schrank_angebunden
-        ? "Haken weg bei allem, was schon zuhause ist. Was im Vorratsschrank liegt, ist schon abgehakt – bei Bedarf wieder anhaken."
-        : "Haken weg bei allem, was schon zuhause ist. Vorrat nur anhaken, wenn er leer ist."))));
+        ? "Haken weg bei allem, was schon zuhause ist. Was im Vorratsschrank liegt, hat schon keinen Haken. Bei Bedarf anhaken."
+        : "Haken weg bei allem, was schon zuhause ist. Grundvorrat nur anhaken, wenn er leer ist."))));
   const rang = {neu: 0, schrank: 1, vorrat: 2, liste: 3};
   const gruppen = {};
   for (const a of pruefung.artikel) (gruppen[a.abteilung || "Eigene Artikel"] ||= []).push(a);
@@ -1118,7 +1120,7 @@ function zeigeGerichte() {
     box.append(el("div", {class: "gruppe"}, kopf(`${TAG_NAME[t]} · ${g}`, t),
       el("div", {class: "card list"}, el("ul", {class: "check"}, li),
         vorrat.length ? el("div", {class: "list-head", style: "border-top:.5px solid var(--line);padding-bottom:12px"},
-          el("p", {class: "muted"}, "Aus dem Vorrat: " + vorrat.join(", "))) : null)));
+          el("p", {class: "muted"}, "Aus dem Grundvorrat: " + vorrat.join(", "))) : null)));
   }
   // Eigene Zutaten ohne Gericht (oder deren Tag kein Gericht mehr hat)
   const ohne = extra.filter(e => !e.tag || !(woche.tage[e.tag] || []).length);
@@ -1140,7 +1142,7 @@ $("#senden").onclick = async () => {
   $("#senden").disabled = true;
   try {
     const d = await api("POST", "/api/bring/senden", {liste: woche.liste, artikel});
-    toast(`✓ ${d.hinzugefuegt.length} Artikel auf „${woche.liste}“`);
+    toast(`${d.hinzugefuegt.length} Artikel auf „${woche.liste}“`);
     $("#pruefen").click();
   } catch (e) { fehler(e); zaehle(); }
 };
@@ -1335,7 +1337,7 @@ $("#eSave").onclick = async () => {
       TAGE.forEach(t => woche.tage[t] = (woche.tage[t] || []).map(g => g === editName ? rezept.name : g));
       await speichereWoche(); zeigeWoche();
     }
-    toast("✓ Gespeichert"); await ladeRezepte(); schliesse();
+    toast("Gespeichert"); await ladeRezepte(); schliesse();
   } catch (e) { fehler(e); }
 };
 $("#eDelete").onclick = async () => {
@@ -1397,7 +1399,7 @@ function listenEditor({box, ersterTitel, mitMenge, speichern}) {
             el("span", {class: "grow"}, x.artikel, x.menge ? el("span", {class: "muted"}, ` · ${x.menge}`) : null),
             el("button", {type: "button", class: "weg", title: "Entfernen", "aria-label": `${x.artikel} entfernen`,
               onclick: () => { zeilen.splice(x.i, 1); zeichne(); sichern(); toast(`${x.artikel} entfernt`); }}, "×"))))
-        : el("div", {class: "list-head", style: "padding-bottom:16px"}, el("p", {class: "muted"}, "Noch leer – mit + hinzufügen.")));
+        : el("div", {class: "list-head", style: "padding-bottom:16px"}, el("p", {class: "muted"}, "Noch leer. Mit + etwas hinzufügen.")));
       return [el("div", {class: "section-row"}, el("h2", {class: "section"}, `${g.titel} · ${g.items.length}`), plus), karte];
     }));
   }
@@ -1426,7 +1428,7 @@ async function ladeSchrank() {
     box.replaceChildren(
       el("div", {class: "section-row"}, el("h2", {class: "section"}, `Im Vorratsschrank · ${d.artikel.length}`),
         el("a", {class: "oeffnen", href: "../vorrat/"}, "Öffnen ↗")),
-      el("p", {class: "muted", style: "margin:0 20px 10px"}, "Wird beim Zutaten-Prüfen als „zuhause“ vorgeschlagen. Ändern im Vorratsschrank."),
+      el("p", {class: "muted", style: "margin:0 20px 10px"}, "Wird nach „Zutaten prüfen“ als „im Schrank“ markiert. Ändern lässt sich das im Vorratsschrank."),
       karte);
   };
   zeige();
@@ -1437,7 +1439,7 @@ $("#bringOut").onsubmit = async e => {
   e.preventDefault();
   try {
     await api("POST", "/api/bring/login", {email: $("#email").value, password: $("#pw").value});
-    $("#pw").value = ""; toast("✓ Angemeldet"); await ladeBring();
+    $("#pw").value = ""; toast("Angemeldet"); await ladeBring();
   } catch (err) { fehler(err); }
 };
 $("#logout").onclick = async () => { await api("POST", "/api/bring/logout"); await ladeBring(); };

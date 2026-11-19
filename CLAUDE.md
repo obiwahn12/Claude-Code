@@ -66,7 +66,7 @@ Vorratsschrank-Anbindung: `schrank.py` liest den Bestand der Schwester-App (/vor
 ohne Variable aus. „Zutaten prüfen“ markiert Treffer als Status `schrank` (abgehakt = nicht kaufen, außer
 `reicht` ist False bei Dosen/Gläsern). Abgleich: gleiche Sorte, Oberbegriff am Wortende mit Ausnahmen
 (`ANDERES_PRODUKT`) und gleicher Bring!-Abteilung, `ZUORDNUNG` (Spaghetti → Nudeln …). Pflege/Haushalt
-(gespeicherte `abteilung` im Bestand) werden ignoriert. Vorrat-Seite zeigt den Schrank nur an (`/api/schrank`).
+(gespeicherte `abteilung` im Bestand) werden ignoriert. Grundvorrat-Seite (Menüpunkt „Grundvorrat“, intern `vorrat`) zeigt den Schrank nur an (`/api/schrank`).
 
 Anmeldung: Cookie statt Basic-Auth, gemeinsam für /essen/ und /vorrat/ – `anmeldung.py` (identisch in beiden Repos,
 Änderungen in beide übernehmen). Passwort-Hash + Geheimnis liegen in `<Domain>/.anmeldung/passwort.json`
